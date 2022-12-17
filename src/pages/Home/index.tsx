@@ -1,16 +1,18 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import LogoBlue from "../../assets/logo-blue.webp";
+import { useNavigate } from "react-router-dom";
+import LogoBlue from "assets/logo-blue.webp";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 export const Home: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
         width: "100%",
         backgroundImage: {
           xs: "none",
-          md: `url(${require("../../assets/circular-bullseye.png")})`,
+          md: `url(${require("assets/circular-bullseye.png")})`,
         },
         backgroundColor: "secondary.main",
         backgroundSize: "contain",
@@ -22,7 +24,7 @@ export const Home: React.FC = () => {
     >
       <Container maxWidth="md">
         <motion.div
-          initial={{ opacity: 0, x: -100 }}
+          initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
@@ -115,6 +117,9 @@ export const Home: React.FC = () => {
                   variant="outlined"
                   color="inherit"
                   endIcon={<NavigateNextIcon />}
+                  onClick={() => {
+                    navigate("/subscription");
+                  }}
                 >
                   Ir para a inscrição
                 </Button>

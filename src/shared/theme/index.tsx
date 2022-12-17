@@ -22,4 +22,15 @@ export const theme = createTheme({
       xl: 1920,
     },
   },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& label": {
+            color: "white",
+          },
+        },
+      },
+    },
+  },
 });

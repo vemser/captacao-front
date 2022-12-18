@@ -1,8 +1,12 @@
 export interface SubscribeData {
-  name: string;
+  nome: string;
   email: string;
   cpf: string;
-  number: string;
+  telefone: string;
+  estado: string;
+  cidade: string;
+  dataNascimento: string;
+  neurodiversidade: string;
 }
 
 export interface StepsState {

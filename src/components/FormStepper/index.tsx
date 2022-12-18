@@ -59,12 +59,22 @@ export const FormStepper: React.FC<StepperProps> = ({ activeStep, steps }) => {
                 },
                 alignItems: "center",
                 gap: 1,
+
+                "& .MuiSvgIcon-root": {
+                  color: (theme) => {
+                    return activeStep === steps.indexOf(step)
+                      ? theme.palette.primary.main
+                      : "#979797";
+                  },
+                },
               }}
             >
               {step.icon}
               <Typography
                 variant="body2"
-                color={activeStep === steps.indexOf(step) ? "primary" : "white"}
+                color={
+                  activeStep === steps.indexOf(step) ? "primary" : "initial"
+                }
                 textAlign="center"
               >
                 {step.label}

@@ -19,12 +19,6 @@ export const StepTwo: React.FC = () => {
 
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
-      <Grid item xs={12} lg={6}>
-        <TextField {...register("cpf")} label="CPF" color="primary" fullWidth />
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <TextField {...register("number")} label="Number" fullWidth />
-      </Grid>
       <Grid
         item
         xs={12}

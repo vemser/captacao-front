@@ -27,7 +27,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           "& label": {
-            color: "white",
+            color: "#1E62FE",
           },
         },
       },

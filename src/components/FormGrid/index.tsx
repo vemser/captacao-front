@@ -20,21 +20,16 @@ export const FormGrid: React.FC<IFormGridProps> = ({ children, onSubmit }) => {
       sx={{
         "& .MuiInput-underline:after": {
           borderBottomColor: "primary.main",
-          color: "white",
+          color: "primary.main",
         },
         "& .MuiOutlinedInput-root": {
-          color: "white",
+          color: "primary.main",
           "& fieldset": {
-            color: "white",
+            color: "primary.main",
             borderColor: "primary.main",
           },
-          "&:hover fieldset": {
-            color: "white",
-            borderColor: "primary.main",
-          },
-          "&.Mui-focused fieldset": {
-            color: "white",
-            borderColor: "primary.main",
+          "& .MuiFormLabel-root": {
+            color: "primary.main",
           },
         },
       }}

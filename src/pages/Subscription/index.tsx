@@ -65,7 +65,7 @@ export const Subscription = () => {
           transition={{ duration: 0.5 }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} lg={10} m="0 auto" pb={2}>
+            <Grid item xs={12} lg={12} m="0 auto" pb={2}>
               <FormStepper activeStep={current} steps={stepsInfos} />
             </Grid>
             <Grid item xs={12} lg={6}>

@@ -1,5 +1,5 @@
-import { Home } from "@mui/icons-material";
-import { Aptos } from "pages/Aptos";
+import { Home, Groups, WorkHistory, AutoStories } from "@mui/icons-material";
+import { Avaliation } from "pages/Avaliation";
 
 interface MenuItem {
   text: string;
@@ -16,6 +16,16 @@ export const menuItems: MenuItem[] = [
   {
     text: "Aptos",
     path: "/aptos",
-    // icon: <Aptos />,
+    icon: <Groups />,
+  },
+  {
+    text: "Entrevista",
+    path: "/interview",
+    icon: <WorkHistory />,
+  },
+  {
+    text: "Avaliar",
+    path: "/avaliation",
+    icon: <AutoStories />,
   },
 ];

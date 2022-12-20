@@ -1,9 +1,10 @@
-import { ToastContainer } from "react-toastify";
-import { Routes, Route } from "react-router-dom";
-import { Home } from "../pages/Home";
-import { Subscription } from "../pages/Subscription";
-import { PrivateRoute } from "pages/PrivateRoute";
-import { Registers } from "pages/Registers";
+import { ToastContainer } from 'react-toastify'
+import { Routes, Route } from 'react-router-dom'
+import { Home } from '../pages/Home'
+import { Subscription } from '../pages/Subscription'
+import { PrivateRoute } from 'pages/PrivateRoute'
+import { Registers } from 'pages/Registers'
+import { Login } from 'pages/Login'
 
 export const Router = () => {
   return (
@@ -11,6 +12,7 @@ export const Router = () => {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/subscription" element={<Subscription />} />
 
         <Route element={<PrivateRoute />}>
@@ -20,5 +22,5 @@ export const Router = () => {
         <Route path="*" element={<div>Erro</div>} />
       </Routes>
     </>
-  );
-};
+  )
+}

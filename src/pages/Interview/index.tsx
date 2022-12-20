@@ -8,23 +8,22 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-  Chip,
   Button,
   Pagination,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import React from "react";
 
 const columns = [
   {
-    field: "nota",
-    headerName: "Adicionar nota",
-    width: 140,
+    field: "entrervista",
+    headerName: "Agendar entrevista",
+    width: 160,
     renderCell: (params: any) => {
       return (
         <Button variant="contained" id="" onClick={() => console.log(params)}>
-          Adicionar
+          Agendar
         </Button>
       );
     },
@@ -40,6 +39,11 @@ const columns = [
     headerName: "Email",
     minWidth: 230,
     flex: 1,
+  },
+  {
+    field: "nota",
+    headerName: "Nota da Prova",
+    minWidth: 130,
   },
   {
     field: "telefone",
@@ -63,6 +67,7 @@ const rows = [
     id: 1,
     nome: "Daniel Jacon",
     email: "danieljacon@dbccompany.com.br",
+    nota: 10,
     telefone: "(19)98765-7829",
     turno: "Manhã",
     estado: "SP",
@@ -71,13 +76,14 @@ const rows = [
     id: 2,
     nome: "Daniel Jacon",
     email: "danieljacon@dbccompany.com.br",
+    nota: 6,
     telefone: "(19)98765-7829",
     turno: "Manhã",
     estado: "SP",
   },
 ];
 
-export const Aptos: React.FC = () => {
+export const Interview: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

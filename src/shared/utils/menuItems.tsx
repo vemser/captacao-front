@@ -1,5 +1,4 @@
-import { Aptos } from 'pages/Aptos'
-import { Home } from '@mui/icons-material'
+import { Home, Groups, WorkHistory, AutoStories } from "@mui/icons-material";
 import DateRangeIcon from '@mui/icons-material/DateRange'
 
 interface MenuItem {
@@ -16,8 +15,18 @@ export const menuItems: MenuItem[] = [
   },
   {
     text: 'Aptos',
-    path: '/aptos'
-    // icon: <Aptos />,
+    path: '/aptos',
+    icon: <Groups />,
+  },
+  {
+    text: "Entrevista",
+    path: "/interview",
+    icon: <WorkHistory />,
+  },
+  {
+    text: "Avaliar",
+    path: "/avaliation",
+    icon: <AutoStories />,
   },
   {
     text: 'Agenda',

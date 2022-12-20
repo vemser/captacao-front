@@ -5,6 +5,7 @@ import { Subscription } from '../pages/Subscription'
 import { PrivateRoute } from 'pages/PrivateRoute'
 import { Registers } from 'pages/Registers'
 import { Login } from 'pages/Login'
+import { Schedule } from 'pages/Schedule'
 
 export const Router = () => {
   return (
@@ -17,6 +18,7 @@ export const Router = () => {
 
         <Route element={<PrivateRoute />}>
           <Route path="/registros" index element={<Registers />} />
+          <Route path="/agenda" index element={<Schedule />} />
         </Route>
 
         <Route path="*" element={<div>Erro</div>} />

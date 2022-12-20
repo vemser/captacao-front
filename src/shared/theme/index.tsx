@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material";
 import { ptBR } from "@mui/x-data-grid";
+import type {} from '@mui/x-data-grid/themeAugmentation';
 
 export const theme = createTheme(
   {
@@ -31,6 +32,30 @@ export const theme = createTheme(
             "& label": {
               color: "#1E62FE",
             },
+            fieldset: {
+              borderColor: "#1E62FE",
+            },
+          },
+        },
+      },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            "& label": {
+              color: "#1E62FE",
+            },
+            fieldset: {
+              borderColor: "#1E62FE",
+            },
+          },
+        },
+      },
+      MuiDataGrid: {
+        styleOverrides: {
+          root: {
+            "& .MuiDataGrid-cell": {
+              color: "#040C2C",
+            }
           },
         },
       },

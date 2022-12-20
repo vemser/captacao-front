@@ -2,6 +2,8 @@ import { ToastContainer } from "react-toastify";
 import { Routes, Route } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { Subscription } from "../pages/Subscription";
+import { PrivateRoute } from "pages/PrivateRoute";
+import { Registers } from "pages/Registers";
 
 export const Router = () => {
   return (
@@ -10,6 +12,12 @@ export const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/subscription" element={<Subscription />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route path="/registros" index element={<Registers />} />
+        </Route>
+
+        <Route path="*" element={<div>Erro</div>} />
       </Routes>
     </>
   );

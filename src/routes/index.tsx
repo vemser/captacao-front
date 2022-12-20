@@ -4,6 +4,7 @@ import { Home } from "../pages/Home";
 import { Subscription } from "../pages/Subscription";
 import { PrivateRoute } from "pages/PrivateRoute";
 import { Registers } from "pages/Registers";
+import { Aptos } from "pages/Aptos";
 
 export const Router = () => {
   return (
@@ -15,6 +16,7 @@ export const Router = () => {
 
         <Route element={<PrivateRoute />}>
           <Route path="/registros" index element={<Registers />} />
+          <Route path="/aptos" element={<Aptos />} />
         </Route>
 
         <Route path="*" element={<div>Erro</div>} />

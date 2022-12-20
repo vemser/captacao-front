@@ -83,7 +83,7 @@ export const Subscription = () => {
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center",
-                  boxShadow: "inset 0 0 0 1000px #1e61fe32",
+                  boxShadow: "inset 0 0 0 1000px #000e3031",
                   "&:hover": {
                     boxShadow: "inset 0 0 0 1000px #1e61fe",
                   }

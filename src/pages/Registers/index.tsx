@@ -20,11 +20,12 @@ const columns = [
   {
     field: "status",
     headerName: "Status",
-    width: 120,
+    width: 140,
     renderCell: (params: any) => {
       return (
         <Chip
           label={params.value}
+          sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
           color={params.value === "Avaliado" ? "success" : "primary"}
         />
       );
@@ -45,29 +46,28 @@ const columns = [
   {
     field: "telefone",
     headerName: "Telefone",
-    minWidth: 180,
-  },
-  {
-    field: "dataNascimento",
-    headerName: "Data de Nascimento",
-    minWidth: 180,
+    minWidth: 160,
   },
   {
     field: "turno",
     headerName: "Turno",
-    minWidth: 180,
+    minWidth: 90,
   },
   {
     field: "estado",
     headerName: "Estado",
-    minWidth: 180,
+    minWidth: 90,
   },
   {
     field: "acoes",
     headerName: "Ações",
     width: 120,
     renderCell: (params: any) => {
-      return <Button variant="contained" id="">Avaliar</Button>;
+      return (
+        <Button variant="contained" id="" onClick={() => console.log(params)}>
+          Avaliar
+        </Button>
+      );
     },
   },
 ];
@@ -75,10 +75,19 @@ const columns = [
 const rows = [
   {
     id: 1,
-    status: "asdasd",
+    status: "Avaliado",
+    nome: "Daniel Jacon",
     email: "danieljacon@dbccompany.com.br",
     telefone: "(19)98765-7829",
-    dataNascimento: "07/01/2001",
+    turno: "Manhã",
+    estado: "SP",
+  },
+  {
+    id: 2,
+    status: "Não avaliado",
+    nome: "Daniel Jacon",
+    email: "danieljacon@dbccompany.com.br",
+    telefone: "(19)98765-7829",
     turno: "Manhã",
     estado: "SP",
   },
@@ -138,12 +147,15 @@ export const Registers: React.FC = () => {
           </FormControl>
         </Stack>
       </Grid>
-      <Grid item xs={12} sx={{ height: "calc(100vh - 215px)", width: "100%" }}>
+      <Grid item xs={12} sx={{ height: "calc(100vh - 211px)", width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          sx={{
+            boxShadow: 2,
+          }}
           hideFooter
         />
       </Grid>

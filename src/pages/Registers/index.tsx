@@ -9,6 +9,8 @@ import {
   InputAdornment,
   IconButton,
   Chip,
+  Button,
+  Pagination,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import React from "react";
@@ -28,12 +30,57 @@ const columns = [
       );
     },
   },
+  {
+    field: "nome",
+    headerName: "Nome",
+    minWidth: 180,
+    flex: 1,
+  },
+  {
+    field: "email",
+    headerName: "Email",
+    minWidth: 230,
+    flex: 1,
+  },
+  {
+    field: "telefone",
+    headerName: "Telefone",
+    minWidth: 180,
+  },
+  {
+    field: "dataNascimento",
+    headerName: "Data de Nascimento",
+    minWidth: 180,
+  },
+  {
+    field: "turno",
+    headerName: "Turno",
+    minWidth: 180,
+  },
+  {
+    field: "estado",
+    headerName: "Estado",
+    minWidth: 180,
+  },
+  {
+    field: "acoes",
+    headerName: "Ações",
+    width: 120,
+    renderCell: (params: any) => {
+      return <Button variant="contained" id="">Avaliar</Button>;
+    },
+  },
 ];
 
 const rows = [
   {
     id: 1,
     status: "asdasd",
+    email: "danieljacon@dbccompany.com.br",
+    telefone: "(19)98765-7829",
+    dataNascimento: "07/01/2001",
+    turno: "Manhã",
+    estado: "SP",
   },
 ];
 
@@ -91,13 +138,23 @@ export const Registers: React.FC = () => {
           </FormControl>
         </Stack>
       </Grid>
-      <Grid item xs={12} sx={{ height: 400, width: "100%" }}>
+      <Grid item xs={12} sx={{ height: "calc(100vh - 215px)", width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
           hideFooter
+        />
+      </Grid>
+      <Grid item xs={12} display="flex" justifyContent="center">
+        <Pagination
+          count={5}
+          color="primary"
+          size="small"
+          // onChange={(event, page) => {
+          //   getCandidates(page - 1);
+          // }}
         />
       </Grid>
     </Grid>

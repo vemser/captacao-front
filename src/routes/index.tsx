@@ -7,8 +7,9 @@ import { ToastContainer } from 'react-toastify'
 import { Routes, Route } from 'react-router-dom'
 import { Login } from 'pages/Login'
 import { Schedule } from 'pages/Schedule'
-import { Interview } from "pages/Interview";
-import { Avaliation } from "pages/Avaliation";
+import { Interview } from 'pages/Interview'
+import { Avaliation } from 'pages/Avaliation'
+import { Result } from 'pages/Result'
 
 export const Router = () => {
   return (
@@ -20,11 +21,12 @@ export const Router = () => {
         <Route path="/subscription" element={<Subscription />} />
 
         <Route element={<PrivateRoute />}>
-          <Route path="/registros" index element={<Registers />} />
+          <Route path="/candidatos" index element={<Registers />} />
           <Route path="/aptos" element={<Aptos />} />
-          <Route path="/interview" element={<Interview />} />
-          <Route path="/avaliation" element={<Avaliation />} />
+          <Route path="/entrevista" element={<Interview />} />
+          <Route path="/avaliacao" element={<Avaliation />} />
           <Route path="/agenda" index element={<Schedule />} />
+          <Route path="/resultado" index element={<Result />} />
         </Route>
 
         <Route path="*" element={<div>Erro</div>} />

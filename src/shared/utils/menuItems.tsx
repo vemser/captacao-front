@@ -1,5 +1,6 @@
-import { Home, Groups, WorkHistory, AutoStories } from "@mui/icons-material";
+import { Home, Groups, WorkHistory, AutoStories } from '@mui/icons-material'
 import DateRangeIcon from '@mui/icons-material/DateRange'
+import FactCheckIcon from '@mui/icons-material/FactCheck'
 
 interface MenuItem {
   text: string
@@ -9,28 +10,33 @@ interface MenuItem {
 
 export const menuItems: MenuItem[] = [
   {
-    text: 'Registros',
-    path: '/registros',
+    text: 'Candidatos',
+    path: '/candidatos',
     icon: <Home />
   },
   {
     text: 'Aptos',
     path: '/aptos',
-    icon: <Groups />,
+    icon: <Groups />
   },
   {
-    text: "Entrevista",
-    path: "/interview",
-    icon: <WorkHistory />,
+    text: 'Entrevista',
+    path: '/entrevista',
+    icon: <WorkHistory />
   },
   {
-    text: "Avaliar",
-    path: "/avaliation",
-    icon: <AutoStories />,
+    text: 'Avaliar',
+    path: '/avaliacao',
+    icon: <AutoStories />
   },
   {
     text: 'Agenda',
     path: '/agenda',
     icon: <DateRangeIcon />
+  },
+  {
+    text: 'Resultado',
+    path: '/resultado',
+    icon: <FactCheckIcon />
   }
 ]

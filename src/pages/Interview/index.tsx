@@ -117,10 +117,13 @@ export const Interview: React.FC = () => {
               label="Filtrar por trilha"
               id="registros-filter-by-trilha"
               // error={!!errors.estado}
-              // defaultValue="AC"
+              defaultValue=""
               // {...register("estado")}
             >
-              <MenuItem value="QA">QA</MenuItem>
+              <MenuItem value="" disabled></MenuItem>
+              <MenuItem value="qa">QA</MenuItem>
+              <MenuItem value="front">Front End</MenuItem>
+              <MenuItem value="back">Back End</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -131,8 +134,12 @@ export const Interview: React.FC = () => {
               // error={!!errors.estado}
               // defaultValue="AC"
               // {...register("estado")}
+              defaultValue=""
             >
+              <MenuItem value="" disabled></MenuItem>
               <MenuItem value="10">10°</MenuItem>
+              <MenuItem value="9">9</MenuItem>
+              <MenuItem value="8">8°</MenuItem>
             </Select>
           </FormControl>
         </Stack>

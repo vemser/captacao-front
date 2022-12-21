@@ -20,6 +20,7 @@ const formSlice = apiSlice.injectEndpoints({
               nome
               estado
               cpf
+              rg
               dataNascimento
               cidade
               telefone

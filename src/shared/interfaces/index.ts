@@ -1,9 +1,9 @@
-
-import { StructuredTextGraphQlResponse } from 'react-datocms';
+import { StructuredTextGraphQlResponse } from "react-datocms";
 
 export interface SubscribeData {
   nome: string;
   email: string;
+  rg: string;
   cpf: string;
   telefone: string;
   estado: string;
@@ -11,29 +11,27 @@ export interface SubscribeData {
   dataNascimento: string;
   neurodiversidade: string;
   matriculado: boolean;
-  turno: "MANHA" | "TARDE" | "NOITE";
+  turno: string;
   instituicao: string;
-  curso:string;
+  curso: string;
   ingles: string;
   espanhol: string;
   orientacao: string;
   genero: string;
-  trilhas: [];
+  trilhas: string[];
   desafiosBoolean: boolean;
   problemasBoolean: boolean;
   reconhecimentoBoolean: boolean;
   altruismoBoolean: boolean;
   provaBoolean: boolean;
   efetivacaoBoolean: boolean;
-  disponibilidadeBoolean:boolean;
+  disponibilidadeBoolean: boolean;
   github: string;
   linkedin: string;
   curriculo?: any;
   lgpdBoolean: boolean;
 
   // configuracoes: string;
-
-
 }
 
 export interface StepsState {
@@ -55,8 +53,8 @@ export interface IFormSubscribeText {
   titulo: string;
   content?: string;
   backgroundImage?: {
-    url: string
-  }
+    url: string;
+  };
 }
 
 export interface IFormSubscribeTextResponse {

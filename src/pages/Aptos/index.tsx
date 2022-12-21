@@ -30,6 +30,20 @@ const columns = [
     },
   },
   {
+    field: "status",
+    headerName: "Status",
+    width: 140,
+    renderCell: (params: any) => {
+      return (
+        <Chip
+          label={params.value}
+          sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
+          color={params.value === "Apto" ? "success" : "primary"}
+        />
+      );
+    },
+  },
+  {
     field: "nome",
     headerName: "Nome",
     minWidth: 180,
@@ -63,6 +77,7 @@ const rows = [
     id: 1,
     nome: "Daniel Jacon",
     email: "danieljacon@dbccompany.com.br",
+    status: "Apto",
     telefone: "(19)98765-7829",
     turno: "Manhã",
     estado: "SP",
@@ -71,6 +86,7 @@ const rows = [
     id: 2,
     nome: "Daniel Jacon",
     email: "danieljacon@dbccompany.com.br",
+    status: "Não apto",
     telefone: "(19)98765-7829",
     turno: "Manhã",
     estado: "SP",
@@ -111,10 +127,13 @@ export const Aptos: React.FC = () => {
               label="Filtrar por trilha"
               id="registros-filter-by-trilha"
               // error={!!errors.estado}
-              // defaultValue="AC"
+              defaultValue=""
               // {...register("estado")}
             >
-              <MenuItem value="QA">QA</MenuItem>
+              <MenuItem value="" disabled></MenuItem>
+              <MenuItem value="qa">QA</MenuItem>
+              <MenuItem value="front">Front End</MenuItem>
+              <MenuItem value="back">Back End</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -125,8 +144,12 @@ export const Aptos: React.FC = () => {
               // error={!!errors.estado}
               // defaultValue="AC"
               // {...register("estado")}
+              defaultValue=""
             >
+              <MenuItem value="" disabled></MenuItem>
               <MenuItem value="10">10°</MenuItem>
+              <MenuItem value="9">9</MenuItem>
+              <MenuItem value="8">8°</MenuItem>
             </Select>
           </FormControl>
         </Stack>

@@ -58,13 +58,22 @@ export const StepOne: React.FC = () => {
           {...register("nome")}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} lg={6}>
         <TextField
           fullWidth
           label={<FormName nome={formulario?.email} />}
           error={!!errors.email}
           helperText={errors.email?.message}
           {...register("email")}
+        />
+      </Grid>
+      <Grid item xs={12} lg={6}>
+        <TextField
+          fullWidth
+          label={<FormName nome={formulario?.rg} />}
+          error={!!errors.rg}
+          helperText={errors.rg?.message}
+          {...register("rg")}
         />
       </Grid>
       <Grid item xs={12} lg={6}>

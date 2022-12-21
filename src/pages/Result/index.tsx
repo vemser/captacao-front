@@ -8,29 +8,14 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-  Chip,
   Button,
   Pagination
 } from '@mui/material'
 import { Search } from '@mui/icons-material'
-import React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
+import React from 'react'
 
 const columns = [
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 140,
-    renderCell: (params: any) => {
-      return (
-        <Chip
-          label={params.value}
-          sx={{ borderRadius: 1, boxShadow: 1, width: '100%' }}
-          color={params.value === 'Apto' ? 'success' : 'primary'}
-        />
-      )
-    }
-  },
   {
     field: 'nome',
     headerName: 'Nome',
@@ -44,31 +29,19 @@ const columns = [
     flex: 1
   },
   {
+    field: 'nota',
+    headerName: 'Nota da Prova',
+    minWidth: 130
+  },
+  {
     field: 'telefone',
     headerName: 'Telefone',
     minWidth: 160
   },
   {
-    field: 'turno',
-    headerName: 'Turno',
-    minWidth: 90
-  },
-  {
     field: 'estado',
     headerName: 'Estado',
     minWidth: 90
-  },
-  {
-    field: 'nota',
-    headerName: 'Adicionar nota',
-    width: 140,
-    renderCell: (params: any) => {
-      return (
-        <Button variant="contained" id="" onClick={() => console.log(params)}>
-          Adicionar
-        </Button>
-      )
-    }
   }
 ]
 
@@ -77,7 +50,7 @@ const rows = [
     id: 1,
     nome: 'Daniel Jacon',
     email: 'danieljacon@dbccompany.com.br',
-    status: 'Apto',
+    nota: 10,
     telefone: '(19)98765-7829',
     turno: 'Manhã',
     estado: 'SP'
@@ -86,14 +59,14 @@ const rows = [
     id: 2,
     nome: 'Daniel Jacon',
     email: 'danieljacon@dbccompany.com.br',
-    status: 'Não apto',
+    nota: 6,
     telefone: '(19)98765-7829',
     turno: 'Manhã',
     estado: 'SP'
   }
 ]
 
-export const Aptos: React.FC = () => {
+export const Result: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -127,13 +100,10 @@ export const Aptos: React.FC = () => {
               label="Filtrar por trilha"
               id="registros-filter-by-trilha"
               // error={!!errors.estado}
-              defaultValue=""
+              // defaultValue="AC"
               // {...register("estado")}
             >
-              <MenuItem value="" disabled></MenuItem>
-              <MenuItem value="qa">QA</MenuItem>
-              <MenuItem value="front">Front End</MenuItem>
-              <MenuItem value="back">Back End</MenuItem>
+              <MenuItem value="QA">QA</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -144,12 +114,8 @@ export const Aptos: React.FC = () => {
               // error={!!errors.estado}
               // defaultValue="AC"
               // {...register("estado")}
-              defaultValue=""
             >
-              <MenuItem value="" disabled></MenuItem>
               <MenuItem value="10">10°</MenuItem>
-              <MenuItem value="9">9</MenuItem>
-              <MenuItem value="8">8°</MenuItem>
             </Select>
           </FormControl>
         </Stack>

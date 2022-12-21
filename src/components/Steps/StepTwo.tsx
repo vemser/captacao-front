@@ -23,6 +23,7 @@ import {
 import {
 	previousStep,
 	changeData,
+	nextStep,
 } from "../../shared/features/subscription/stepsSlice";
 import { useDispatch } from "react-redux";
 import { FormGrid } from "components/FormGrid";
@@ -50,64 +51,67 @@ export const StepTwo: React.FC = () => {
 	return (
 		<FormGrid onSubmit={handleSubmit(onSubmit)}>
 			<Grid item xs={12} lg={6}>
-				<InputLabel
-					sx={{
-						color: "primary.main",
-					}}
-				>
+				<FormLabel>
 					Você é matriculado em algum curso de graduação ou técnico?
-				</InputLabel>
+				</FormLabel>
 				<RadioGroup
 					row
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
+					defaultValue="T"
 				>
 					<FormControlLabel
 						id="matriculado-sim"
 						value="T"
 						control={<Radio />}
 						label="Sim"
+						{...register("matriculado")}
 					/>
 					<FormControlLabel
 						id="matriculado-nao"
 						value="F"
 						control={<Radio />}
 						label="Não"
+						{...register("matriculado")}
 					/>
 				</RadioGroup>
 			</Grid>
 			<Grid item xs={12} lg={6}>
-				<InputLabel
+				<FormLabel
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
 				>
 					Qual o turno que você estuda?
-				</InputLabel>
+				</FormLabel>
 				<RadioGroup
 					row
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
+					defaultValue="MANHA"
 				>
 					<FormControlLabel
 						id="turno-manha"
 						value="MANHA"
 						control={<Radio />}
 						label="Manhã"
+						{...register("turno")}
 					/>
 					<FormControlLabel
 						id="turno-tarde"
 						value="TARDE"
 						control={<Radio />}
 						label="Tarde"
+						{...register("turno")}
 					/>
 					<FormControlLabel
 						id="turno-noite"
 						value="NOITE"
 						control={<Radio />}
 						label="Noite"
+						{...register("turno")}
 					/>
 				</RadioGroup>
 			</Grid>
@@ -116,16 +120,23 @@ export const StepTwo: React.FC = () => {
 					fullWidth
 					id="instituicao-de-ensino-candidato"
 					label="Instituição de ensino matriculado"
+					error={!!errors.instituicao}
+         			helperText={errors.instituicao?.message}
+					{...register("instituicao")}
 				/>
 			</Grid>
 			<Grid item xs={12} lg={6}>
-				<TextField fullWidth id="curso-candidato" label="Curso" />
+				<TextField fullWidth id="curso-candidato" label="Curso" 
+				error={!!errors.curso}
+				helperText={errors.curso?.message}
+				{...register("curso")}
+				/>
 			</Grid>
 			<Grid item xs={12} lg={6}>
 				<FormControl fullWidth>
 					<InputLabel
 						sx={{
-							color: "primary.main",
+							color: "GrayText",
 						}}
 					>
 						Qual o seu nível de inglês?
@@ -133,6 +144,7 @@ export const StepTwo: React.FC = () => {
 					<Select
 						id="nivel-ingles-candidato"
 						label="Qual o seu nível de inglês?"
+						{...register("ingles")}
 					>
 						<MenuItem value="iniciante">Iniciante</MenuItem>
 						<MenuItem value="intermediario">Intermediário</MenuItem>
@@ -145,7 +157,7 @@ export const StepTwo: React.FC = () => {
 				<FormControl fullWidth>
 					<InputLabel
 						sx={{
-							color: "primary.main",
+							color: "GrayText",
 						}}
 					>
 						Qual o seu nível de espanhol?
@@ -153,6 +165,7 @@ export const StepTwo: React.FC = () => {
 					<Select
 						label="Qual o seu nível de espanhol?"
 						id="nivel-espanhol-candidato"
+						{...register("espanhol")}
 					>
 						<MenuItem value="iniciante">Iniciante</MenuItem>
 						<MenuItem value="intermediario">Intermediário</MenuItem>
@@ -166,7 +179,7 @@ export const StepTwo: React.FC = () => {
 				<FormControl fullWidth>
 					<InputLabel
 						sx={{
-							color: "primary.main",
+							color: "GrayText",
 						}}
 					>
 						Qual a sua orientação sexual?
@@ -174,6 +187,7 @@ export const StepTwo: React.FC = () => {
 					<Select
 						id="orientacao-sexual-candidato"
 						label="Qual a sua orientação sexual?"
+						{...register("orientacao")}
 					>
 						<MenuItem value="heterossexual">Heterossexual</MenuItem>
 						<MenuItem value="homossexual">Homossexual</MenuItem>
@@ -191,12 +205,16 @@ export const StepTwo: React.FC = () => {
 					<InputLabel
 						id="label-genero-candidato"
 						sx={{
-							color: "primary.main",
+							color: "GrayText",
 						}}
 					>
 						Qual o seu gênero?
 					</InputLabel>
-					<Select label="Qual o seu gênero?" fullWidth>
+					<Select
+						label="Qual o seu gênero?"
+						fullWidth
+						{...register("genero")}
+					>
 						<MenuItem
 							id="genero-homem-cisgenero-candidato"
 							value="cisgenero"
@@ -240,24 +258,26 @@ export const StepTwo: React.FC = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12} lg={6}>
-				<InputLabel
+				
+				<FormLabel
 					id="label-trilha-candidato"
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
 				>
 					Selecione qual trilha você deseja participar
-				</InputLabel>
-
-				<FormControlLabel
+				</FormLabel>
+				<Box>
+					<FormControlLabel
 					id="trilha-backend"
 					value=""
 					control={<Radio />}
 					label="Back-end"
 					sx={{
 						marginRight: "2rem",
-						color: "primary.main",
+						color: "GrayText",
 					}}
+					{...register("trilhas")}
 				/>
 				<FormControlLabel
 					id="trilha-frontend"
@@ -266,8 +286,9 @@ export const StepTwo: React.FC = () => {
 					label="Front-end"
 					sx={{
 						marginRight: "2rem",
-						color: "primary.main",
+						color: "GrayText",
 					}}
+					{...register("trilhas")}
 				/>
 				<FormControlLabel
 					id="trilha-qa"
@@ -275,47 +296,49 @@ export const StepTwo: React.FC = () => {
 					control={<Radio />}
 					label="QA"
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
+					{...register("trilhas")}
 				/>
+				</Box>
+				
 			</Grid>
 			<Grid item xs={12}>
-				<InputLabel
+				<FormLabel
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
 				>
 					O que levou você a inscrever-se no VemSer?
-				</InputLabel>
+				</FormLabel>
 				<FormGroup
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
 				>
 					<FormControlLabel
 						control={<Checkbox />}
 						label="Por gostar de desafios"
 						id="s2-candidato-desafio"
-                      	// {...register("desafiosBoolean")}
+						{...register("desafiosBoolean")}
 					/>
 					<FormControlLabel
 						control={<Checkbox />}
 						label="Por gostar de resolver problemas"
 						id="s2-candidato-problemas"
-						// {...register("problemasBoolean")}
+						{...register("problemasBoolean")}
 					/>
 					<FormControlLabel
 						control={<Checkbox />}
 						label="Pelo reconhecimento e valorização financeira do profissional de tecnologia"
 						id="s2-candidato-reconhecimento"
-						// {...register("reconhecimentoBoolean")}
+						{...register("reconhecimentoBoolean")}
 					/>
 					<FormControlLabel
 						control={<Checkbox />}
 						label="Por querer ajudar outras pessoas"
 						id="s2-candidato-altruismo"
-						// {...register("altruismoBoolean")}
-						
+						{...register("altruismoBoolean")}
 					/>
 					<FormControlLabel
 						control={<Checkbox />}
@@ -334,6 +357,7 @@ export const StepTwo: React.FC = () => {
 					size="medium"
 					fullWidth
 					id="textarea-motivacao-da-inscricao-candidato"
+					// {...register("motivacao")}
 				/>
 			</Grid>
 			<Grid item xs={12}>
@@ -345,6 +369,7 @@ export const StepTwo: React.FC = () => {
 					size="medium"
 					fullWidth
 					id="textarea-inspiracao-candidato"
+					// {...register("inspiracao")}
 				/>
 			</Grid>
 
@@ -357,6 +382,7 @@ export const StepTwo: React.FC = () => {
 					size="medium"
 					fullWidth
 					id="textarea-algo-importante-candidato"
+					// {...register("ensinou")}
 				/>
 			</Grid>
 			<Grid item xs={12}>
@@ -380,7 +406,7 @@ export const StepTwo: React.FC = () => {
 						<RadioGroup
 							row
 							sx={{
-								color: "primary.main",
+								color: "GrayText",
 							}}
 						>
 							<FormControlLabel
@@ -388,14 +414,14 @@ export const StepTwo: React.FC = () => {
 								value="T"
 								control={<Radio />}
 								label="Sim"
-								// {...register("provaBoolean")}
+								{...register("provaBoolean")}
 							/>
 							<FormControlLabel
 								id="s2-candidato-prova-nao"
 								value="F"
 								control={<Radio />}
 								label="Não"
-								// {...register("provaBoolean")}
+								{...register("provaBoolean")}
 							/>
 						</RadioGroup>
 					</FormLabel>
@@ -421,7 +447,7 @@ export const StepTwo: React.FC = () => {
 						<RadioGroup
 							row
 							sx={{
-								color: "primary.main",
+								color: "GrayText",
 							}}
 						>
 							<FormControlLabel
@@ -429,14 +455,14 @@ export const StepTwo: React.FC = () => {
 								value="T"
 								control={<Radio />}
 								label="Sim"
-								// {...register("efetivacaoBoolean")}
+								{...register("efetivacaoBoolean")}
 							/>
 							<FormControlLabel
 								id="s2-candidato-efetivacao-nao"
 								value="F"
 								control={<Radio />}
 								label="Não"
-								// {...register("efetivacaoBoolean")}
+								{...register("efetivacaoBoolean")}
 							/>
 						</RadioGroup>
 					</FormLabel>
@@ -461,7 +487,7 @@ export const StepTwo: React.FC = () => {
 						<RadioGroup
 							row
 							sx={{
-								color: "primary.main",
+								color: "GrayText",
 							}}
 						>
 							<FormControlLabel
@@ -469,14 +495,14 @@ export const StepTwo: React.FC = () => {
 								control={<Radio />}
 								label="Sim"
 								id="s2-candidato-disponibilidade-sim"
-								// {...register("disponibilidadeBoolean")}
+								{...register("disponibilidadeBoolean")}
 							/>
 							<FormControlLabel
 								value="F"
 								control={<Radio />}
 								label="Não"
 								id="s2-candidato-disponibilidade-nao"
-								// {...register("disponibilidadeBoolean")}
+								{...register("disponibilidadeBoolean")}
 							/>
 						</RadioGroup>
 					</FormLabel>
@@ -498,6 +524,7 @@ export const StepTwo: React.FC = () => {
 							</Box>
 						),
 					}}
+					{...register("github")}
 				/>
 			</Grid>
 
@@ -517,36 +544,72 @@ export const StepTwo: React.FC = () => {
 							</Box>
 						),
 					}}
+					{...register("github")}
 				/>
 			</Grid>
 			<Grid item xs={12} lg={6}>
-				<InputLabel
-					id="label-hardware-candidato"
-					sx={{
-						color: "primary.main",
-					}}
-				>
-					Adicionar currículo
-				</InputLabel>
-				<Button variant="outlined" component="label">
-					Adicionar
-					<input hidden type="file" />
-				</Button>
+				<Box display="flex" flexDirection="column">
+					<FormLabel
+						id="label-hardware-candidato"
+						sx={{
+							color: "GrayText",
+						}}
+					>
+						Adicionar currículo
+					</FormLabel>
+					<Button
+						variant="outlined"
+						component="label"
+						sx={{
+							width: "6rem",
+						}}
+					>
+						Adicionar
+						<input 
+							hidden 
+							type="file" 
+							// {...register("CV")} 
+						/>
+					</Button>
+				</Box>
 			</Grid>
 			<Grid item xs={12} lg={6}>
-				<InputLabel
-					id="label-hardware-candidato"
+				<Box display="flex" flexDirection="column">
+					<FormLabel
+						id="label-hardware-candidato"
+						sx={{
+							color: "GrayText",
+						}}
+					>
+						Adicionar print das configurações do seu hardware
+					</FormLabel>
+					<Button
+						sx={{
+							width: "6rem",
+						}}
+						variant="outlined"
+						component="label"
+					>
+						Adicionar
+						<input hidden type="file" />
+					</Button>
+				</Box>
+			</Grid>
+			<Grid item xs={12}>
+				<FormGroup
 					sx={{
-						color: "primary.main",
+						color: "GrayText",
 					}}
 				>
-					Adicionar print das configurações do seu hardware
-				</InputLabel>
-				<Button variant="outlined" component="label">
-					Adicionar
-					<input hidden type="file" />
-				</Button>
+					<FormControlLabel
+						control={<Checkbox />}
+						label="Você concorda com o tratamento dos seus dados pessoais para fins de seleção de candidatos?"
+						id="s2-candidato-problemas"
+						{...register("lgpdBoolean")}
+					/>
+				</FormGroup>
 			</Grid>
+
 			<Grid
 				item
 				xs={12}

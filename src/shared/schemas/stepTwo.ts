@@ -1,7 +1,7 @@
-import * as yup from "yup";
+import * as Yup from "yup";
 
-export const stepTwoSchema = yup.object().shape({
-  resposta: yup
+export const stepTwoSchema = Yup.object().shape({
+  resposta: Yup
     .string()
     .when(
       [
@@ -24,30 +24,30 @@ export const stepTwoSchema = yup.object().shape({
             problemas === false
           );
         },
-        then: yup
+        then: Yup
           .string()
           .required(
             "Preencha o campo 'Outro motivo' ou selecione uma das opções acima"
           ),
-        otherwise: yup.string(),
+        otherwise: Yup.string(),
       }
     ),
-  instituicao: yup.string().when("matriculadoBoolean", {
+  instituicao: Yup.string().when("matriculadoBoolean", {
     is: "T",
-    then: yup
+    then: Yup
       .string()
       .min(2, "É necessário 2 caracteres, no mínimo")
       .required("Preencha o campo com o nome da instituição"),
   }),
-  curso: yup.string().when("matriculadoBoolean", {
+  curso: Yup.string().when("matriculadoBoolean", {
     is: "T",
-    then: yup
+    then: Yup
       .string()
       .min(2, "É necessário 2 caracteres, no mínimo")
       .required("Preencha o campo com o nome do curso"),
   }),
-  github: yup.string(),
-  lgpdBoolean: yup.boolean().oneOf([true], "É necessário aceitar os termos"),
-  configuracoes: yup.string().required("É necessário informar a configuração"),
-  trilhas: yup.array().min(1, "É necessário selecionar pelo menos uma trilha"),
+  github: Yup.string(),
+  lgpdBoolean: Yup.boolean().oneOf([true], "É necessário aceitar os termos"),
+  configuracoes: Yup.string().required("É necessário informar a configuração"),
+  trilhas: Yup.array().min(1, "É necessário selecionar pelo menos uma trilha"),
 });

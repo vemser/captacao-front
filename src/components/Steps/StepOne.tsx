@@ -108,13 +108,7 @@ export const StepOne: React.FC = () => {
       </Grid>
       <Grid item xs={12} lg={6}>
         <FormControl fullWidth>
-          <InputLabel
-            sx={{
-              color: "primary.main",
-            }}
-          >
-            Estado
-          </InputLabel>
+          <InputLabel>Estado</InputLabel>
           <Select
             label={<FormName nome={formulario?.estado} />}
             error={!!errors.estado}
@@ -137,11 +131,7 @@ export const StepOne: React.FC = () => {
           arrow
         >
           <FormControl fullWidth>
-            <InputLabel
-              sx={{
-                color: "primary.main",
-              }}
-            >
+            <InputLabel>
               {<FormName nome={formulario?.neurodiversidade} />}
             </InputLabel>
             <Select

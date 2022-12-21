@@ -17,18 +17,12 @@ export const Curriculo = () => {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={4}
       sx={{
         pb: 2,
       }}
     >
-      <Grid
-        xs={12}
-        sx={{
-          px: 2,
-          mt: "6px",
-        }}
-      >
+      <Grid xs={12} item>
         <Button
           id="candidatos-avaliar"
           variant="contained"
@@ -40,7 +34,7 @@ export const Curriculo = () => {
           Avaliar
         </Button>
         <Menu
-          id="basic-menu"
+          id="candidatos-avaliar-options"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}

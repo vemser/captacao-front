@@ -10,7 +10,7 @@ import { Schedule } from 'pages/Schedule'
 import { Interview } from 'pages/Interview'
 import { Avaliation } from 'pages/Avaliation'
 import { Result } from 'pages/Result'
-import { Curriculo } from 'pages/Curriculo'
+import { Curriculo } from 'pages/RegistersCurriculo'
 
 export const Router = () => {
   return (

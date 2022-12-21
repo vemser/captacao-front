@@ -1,3 +1,5 @@
+export type TBoolean = "T" | "F";
+
 export interface SubscribeData {
   nome: string;
   email: string;
@@ -7,7 +9,8 @@ export interface SubscribeData {
   cidade: string;
   dataNascimento: string;
   neurodiversidade: string;
-  matriculado: boolean;
+  
+  matriculado: boolean | TBoolean;
   turno: "MANHA" | "TARDE" | "NOITE";
   instituicao: string;
   curso:string;
@@ -16,21 +19,22 @@ export interface SubscribeData {
   orientacao: string;
   genero: string;
   trilhas: [];
-  desafiosBoolean: boolean;
-  problemasBoolean: boolean;
-  reconhecimentoBoolean: boolean;
-  altruismoBoolean: boolean;
-  provaBoolean: boolean;
-  efetivacaoBoolean: boolean;
-  disponibilidadeBoolean:boolean;
+  desafiosBoolean: boolean | TBoolean;
+  problemasBoolean: boolean | TBoolean;
+  reconhecimentoBoolean: boolean | TBoolean;
+  altruismoBoolean: boolean | TBoolean;
+  provaBoolean: boolean | TBoolean;
+  efetivacaoBoolean: boolean | TBoolean;
+  disponibilidadeBoolean:boolean | TBoolean;
+  algoimportante:string;
   github: string;
   linkedin: string;
-  curriculo?: any;
+  curriculo: any;
   lgpdBoolean: boolean;
-
-  // configuracoes: string;
-  
-
+  resposta:string;
+  deficiencia:boolean | TBoolean;
+  configuracoes: any;
+  motivo:string
 }
 
 export interface StepsState {

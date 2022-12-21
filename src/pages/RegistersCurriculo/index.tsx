@@ -1,8 +1,7 @@
-import { Button, ButtonGroup, Chip, Grid, Menu, MenuItem } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import React from "react";
+import { Button, Grid, Menu, MenuItem } from "@mui/material";
 import { objeto } from "shared/utils/states";
 import { CurriculoContainer } from "../../components/CurriculoContainer";
+import React from "react";
 
 export const Curriculo = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -15,13 +14,7 @@ export const Curriculo = () => {
   };
 
   return (
-    <Grid
-      container
-      spacing={4}
-      sx={{
-        pb: 2,
-      }}
-    >
+    <Grid container spacing={2}>
       <Grid xs={12} item>
         <Button
           id="candidatos-avaliar"
@@ -49,11 +42,17 @@ export const Curriculo = () => {
       <Grid
         item
         xs={12}
-        md={12}
+        md={6}
         sx={{ height: "calc(100vh - 150px)", width: "100%" }}
       >
         <CurriculoContainer resposta={objeto} />
       </Grid>
+      <Grid
+        item
+        xs={12}
+        lg={6}
+        sx={{ height: "calc(100vh - 150px)", width: "100%" }}
+      ></Grid>
     </Grid>
   );
 };

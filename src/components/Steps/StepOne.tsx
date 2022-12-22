@@ -31,7 +31,7 @@ export const StepOne: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<SubscribeData>({
-    // resolver: yupResolver(stepOneSchema),
+    resolver: yupResolver(stepOneSchema),
   });
 
   const dispatch = useDispatch();

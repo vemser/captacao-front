@@ -55,6 +55,7 @@ export const StepOne: React.FC = () => {
           label={<FormName nome={formulario?.nome} />}
           error={!!errors.nome}
           helperText={errors.nome?.message}
+          id="step-1-nome"
           {...register("nome")}
         />
       </Grid>
@@ -64,6 +65,7 @@ export const StepOne: React.FC = () => {
           label={<FormName nome={formulario?.email} />}
           error={!!errors.email}
           helperText={errors.email?.message}
+          id="step-1-email"
           {...register("email")}
         />
       </Grid>
@@ -73,6 +75,7 @@ export const StepOne: React.FC = () => {
           label={<FormName nome={formulario?.rg} />}
           error={!!errors.rg}
           helperText={errors.rg?.message}
+          id="step-1-rg"
           {...register("rg")}
         />
       </Grid>
@@ -82,6 +85,7 @@ export const StepOne: React.FC = () => {
           label={<FormName nome={formulario?.cpf} />}
           error={!!errors.cpf}
           helperText={errors.cpf?.message}
+          id="step-1-cpf"
           {...register("cpf")}
         />
       </Grid>
@@ -91,6 +95,7 @@ export const StepOne: React.FC = () => {
           label={<FormName nome={formulario?.telefone} />}
           error={!!errors.telefone}
           helperText={errors.telefone?.message}
+          id="step-1-telefone"
           {...register("telefone")}
         />
       </Grid>
@@ -101,6 +106,7 @@ export const StepOne: React.FC = () => {
           type="date"
           error={!!errors.dataNascimento}
           helperText={errors.dataNascimento?.message}
+          id="step-1-dataNascimento"
           InputLabelProps={{ shrink: true }}
           {...register("dataNascimento")}
         />
@@ -112,6 +118,7 @@ export const StepOne: React.FC = () => {
           label={<FormName nome={formulario?.cidade} />}
           error={!!errors.cidade}
           helperText={errors.cidade?.message}
+          id="step-1-cidade"
           {...register("cidade")}
         />
       </Grid>
@@ -122,6 +129,7 @@ export const StepOne: React.FC = () => {
             label={<FormName nome={formulario?.estado} />}
             error={!!errors.estado}
             defaultValue="AC"
+            id="step-1-estado"
             {...register("estado")}
           >
             {estadosBrasileiros.map((estado) => (
@@ -149,6 +157,7 @@ export const StepOne: React.FC = () => {
               onChange={() => {
                 setNeurodiversidade(neurodiversidade === "F" ? "T" : "F");
               }}
+              id="step-1-neurodiversidade"
             >
               <MenuItem value="F">Não</MenuItem>
               <MenuItem value="T">Sim</MenuItem>
@@ -163,13 +172,14 @@ export const StepOne: React.FC = () => {
             label="Qual neurodiversidade você possui?"
             error={!!errors.neurodiversidade}
             helperText={errors.neurodiversidade?.message}
+            id="step-1-neurodiversidade"
             {...register("neurodiversidade")}
           />
         </Grid>
       )}
 
       <Grid item xs={12}>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" id="step-1-enviar">
           Próximo
         </Button>
       </Grid>

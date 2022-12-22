@@ -11,7 +11,7 @@ export interface SubscribeData {
   neurodiversidade: string;
   
   matriculado: boolean | TBoolean;
-  turno: "MANHA" | "TARDE" | "NOITE";
+  turno: string;
   instituicao: string;
   curso:string;
   ingles: string;

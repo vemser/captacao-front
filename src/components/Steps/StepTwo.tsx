@@ -46,7 +46,6 @@ export const StepTwo: React.FC = () => {
 	} = useForm<SubscribeData>({
 		defaultValues: {
 			matriculado: "T",
-			trilhas: [],
 		},
 		resolver: yupResolver(stepTwoSchema),
 	});
@@ -294,18 +293,21 @@ export const StepTwo: React.FC = () => {
 						>
 							<FormControlLabel
 								control={<Checkbox />}
+								value="backend"
 								label="Back-end"
 								id="s2-trilha-backend"
 								{...register("trilhas")}
 							/>
 							<FormControlLabel
 								control={<Checkbox />}
+								value="frontend"
 								label="Front-end"
 								id="s2-trilha-frontend"
 								{...register("trilhas")}
 							/>
 							<FormControlLabel
 								control={<Checkbox />}
+								value="qa"
 								label="QA"
 								id="s2-trilha-qa"
 								{...register("trilhas")}

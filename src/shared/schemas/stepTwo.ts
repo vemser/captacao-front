@@ -18,7 +18,7 @@ export const stepTwoSchema = Yup.object().shape({
       
   }),
  
-  trilhas: Yup.array().min(1, "É necessário selecionar pelo menos uma trilha"),
+  // trilhas: Yup.array().min(1, "É necessário selecionar pelo menos uma trilha"),
   motivo: Yup
   .string()
   .when(
@@ -50,7 +50,7 @@ export const stepTwoSchema = Yup.object().shape({
       otherwise: Yup.string(),
     }
   ),
-  resposta:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
+  // resposta:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
   algoimportante:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
   configuracoes: Yup.string().required("É necessário informar a configuração"),
   lgpdBoolean: Yup.boolean().oneOf([true], "É necessário aceitar os termos"),

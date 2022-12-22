@@ -34,6 +34,11 @@ export const Curriculo = () => {
     linkedin: "joaosilva",
     curriculo: null,
     lgpdBoolean: true,
+    resposta:"string",
+    deficiencia:false,
+    configuracoes: "string",
+    motivo:"string",
+    algoimportante:"string"
   };
 
   return (

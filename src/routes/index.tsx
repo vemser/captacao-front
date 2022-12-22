@@ -1,7 +1,7 @@
 import { Home } from '../pages/Home'
 import { Subscription } from '../pages/Subscription'
 import { PrivateRoute } from 'pages/PrivateRoute'
-import { Registers } from 'pages/Registers'
+import { Registers } from 'pages/Candidates'
 import { Aptos } from 'pages/Aptos'
 import { ToastContainer } from 'react-toastify'
 import { Routes, Route } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { Schedule } from 'pages/Schedule'
 import { Interview } from 'pages/Interview'
 import { Avaliation } from 'pages/Avaliation'
 import { Result } from 'pages/Result'
-import { Curriculo } from 'pages/RegistersCurriculo'
+import { CandidatesCurriculum } from 'pages/CandidatesCurriculum'
 
 export const Router = () => {
   return (
@@ -23,7 +23,7 @@ export const Router = () => {
 
         <Route element={<PrivateRoute />}>
           <Route path="/candidatos" index element={<Registers />} />
-          <Route path="/candidatos/curriculo" element={<Curriculo />} />
+          <Route path="/candidatos/curriculo" element={<CandidatesCurriculum />} />
 
           <Route path="/aptos" element={<Aptos />} />
           <Route path="/entrevista" element={<Interview />} />

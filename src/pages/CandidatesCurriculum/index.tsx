@@ -3,7 +3,7 @@ import { objeto } from "shared/utils/states";
 import { CurriculoContainer } from "../../components/CurriculoContainer";
 import React from "react";
 
-export const Curriculo = () => {
+export const CandidatesCurriculum = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

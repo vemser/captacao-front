@@ -58,4 +58,9 @@ export const objeto = {
   linkedin: "joaosilva",
   curriculo: null,
   lgpdBoolean: true,
+  resposta:"string",
+  deficiencia:false,
+  configuracoes: "string",
+  motivo:"string",
+  algoimportante:"string"
 };

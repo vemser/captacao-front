@@ -66,3 +66,32 @@ export interface IFormSubscribeTextResponse {
     formulario: IFormSubscribeText
   }
 }
+
+export interface IFormSubscribeFormResponse {
+ data: {
+  formulario: {
+    s2Matriculado?:string,
+    s2Turno?:string,
+    s2Instituicao?:string,
+    s2Curso?:string,
+    s2InglS?:string,
+    s2Espanhol?:string,
+    s2OriSexual?:string,
+    s2GNero?:string,
+    s2Trilha?:string,
+    s2DeficiNcia?:string,
+    s2DefDesc?:string,
+    s2TextoMotivacao?:string,
+    s2SubtTextmotivacao?:string,
+    s2OutroMotivo?:string,
+    s2AlgoImp?:string,
+    s2TextoLingProva?:string,
+    s2TextoDisp?:string,
+    s2DispHaula?:string,
+    s2Github?:string,
+    s2Linkedin?:string,
+    s2Curriculo?:string,
+    s2ConfiguraEsDaMQuina?:string,
+  }
+ } 
+}

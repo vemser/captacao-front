@@ -18,6 +18,9 @@ import {
 	FormLabel,
 	Stack,
 	Tooltip,
+	CircularProgress,
+	useMediaQuery,
+	useTheme,
 } from "@mui/material";
 import {
 	previousStep,
@@ -25,18 +28,23 @@ import {
 } from "../../shared/features/subscription/stepsSlice";
 import { useDispatch } from "react-redux";
 import { FormGrid } from "components/FormGrid";
-import { SubscribeData } from "shared/interfaces";
+import { IFormQuery, SubscribeData } from "shared/interfaces";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { stepTwoSchema } from "shared/schemas/stepTwo";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { Error } from "../error/index";
+import { useGetSubscribeFormQuery } from "shared/features/api/subscription/formSlice";
 
 export const StepTwo: React.FC = () => {
 	const dispatch = useDispatch();
 	const [anotherReason, setAnotherReason] = useState(false);
 	const [deficiencia, setDeficiencia] = useState("F");
+	const { data } = useGetSubscribeFormQuery();
+	const formulario = data?.data.formulario;
+	const theme = useTheme();
+	const menorLg = useMediaQuery(theme.breakpoints.down("lg"));
 
 	const {
 		register,
@@ -54,19 +62,25 @@ export const StepTwo: React.FC = () => {
 		dispatch(changeData(data));
 		console.log(data);
 	};
+
+	const FormName: React.FC<IFormQuery> = ({ nome }) => {
+		return <>{nome ? nome : <CircularProgress size={22} />}</>;
+	};
+
+	console.log(data);
+
 	const { matriculado, curriculo, configuracoes } = watch();
 
 	return (
 		<FormGrid onSubmit={handleSubmit(onSubmit)}>
 			<Grid item xs={12} lg={6}>
 				<FormLabel>
-					Você é matriculado em algum curso de graduação ou técnico?
+					<FormName nome={formulario?.s2Matriculado} />
 				</FormLabel>
 				<RadioGroup
 					row
 					sx={{
 						color: "GrayText",
-						gap: "2rem",
 					}}
 					defaultValue="T"
 				>
@@ -94,13 +108,12 @@ export const StepTwo: React.FC = () => {
 								color: "GrayText",
 							}}
 						>
-							Qual o turno que você estuda?
+							<FormName nome={formulario?.s2Turno} />
 						</FormLabel>
 						<RadioGroup
 							row
 							sx={{
 								color: "GrayText",
-								gap: "2rem",
 							}}
 							defaultValue="MANHA"
 						>
@@ -138,7 +151,9 @@ export const StepTwo: React.FC = () => {
 						<TextField
 							fullWidth
 							id="instituicao-de-ensino-candidato"
-							label="Instituição de ensino matriculado"
+							label={
+								<FormName nome={formulario?.s2Instituicao} />
+							}
 							error={!!errors.instituicao}
 							helperText={errors.instituicao?.message}
 							{...register("instituicao")}
@@ -149,7 +164,7 @@ export const StepTwo: React.FC = () => {
 						<TextField
 							fullWidth
 							id="curso-candidato"
-							label="Curso"
+							label={<FormName nome={formulario?.s2Curso} />}
 							error={!!errors.curso}
 							helperText={errors.curso?.message}
 							{...register("curso")}
@@ -163,11 +178,11 @@ export const StepTwo: React.FC = () => {
 									color: "GrayText",
 								}}
 							>
-								Qual o seu nível de inglês?
+								<FormName nome={formulario?.s2InglS} />
 							</InputLabel>
 							<Select
 								id="s2-nivel-ingles-candidato"
-								label="Qual o seu nível de inglês"
+								label={<FormName nome={formulario?.s2InglS} />}
 								defaultValue="iniciante"
 								{...register("ingles")}
 							>
@@ -187,10 +202,12 @@ export const StepTwo: React.FC = () => {
 									color: "GrayText",
 								}}
 							>
-								Qual o seu nível de espanhol?
+								<FormName nome={formulario?.s2Espanhol} />
 							</InputLabel>
 							<Select
-								label="Qual o seu nível de espanhol?"
+								label={
+									<FormName nome={formulario?.s2Espanhol} />
+								}
 								id="s2-nivel-espanhol-candidato"
 								defaultValue="iniciante"
 								{...register("espanhol")}
@@ -212,11 +229,13 @@ export const StepTwo: React.FC = () => {
 									color: "GrayText",
 								}}
 							>
-								Qual a sua orientação sexual?
+								<FormName nome={formulario?.s2OriSexual} />
 							</InputLabel>
 							<Select
 								id="orientacao-sexual-candidato"
-								label="Qual a sua orientação sexual?"
+								label={
+									<FormName nome={formulario?.s2OriSexual} />
+								}
 								defaultValue="heterossexual"
 								{...register("orientacao")}
 							>
@@ -243,11 +262,11 @@ export const StepTwo: React.FC = () => {
 									color: "GrayText",
 								}}
 							>
-								Qual o seu gênero?
+								<FormName nome={formulario?.s2GNero} />
 							</InputLabel>
 							<Select
 								id="s2-select-genero-candidato"
-								label="Qual o seu gênero?"
+								label={<FormName nome={formulario?.s2GNero} />}
 								defaultValue="cisgenero"
 								fullWidth
 								{...register("genero")}
@@ -281,14 +300,13 @@ export const StepTwo: React.FC = () => {
 								color: "GrayText",
 							}}
 						>
-							Selecione quais trilhas você deseja participar
+							<FormName nome={formulario?.s2Trilha} />
 						</FormLabel>
 						<FormGroup
 							aria-label="position"
 							row
 							sx={{
 								color: "GrayText",
-								gap: "2rem",
 							}}
 						>
 							<FormControlLabel
@@ -326,11 +344,15 @@ export const StepTwo: React.FC = () => {
 										color: "primary.main",
 									}}
 								>
-									Você possui alguma deficiencia?
+									<FormName nome={formulario?.s2DeficiNcia} />
 								</InputLabel>
 								<Select
 									id="s2-select-deficiencia-candidato"
-									label="Você possui alguma deficiencia?"
+									label={
+										<FormName
+											nome={formulario?.s2DeficiNcia}
+										/>
+									}
 									defaultValue="F"
 									onChange={() => {
 										setDeficiencia(
@@ -347,7 +369,9 @@ export const StepTwo: React.FC = () => {
 					{deficiencia === "T" && (
 						<Grid item xs={12}>
 							<TextField
-								label="Qual deficiência você possui?"
+								label={
+									<FormName nome={formulario?.s2DefDesc} />
+								}
 								variant="outlined"
 								sx={{ width: "100%" }}
 								id="s2-candidato-deficiencia-descricao"
@@ -365,7 +389,7 @@ export const StepTwo: React.FC = () => {
 							color="primary.main"
 							margin="1rem 0"
 						>
-							Nos conte o que levou você a se inscrever no Vem Ser
+							<FormName nome={formulario?.s2TextoMotivacao} />
 						</Typography>
 						;
 						<FormLabel
@@ -374,7 +398,7 @@ export const StepTwo: React.FC = () => {
 								fontWeight: "700",
 							}}
 						>
-							O que te motiva em fazer parte do Vem Ser:
+							<FormName nome={formulario?.s2SubtTextmotivacao} />
 						</FormLabel>
 						<FormGroup
 							sx={{
@@ -414,12 +438,19 @@ export const StepTwo: React.FC = () => {
 									setAnotherReason((state) => !state)
 								}
 							/>
-							<Error id={""} width={"100%"}>
+							<Error
+								id="mensagem-erro-outro-motivo"
+								width={"100%"}
+							>
 								{errors.motivo?.message}
 							</Error>
 							{anotherReason && (
 								<TextField
-									label="Por qual motivo você se interessou pela área de tecnologia?"
+									label={
+										<FormName
+											nome={formulario?.s2OutroMotivo}
+										/>
+									}
 									multiline={true}
 									id="s2-candidato-motivo"
 									error={!!errors.resposta}
@@ -431,7 +462,7 @@ export const StepTwo: React.FC = () => {
 
 					<Grid item xs={12}>
 						<TextField
-							label="Alguém te ensinou algo importante para a vida e que você nunca esqueceu? Quem foi e o que você aprendeu?"
+							label={<FormName nome={formulario?.s2AlgoImp} />}
 							multiline
 							minRows={4}
 							type="textArea"
@@ -445,14 +476,7 @@ export const StepTwo: React.FC = () => {
 					</Grid>
 					<Grid item xs={12}>
 						<FormLabel component="legend">
-							Uma das nossas etapas eliminatórias de seleção será
-							a realização de uma prova técnica. Será necessário
-							conhecimento de lógica de programação e uso básico
-							em algumas dessas tecnologias (Javascript, Java,
-							Python, C e C++), mas será avaliado principalmente
-							raciocínio para solução de problemas. Tens
-							conhecimento necessário para realizar esta prova
-							específica?
+							<FormName nome={formulario?.s2TextoLingProva} />
 						</FormLabel>
 
 						<Stack direction="row" spacing={2}>
@@ -495,15 +519,9 @@ export const StepTwo: React.FC = () => {
 					<Typography variant="caption" color="error">
 						{errors.provaBoolean?.message}
 					</Typography>
-
 					<Grid item xs={12}>
 						<FormLabel component="legend">
-							O interesse da DBC é efetivar os participantes que
-							se desenvolverem bem ao longo do período de
-							formação. Tens interesse e disponibilidade para
-							trabalhar em turno integral, (manhã e tarde, até 44h
-							semanais), caso aprovado? (Disponibilidade de no
-							mínimo 1 ano para ficar na DBC).
+							<FormName nome={formulario?.s2TextoDisp} />
 						</FormLabel>
 
 						<Stack direction="row" spacing={2}>
@@ -540,11 +558,7 @@ export const StepTwo: React.FC = () => {
 					</Grid>
 					<Grid item xs={12}>
 						<FormLabel component="legend">
-							O estágio/capacitação acontecerá de maneira virtual,
-							no turno da tarde, das 13h30min às 17h30min, de
-							segunda a sexta-feira, e será necessária muita
-							dedicação extra para as atividades. Tens
-							disponibilidade em outros turnos para estudo?
+							<FormName nome={formulario?.s2DispHaula} />
 						</FormLabel>
 
 						<Stack direction="row" spacing={2}>
@@ -582,7 +596,7 @@ export const StepTwo: React.FC = () => {
 					<Grid item xs={12} md={6}>
 						<TextField
 							type="url"
-							label="Qual o link do seu repositorio no GitHub?"
+							label={<FormName nome={formulario?.s2Github} />}
 							variant="outlined"
 							sx={{
 								width: "100%",
@@ -609,7 +623,7 @@ export const StepTwo: React.FC = () => {
 					<Grid item xs={12} md={6}>
 						<TextField
 							type="url"
-							label="Qual o link do seu Linkedin"
+							label={<FormName nome={formulario?.s2Linkedin} />}
 							variant="outlined"
 							sx={{
 								width: "100%",
@@ -641,7 +655,7 @@ export const StepTwo: React.FC = () => {
 									color: "GrayText",
 								}}
 							>
-								Adicionar currículo
+								<FormName nome={formulario?.s2Curriculo} />
 							</FormLabel>
 							<Box
 								display="flex"
@@ -650,6 +664,7 @@ export const StepTwo: React.FC = () => {
 							>
 								{!curriculo?.[0] && (
 									<Button
+										id="botao-curriculo"
 										variant="outlined"
 										component="label"
 									>
@@ -664,6 +679,7 @@ export const StepTwo: React.FC = () => {
 								)}
 								{curriculo?.[0] && (
 									<Button
+										id="botao-curriculo"
 										variant="outlined"
 										component="label"
 									>
@@ -699,8 +715,9 @@ export const StepTwo: React.FC = () => {
 									color: "GrayText",
 								}}
 							>
-								Adicionar print das configurações do seu
-								computador
+								<FormName
+									nome={formulario?.s2ConfiguraEsDaMQuina}
+								/>
 							</FormLabel>
 							<Box
 								display="flex"
@@ -709,6 +726,7 @@ export const StepTwo: React.FC = () => {
 							>
 								{!configuracoes?.[0] && (
 									<Button
+										id="botao-configuracoes"
 										variant="outlined"
 										component="label"
 									>
@@ -723,6 +741,7 @@ export const StepTwo: React.FC = () => {
 								)}
 								{configuracoes?.[0] && (
 									<Button
+										id="botao-configuracoes"
 										variant="outlined"
 										component="label"
 									>
@@ -757,7 +776,7 @@ export const StepTwo: React.FC = () => {
 						sx={{
 							display: "flex",
 							alignItems: "center",
-							justifyContent: "space-between",
+							justifyContent: "center",
 							gap: 2,
 							margin: "2rem 0",
 						}}
@@ -770,7 +789,7 @@ export const StepTwo: React.FC = () => {
 								dispatch(previousStep());
 							}}
 							sx={{
-								width: "10rem",
+								width: "8rem",
 							}}
 						>
 							Voltar
@@ -780,7 +799,7 @@ export const StepTwo: React.FC = () => {
 							variant="contained"
 							type="submit"
 							sx={{
-								width: "10rem",
+								width: "8rem",
 							}}
 						>
 							Enviar

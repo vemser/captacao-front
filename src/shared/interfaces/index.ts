@@ -18,7 +18,7 @@ export interface SubscribeData {
   espanhol: string;
   orientacao: string;
   genero: string;
-  trilhas: [];
+  trilhas: string[];
   desafiosBoolean: boolean | TBoolean;
   problemasBoolean: boolean | TBoolean;
   reconhecimentoBoolean: boolean | TBoolean;
@@ -35,11 +35,34 @@ export interface SubscribeData {
   deficiencia:boolean | TBoolean;
   configuracoes: any;
   motivo:string
+  rg: string
 }
 
 export interface StepsState {
-  next: number;
-  previous: number;
-  current: number;
-  data?: SubscribeData;
+  next: number
+  previous: number
+  current: number
+  data?: SubscribeData
+}
+
+export type IFormQuery = Partial<SubscribeData>
+
+export interface IFormResponse {
+  data: {
+    formulario: IFormQuery
+  }
+}
+
+export interface IFormSubscribeText {
+  titulo: string
+  content?: string
+  backgroundImage?: {
+    url: string
+  }
+}
+
+export interface IFormSubscribeTextResponse {
+  data: {
+    formulario: IFormSubscribeText
+  }
 }

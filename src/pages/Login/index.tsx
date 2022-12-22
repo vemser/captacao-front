@@ -70,7 +70,7 @@ export const Login = () => {
                   autoComplete="email"
                   autoFocus
                   // register={'...email'}
-                  //   error={!!errors.email}
+                  // error={!!errors.email}
                 />
                 <TextField
                   margin="normal"
@@ -82,7 +82,7 @@ export const Login = () => {
                   type="password"
                   autoComplete="current-password"
                   // register={'...password'}
-                  //   error={!!errors.password}
+                  // error={!!errors.password}
                 />
 
                 <Button

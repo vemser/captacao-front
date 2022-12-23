@@ -11,6 +11,7 @@ import {
 	MenuItem,
 	Tooltip,
 	CircularProgress,
+  Typography,
 } from "@mui/material";
 import { FormGrid } from "../FormGrid";
 import {
@@ -99,8 +100,8 @@ export const StepOne: React.FC = () => {
 								{...inputProps}
 								label={<FormName nome={formulario?.cpf} />}
 								variant="outlined"
-                helperText={errors.cpf?.message}
-								error={!!errors.cpf}
+								
+								error={checkCpf === false && cpf?.length >= 11 && !!errors.cpf}
 								id="step-1-cpf"
 								sx={{
 									width: "100%",
@@ -109,6 +110,11 @@ export const StepOne: React.FC = () => {
 						)
 					}
 				</InputMask>
+        <Typography variant="caption" color="error">
+            {checkCpf === false && errors.telefone?.message &&
+              cpf?.length >= 11 &&
+              "O CPF precisa ser válido"}
+          </Typography>
 			</Grid>
 			<Grid item xs={6} display="flex" flexDirection="column">
 				<InputMask

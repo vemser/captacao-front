@@ -24,14 +24,12 @@ export const stepOneSchema = Yup.object().shape({
   .min(9, "O RG deve ter no mínimo 9 caracteres"),
 
   cpf: Yup.string()
-    .required("O CPF é obrigatório")
+    .required()
     .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "O CPF deve ser um número válido"),
     
   telefone: Yup.string()
     .required("O telefone é obrigatório")
-    .matches(
-      /^\(\d{2}\) \d{5}-\d{4}$/,
-      "O telefone deve ser um número válido no formato (99) 99999-9999"
+    .matches(/^\(\d{2}\)\d{5}-\d{4}$/,"O telefone deve ser um número válido no formato (99)99999-9999"
     ),
     
   cidade: Yup.string()

@@ -8,7 +8,6 @@ import { Routes, Route } from 'react-router-dom'
 import { Login } from 'pages/Login'
 import { Schedule } from 'pages/Schedule'
 import { Interview } from 'pages/Interview'
-import { Avaliation } from 'pages/Avaliation'
 import { Result } from 'pages/Result'
 import { CandidatesCurriculum } from 'pages/CandidatesCurriculum'
 import { AptosCurriculum } from 'pages/AptosCurriculum'
@@ -33,7 +32,6 @@ export const Router = () => {
           <Route path="/aptos/curriculo" element={<AptosCurriculum />} />
 
           <Route path="/entrevista" element={<Interview />} />
-          <Route path="/avaliacao" element={<Avaliation />} />
           <Route path="/agenda" index element={<Schedule />} />
           <Route path="/resultado" index element={<Result />} />
         </Route>

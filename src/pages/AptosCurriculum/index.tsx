@@ -4,17 +4,12 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
   TextField
 } from '@mui/material'
 import { objeto } from 'shared/utils/states'
 import { CurriculoContainer } from '../../components/CurriculoContainer'
-
-import Box from '@mui/material/Box'
-import Slider from '@mui/material/Slider'
-import { number } from 'yup'
 
 const marks = [
   {
@@ -91,7 +86,7 @@ export const AptosCurriculum = () => {
           </DialogTitle>
           <DialogContent>
             <TextField
-              id="outlined-multiline-flexible"
+              id="campo-nota"
               label="Nota"
               type="number"
               maxRows={4}
@@ -100,8 +95,10 @@ export const AptosCurriculum = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button id="botao-cancelar" onClick={handleClose}>
+              Cancelar
+            </Button>
+            <Button id="botao-enviar" onClick={handleClose} autoFocus>
               Enviar
             </Button>
           </DialogActions>

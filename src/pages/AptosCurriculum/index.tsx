@@ -6,13 +6,15 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Grid
+  Grid,
+  TextField
 } from '@mui/material'
 import { objeto } from 'shared/utils/states'
 import { CurriculoContainer } from '../../components/CurriculoContainer'
 
 import Box from '@mui/material/Box'
 import Slider from '@mui/material/Slider'
+import { number } from 'yup'
 
 const marks = [
   {
@@ -85,21 +87,17 @@ export const AptosCurriculum = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {'Escolha a nota abaixo:'}
+            {'Digite a nota abaixo:'}
           </DialogTitle>
           <DialogContent>
-            <Box sx={{ width: 300, mt: '40px' }}>
-              <Slider
-                aria-label="Always visible"
-                defaultValue={10}
-                min={0}
-                max={100}
-                step={1}
-                marks={marks}
-                valueLabelDisplay="on"
-                onChange={(e: any) => console.log(e.target.value)}
-              />
-            </Box>
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Nota"
+              type="number"
+              maxRows={4}
+              sx={{ mt: 1 }}
+              onChange={e => console.log(e.target.value)}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancelar</Button>

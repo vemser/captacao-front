@@ -12,6 +12,7 @@ import { Avaliation } from "pages/Avaliation";
 import { Result } from "pages/Result";
 import { CandidatesCurriculum } from "pages/CandidatesCurriculum";
 import { InterviewCurriculum } from "pages/InterviewCurriculum";
+import { ResultCurriculum } from "pages/ResultCurriculum";
 
 export const Router = () => {
   return (
@@ -37,8 +38,10 @@ export const Router = () => {
           />
 
           <Route path="/avaliacao" element={<Avaliation />} />
-          <Route path="/agenda" index element={<Schedule />} />
-          <Route path="/resultado" index element={<Result />} />
+          <Route path="/agenda" element={<Schedule />} />
+
+          <Route path="/resultado" element={<Result />} />
+          <Route path="/resultado/curriculo" element={<ResultCurriculum />} />
         </Route>
 
         <Route path="*" element={<div>Erro</div>} />

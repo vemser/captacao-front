@@ -9,71 +9,73 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  Pagination
-} from '@mui/material'
-import { Search } from '@mui/icons-material'
-import { DataGrid } from '@mui/x-data-grid'
-import React from 'react'
+  Pagination,
+} from "@mui/material";
+import { Search } from "@mui/icons-material";
+import { DataGrid } from "@mui/x-data-grid";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   {
-    field: 'nome',
-    headerName: 'Nome',
+    field: "nome",
+    headerName: "Nome",
     minWidth: 180,
-    flex: 1
+    flex: 1,
   },
   {
-    field: 'email',
-    headerName: 'Email',
+    field: "email",
+    headerName: "Email",
     minWidth: 230,
-    flex: 1
+    flex: 1,
   },
   {
-    field: 'nota',
-    headerName: 'Nota da Prova',
-    minWidth: 130
+    field: "nota",
+    headerName: "Nota da Prova",
+    minWidth: 130,
   },
   {
-    field: 'telefone',
-    headerName: 'Telefone',
-    minWidth: 160
+    field: "telefone",
+    headerName: "Telefone",
+    minWidth: 160,
   },
   {
-    field: 'estado',
-    headerName: 'Estado',
-    minWidth: 90
-  }
-]
+    field: "estado",
+    headerName: "Estado",
+    minWidth: 90,
+  },
+];
 
 const rows = [
   {
     id: 1,
-    nome: 'Daniel Jacon',
-    email: 'danieljacon@dbccompany.com.br',
+    nome: "Daniel Jacon",
+    email: "danieljacon@dbccompany.com.br",
     nota: 10,
-    telefone: '(19)98765-7829',
-    turno: 'Manhã',
-    estado: 'SP'
+    telefone: "(19)98765-7829",
+    turno: "Manhã",
+    estado: "SP",
   },
   {
     id: 2,
-    nome: 'Daniel Jacon',
-    email: 'danieljacon@dbccompany.com.br',
+    nome: "Daniel Jacon",
+    email: "danieljacon@dbccompany.com.br",
     nota: 6,
-    telefone: '(19)98765-7829',
-    turno: 'Manhã',
-    estado: 'SP'
-  }
-]
+    telefone: "(19)98765-7829",
+    turno: "Manhã",
+    estado: "SP",
+  },
+];
 
 export const Result: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Stack
           direction={{
-            xs: 'column',
-            sm: 'row'
+            xs: "column",
+            sm: "row",
           }}
           spacing={2}
         >
@@ -120,14 +122,15 @@ export const Result: React.FC = () => {
           </FormControl>
         </Stack>
       </Grid>
-      <Grid item xs={12} sx={{ height: 'calc(100vh - 211px)', width: '100%' }}>
+      <Grid item xs={12} sx={{ height: "calc(100vh - 211px)", width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
           sx={{
-            boxShadow: 2
+            boxShadow: 2,
+          }}
+          onRowClick={({ row }) => {
+            navigate("/resultado/curriculo", { state: row });
           }}
           hideFooter
         />
@@ -143,5 +146,5 @@ export const Result: React.FC = () => {
         />
       </Grid>
     </Grid>
-  )
-}
+  );
+};

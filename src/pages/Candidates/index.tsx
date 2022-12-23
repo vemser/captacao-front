@@ -13,87 +13,90 @@ import {
   Pagination,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-
-const columns = [
-  {
-    field: "status",
-    headerName: "Status",
-    width: 140,
-    renderCell: (params: any) => {
-      return (
-        <Chip
-          label={params.value}
-          sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-          color={params.value === "Avaliado" ? "success" : "primary"}
-        />
-      );
-    },
-  },
-  {
-    field: "nome",
-    headerName: "Nome",
-    minWidth: 180,
-    flex: 1,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    minWidth: 230,
-    flex: 1,
-  },
-  {
-    field: "telefone",
-    headerName: "Telefone",
-    minWidth: 160,
-  },
-  {
-    field: "turno",
-    headerName: "Turno",
-    minWidth: 90,
-  },
-  {
-    field: "estado",
-    headerName: "Estado",
-    minWidth: 90,
-  },
-  {
-    field: "acoes",
-    headerName: "Ações",
-    width: 120,
-    renderCell: (params: any) => {
-      return (
-        <Button variant="contained" id="" onClick={() => console.log(params)}>
-          Avaliar
-        </Button>
-      );
-    },
-  },
-];
-
-const rows = [
-  {
-    id: 1,
-    status: "Avaliado",
-    nome: "Daniel Jacon",
-    email: "danieljacon@dbccompany.com.br",
-    telefone: "(19)98765-7829",
-    turno: "Manhã",
-    estado: "SP",
-  },
-  {
-    id: 2,
-    status: "Não avaliado",
-    nome: "Daniel Jacon",
-    email: "danieljacon@dbccompany.com.br",
-    telefone: "(19)98765-7829",
-    turno: "Manhã",
-    estado: "SP",
-  },
-];
+import { useNavigate, Link } from "react-router-dom";
+import React from "react";
 
 export const Registers: React.FC = () => {
+  const navigate = useNavigate();
+
+  const columns = [
+    {
+      field: "status",
+      headerName: "Status",
+      width: 140,
+      renderCell: (params: any) => {
+        return (
+          <Chip
+            label={params.value}
+            sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
+            color={params.value === "Avaliado" ? "success" : "primary"}
+          />
+        );
+      },
+    },
+    {
+      field: "nome",
+      headerName: "Nome",
+      minWidth: 180,
+      flex: 1,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      minWidth: 230,
+      flex: 1,
+    },
+    {
+      field: "telefone",
+      headerName: "Telefone",
+      minWidth: 160,
+    },
+    {
+      field: "turno",
+      headerName: "Turno",
+      minWidth: 90,
+    },
+    {
+      field: "estado",
+      headerName: "Estado",
+      minWidth: 90,
+    },
+    {
+      field: "acoes",
+      headerName: "Ações",
+      width: 120,
+      renderCell: () => {
+        return (
+          <Button variant="contained" id="">
+            Avaliar
+          </Button>
+        );
+      },
+    },
+  ];
+
+  const rows = [
+    {
+      id: 1,
+      status: "Avaliado",
+      nome: "Daniel Jacon",
+      email: "danieljacon@dbccompany.com.br",
+      telefone: "(19)98765-7829",
+      turno: "Manhã",
+      estado: "SP",
+    },
+    {
+      id: 2,
+      status: "Não avaliado",
+      nome: "Daniel Jacon",
+      email: "danieljacon@dbccompany.com.br",
+      telefone: "(19)98765-7829",
+      turno: "Manhã",
+      estado: "SP",
+    },
+  ];
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -160,6 +163,9 @@ export const Registers: React.FC = () => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          onRowClick={({row}) => {
+            navigate("/candidatos/curriculo", { state: row });
+          }}
           sx={{
             boxShadow: 2,
           }}

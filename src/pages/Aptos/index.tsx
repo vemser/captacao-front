@@ -15,6 +15,7 @@ import {
 import { Search } from '@mui/icons-material'
 import React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
+import { Link } from 'react-router-dom'
 
 const columns = [
   {
@@ -64,9 +65,11 @@ const columns = [
     width: 140,
     renderCell: (params: any) => {
       return (
-        <Button variant="contained" id="" onClick={() => console.log(params)}>
-          Adicionar
-        </Button>
+        <Link to="/aptos/curriculo">
+          <Button variant="contained" id="" onClick={() => console.log(params)}>
+            Adicionar
+          </Button>
+        </Link>
       )
     }
   }

@@ -1,17 +1,17 @@
-import { Button, Grid, Menu, MenuItem } from "@mui/material";
-import { objeto } from "shared/utils/states";
-import { CurriculoContainer } from "../../components/CurriculoContainer";
-import React from "react";
+import { Button, Grid, Menu, MenuItem } from '@mui/material'
+import { objeto } from 'shared/utils/states'
+import { CurriculoContainer } from '../../components/CurriculoContainer'
+import React from 'react'
 
 export const CandidatesCurriculum = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   return (
     <Grid container spacing={2}>
@@ -19,9 +19,9 @@ export const CandidatesCurriculum = () => {
         <Button
           id="candidatos-avaliar"
           variant="contained"
-          aria-controls={open ? "basic-menu" : undefined}
+          aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
+          aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
           Avaliar
@@ -32,7 +32,7 @@ export const CandidatesCurriculum = () => {
           open={open}
           onClose={handleClose}
           MenuListProps={{
-            "aria-labelledby": "basic-button",
+            'aria-labelledby': 'basic-button'
           }}
         >
           <MenuItem onClick={handleClose}>Apto</MenuItem>
@@ -43,7 +43,7 @@ export const CandidatesCurriculum = () => {
         item
         xs={12}
         md={6}
-        sx={{ height: "calc(100vh - 150px)", width: "100%" }}
+        sx={{ height: 'calc(100vh - 150px)', width: '100%' }}
       >
         <CurriculoContainer resposta={objeto} />
       </Grid>
@@ -51,8 +51,8 @@ export const CandidatesCurriculum = () => {
         item
         xs={12}
         lg={6}
-        sx={{ height: "calc(100vh - 150px)", width: "100%" }}
+        sx={{ height: 'calc(100vh - 150px)', width: '100%' }}
       ></Grid>
     </Grid>
-  );
-};
+  )
+}

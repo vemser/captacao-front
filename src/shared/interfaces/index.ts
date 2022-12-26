@@ -9,7 +9,7 @@ export interface SubscribeData {
   cidade: string;
   dataNascimento: string;
   neurodiversidade: string;
-  
+
   matriculado: boolean | TBoolean;
   turno: string;
   instituicao: string;
@@ -93,5 +93,11 @@ export interface IFormSubscribeFormResponse {
     s2Curriculo?:string,
     s2ConfiguraEsDaMQuina?:string,
   }
- } 
+ }
+}
+
+
+export interface IUser {
+  username: string;
+  password: string;
 }

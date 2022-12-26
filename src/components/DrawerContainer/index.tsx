@@ -34,7 +34,7 @@ import {
 import { menuItems } from 'shared/utils/menuItems'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import logoBlue from '../../assets/logo-blue.webp'
-import { useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
+import { useChangeImageMutation, useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
 
 const drawerWidth = 240
 
@@ -45,6 +45,7 @@ interface Props {
 
 export const DrawerContainer = (props: Props) => {
   const { data } = useGetLoggedUserQuery()
+  const [changeImage] = useChangeImageMutation()
 
   const { pathname } = useLocation()
   const navigate = useNavigate()

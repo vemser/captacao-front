@@ -20,13 +20,22 @@ const authSlice = apiSlice.injectEndpoints({
         url: 'http://vemser-dbc.dbccompany.com.br:39000/vemser/usuario-back/usuario/logged-user',
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`
         }
       })
-    })
+    }),
+    changeImage: build.mutation<string, void>({
+      query: () => ({
+        url: 'http://vemser-dbc.dbccompany.com.br:39000/vemser/usuario-back/foto/upload-image-perfil',
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        },
+        responseHandler: response => response.text()
+      })
+    }),
   }),
   overrideExisting: false
 })
 
-export const { useAuthLoginMutation, useGetLoggedUserQuery } = authSlice
+export const { useAuthLoginMutation, useGetLoggedUserQuery, useChangeImageMutation } = authSlice

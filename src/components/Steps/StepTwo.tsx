@@ -770,6 +770,27 @@ export const StepTwo: React.FC = () => {
 						</Error> */}
 					</Grid>
 
+
+					<Grid item xs={12}>
+						
+						<FormGroup
+							aria-label="position"
+							row
+							sx={{
+								color: "GrayText",
+							}}
+						>
+							<FormControlLabel
+								control={<Checkbox />}
+								id="s2-candidato-lgpd"
+								label="Você concorda com o tratamento dos seus dados pessoais para fins de seleção de candidatos?"
+								// error={!!errors.lgpdBoolean}
+								// helperText={errors.lgpdBoolean?.message}
+								{...register("lgpdBoolean")}
+							/>
+						</FormGroup>
+					</Grid>
+
 					<Grid
 						item
 						xs={12}

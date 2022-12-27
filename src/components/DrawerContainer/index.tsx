@@ -79,11 +79,16 @@ export const DrawerContainer = (props: Props) => {
     if (selectedImage) {
       formData.append('imagem', selectedImage)
 
-      await toast.promise(changeImage(formData).unwrap(), {
-        pending: 'Carregando...',
-        success: 'Foto modificada com sucesso!',
-        error: 'Houve um erro ao modificar a foto'
-      })
+      await toast.promise(
+        changeImage(formData)
+          .unwrap()
+          .then(() => setSelectedImage(null)),
+        {
+          pending: 'Carregando...',
+          success: 'Foto modificada com sucesso!',
+          error: 'Houve um erro ao modificar a foto'
+        }
+      )
     }
   }
 
@@ -142,7 +147,6 @@ export const DrawerContainer = (props: Props) => {
                   />
                 </label>
               </Box>
-              <Button onClick={() => changeAvatar()}>enviar</Button>
             </Box>
           }
         >
@@ -184,6 +188,9 @@ export const DrawerContainer = (props: Props) => {
             />
           )}
         </Badge>
+        {selectedImage !== null && (
+          <Button onClick={() => changeAvatar()}>Alterar Foto</Button>
+        )}
         <Typography
           variant="body1"
           component="p"
@@ -210,7 +217,7 @@ export const DrawerContainer = (props: Props) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            minHeight: 'calc(100vh - 255px)'
+            minHeight: 'calc(100vh - 310px)'
           }}
         >
           <List>
@@ -331,7 +338,6 @@ export const DrawerContainer = (props: Props) => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={1}
-                    // onChange={handleChange}
                   >
                     <MenuItem value={1}>1</MenuItem>
                     <MenuItem value={2}>2</MenuItem>

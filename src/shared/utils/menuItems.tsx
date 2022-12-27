@@ -25,11 +25,6 @@ export const menuItems: MenuItem[] = [
     icon: <WorkHistory />
   },
   {
-    text: 'Avaliar',
-    path: '/avaliacao',
-    icon: <AutoStories />
-  },
-  {
     text: 'Agenda',
     path: '/agenda',
     icon: <DateRangeIcon />

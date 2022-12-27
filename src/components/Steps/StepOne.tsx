@@ -22,6 +22,7 @@ import { IFormQuery, SubscribeData } from "shared/interfaces";
 import { estadosBrasileiros } from "shared/utils/states";
 import { stepOneSchema } from "shared/schemas/subscription";
 import { useGetInputsQuery } from "shared/features/api/subscription/formSlice";
+import InputMask from "react-input-mask";
 
 export const StepOne: React.FC = () => {
   const [neurodiversidade, setNeurodiversidade] = useState("F");
@@ -29,9 +30,10 @@ export const StepOne: React.FC = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SubscribeData>({
-    resolver: yupResolver(stepOneSchema),
+    // resolver: yupResolver(stepOneSchema),
   });
 
   const dispatch = useDispatch();
@@ -39,6 +41,7 @@ export const StepOne: React.FC = () => {
   const formulario = data?.data.formulario;
 
   const onSubmit = (data: SubscribeData) => {
+    data.telefone = data.telefone.replace(/[^0-9]/g, "");
     dispatch(nextStep());
     dispatch(changeData(data));
   };
@@ -79,25 +82,42 @@ export const StepOne: React.FC = () => {
           {...register("rg")}
         />
       </Grid>
-      <Grid item xs={12} lg={6}>
-        <TextField
-          fullWidth
-          label={<FormName nome={formulario?.cpf} />}
-          error={!!errors.cpf}
-          helperText={errors.cpf?.message}
-          id="step-1-cpf"
-          {...register("cpf")}
-        />
+      <Grid item xs={6}>
+        <InputMask mask="999.999.999-99" maskChar=" " {...register("cpf")}>
+          {
+            // @ts-ignore
+            (inputProps) => (
+              <TextField
+                {...inputProps}
+                label={<FormName nome={formulario?.cpf} />}
+                variant="outlined"
+                id="step-1-cpf"
+                helperText={errors.cpf?.message}
+                error={!!errors.cpf}
+                sx={{
+                  width: "100%",
+                }}
+              />
+            )
+          }
+        </InputMask>
       </Grid>
-      <Grid item xs={12} lg={6}>
-        <TextField
-          fullWidth
-          label={<FormName nome={formulario?.telefone} />}
-          error={!!errors.telefone}
-          helperText={errors.telefone?.message}
-          id="step-1-telefone"
-          {...register("telefone")}
-        />
+      <Grid item xs={6} display="flex" flexDirection="column">
+        <InputMask mask="(99)99999-9999" maskChar=" " {...register("telefone")}>
+          {
+            // @ts-ignore
+            (inputProps) => (
+              <TextField
+                {...inputProps}
+                label={<FormName nome={formulario?.telefone} />}
+                variant="outlined"
+                error={!!errors.telefone}
+                helperText={errors.telefone?.message}
+                id="step-1-telefone"
+              />
+            )
+          }
+        </InputMask>
       </Grid>
       <Grid item xs={12} lg={6}>
         <TextField

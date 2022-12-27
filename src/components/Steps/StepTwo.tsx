@@ -700,7 +700,6 @@ export const StepTwo: React.FC = () => {
 									</Button>
 								)}
 							</Box>
-							
 						</Box>
 					</Grid>
 					<Grid item xs={12} lg={6}>
@@ -775,10 +774,7 @@ export const StepTwo: React.FC = () => {
 								{...register("lgpdBoolean")}
 							/>
 						</FormGroup>
-						<Error
-							id={"mensagem-erro-lgpd"}
-							width={"100%"}
-						>
+						<Error id={"mensagem-erro-lgpd"} width={"100%"}>
 							{errors.lgpdBoolean?.message}
 						</Error>
 					</Grid>
@@ -813,16 +809,23 @@ export const StepTwo: React.FC = () => {
 							type="submit"
 							sx={{
 								width: "8rem",
-								
 							}}
-							disabled = {!curriculo?.[0] || !configuracoes?.[0]}
-
+							disabled={!curriculo?.[0] || !configuracoes?.[0]}
 						>
 							Enviar
 						</Button>
 					</Grid>
 				</>
 			)}
+			<Grid item xs={12}>
+				{matriculado !== "T" && (
+					<Error id="erro-não-matriculado" width="100%">
+						Devido as restrições impostas pelas leis brasileiras,
+						somente alunos que possuem vínculo com uma instituição
+						de ensino podem se candidatar às vagas de estágio.
+					</Error>
+				)}
+			</Grid>
 		</FormGrid>
 	);
 };

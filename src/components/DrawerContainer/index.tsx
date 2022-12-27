@@ -34,7 +34,12 @@ import {
 import { menuItems } from 'shared/utils/menuItems'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import logoBlue from '../../assets/logo-blue.webp'
-import { useChangeImageMutation, useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
+import {
+  useChangeImageMutation,
+  useGetLoggedUserQuery
+} from 'shared/features/api/usuario/authSlice'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { toast } from 'react-toastify'
 
 const drawerWidth = 240
 
@@ -45,7 +50,11 @@ interface Props {
 
 export const DrawerContainer = (props: Props) => {
   const { data } = useGetLoggedUserQuery()
+
   const [changeImage] = useChangeImageMutation()
+  const [selectedImage, setSelectedImage] = React.useState<any>(null)
+
+  const imagemBase = data?.imagem
 
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -62,6 +71,20 @@ export const DrawerContainer = (props: Props) => {
   }
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const changeAvatar = async () => {
+    const formData = new FormData()
+
+    if (selectedImage) {
+      formData.append('imagem', selectedImage)
+
+      await toast.promise(changeImage(formData).unwrap(), {
+        pending: 'Carregando...',
+        success: 'Foto modificada com sucesso!',
+        error: 'Houve um erro ao modificar a foto'
+      })
+    }
   }
 
   const drawer = (
@@ -98,34 +121,82 @@ export const DrawerContainer = (props: Props) => {
                 borderRadius: '50%'
               }}
             >
-              <Edit
-                sx={{
-                  fontSize: 28,
-                  color: 'primary.main'
-                }}
-              />
+              <Box>
+                <label htmlFor="input-file">
+                  <Edit
+                    sx={{
+                      fontSize: 28,
+                      color: 'primary.main',
+                      cursor: 'pointer'
+                    }}
+                  />
+                  <input
+                    style={{ display: 'none' }}
+                    id="input-file"
+                    type="file"
+                    onChange={(e: any) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        setSelectedImage(e.target.files[0])
+                      }
+                    }}
+                  />
+                </label>
+              </Box>
+              <Button onClick={() => changeAvatar()}>enviar</Button>
             </Box>
           }
         >
-          <Avatar
-            sx={{
-              width: 120,
-              height: 120,
-              border: '2px solid',
-              borderColor: 'primary.main'
-            }}
-            alt="Daniel Jacon"
-            src="https://media.licdn.com/dms/image/C4D03AQEAtQvGjyaAOA/profile-displayphoto-shrink_800_800/0/1656523477737?e=1677110400&v=beta&t=hJaTnPa4ibssJChzQ2ZJdUxRcaeszavxTtaw4sCxCq0"
-          />
+          {imagemBase === null && selectedImage === null ? (
+            <svg data-testid="AccountCircleSharpIcon">
+              <AccountCircleIcon color={'disabled'} />
+            </svg>
+          ) : imagemBase === null && selectedImage !== null ? (
+            <Avatar
+              alt="Avatar"
+              style={{
+                width: 120,
+                height: 120,
+                border: '2px solid',
+                borderColor: 'primary.main'
+              }}
+              src={URL.createObjectURL(selectedImage)}
+            />
+          ) : imagemBase !== null && selectedImage !== null ? (
+            <Avatar
+              style={{
+                width: 120,
+                height: 120,
+                border: '2px solid',
+                borderColor: 'primary.main'
+              }}
+              src={URL.createObjectURL(selectedImage)}
+            />
+          ) : (
+            <Avatar
+              sx={{
+                width: 120,
+                height: 120,
+                border: '2px solid',
+                borderColor: 'primary.main'
+              }}
+              alt="Avatar"
+              src={`data:image/png;base64, ${data?.imagem}`}
+            />
+          )}
         </Badge>
-        <Typography variant="body1" component="p" sx={{ fontWeight: 600 }}>
+        <Typography
+          variant="body1"
+          component="p"
+          sx={{ fontWeight: 600, textTransform: 'capitalize' }}
+        >
           <Box
             component="span"
             sx={{ color: 'primary.main', display: 'inline', mr: '2px' }}
           >
             Olá,
           </Box>
-          Daniel
+
+          {data?.login.split('.').join(' ')}
         </Typography>
       </Toolbar>
       <Divider />

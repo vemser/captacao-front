@@ -24,18 +24,22 @@ const authSlice = apiSlice.injectEndpoints({
         }
       })
     }),
-    changeImage: build.mutation<string, void>({
-      query: () => ({
+    changeImage: build.mutation<string, any>({
+      query: data => ({
         url: 'http://vemser-dbc.dbccompany.com.br:39000/vemser/usuario-back/foto/upload-image-perfil',
         method: 'PUT',
+        body: data,
         headers: {
           Authorization: `Bearer ${getToken()}`
-        },
-        responseHandler: response => response.text()
+        }
       })
-    }),
+    })
   }),
   overrideExisting: false
 })
 
-export const { useAuthLoginMutation, useGetLoggedUserQuery, useChangeImageMutation } = authSlice
+export const {
+  useAuthLoginMutation,
+  useGetLoggedUserQuery,
+  useChangeImageMutation
+} = authSlice

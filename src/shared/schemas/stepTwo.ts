@@ -50,10 +50,8 @@ export const stepTwoSchema = Yup.object().shape({
       otherwise: Yup.string(),
     }
   ),
-  // resposta:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
+  resposta:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
   algoimportante:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
-  configuracoes: Yup.string().required("É necessário informar a configuração"),
   lgpdBoolean: Yup.boolean().oneOf([true], "É necessário aceitar os termos"),
-  deficiencia:Yup.string().required("Campo obrigatório").min(2,"É necessário 2 caracteres, no mínimo"),
-  curriculo:Yup.string().required("Currículo é obrigatório")
+  deficiencia:Yup.string().required("Campo obrigatório").min(2,"É necessário 2 caracteres, no mínimo")
 })

@@ -21,6 +21,7 @@ import {
 	CircularProgress,
 	useMediaQuery,
 	useTheme,
+	FormHelperText,
 } from "@mui/material";
 import {
 	previousStep,
@@ -699,13 +700,8 @@ export const StepTwo: React.FC = () => {
 									</Button>
 								)}
 							</Box>
+							
 						</Box>
-						{/* <Error
-							id={"mensagem-erro-campo-curriculo"}
-							width={"100%"}
-						>
-							{errors.curriculo?.message}
-						</Error> */}
 					</Grid>
 					<Grid item xs={12} lg={6}>
 						<Box display="flex" flexDirection="column">
@@ -762,17 +758,9 @@ export const StepTwo: React.FC = () => {
 								)}
 							</Box>
 						</Box>
-						{/* <Error
-							id={"mensagem-erro-campo-configuracao"}
-							width={"100%"}
-						>
-							{errors.configuracao?.message}
-						</Error> */}
 					</Grid>
 
-
 					<Grid item xs={12}>
-						
 						<FormGroup
 							aria-label="position"
 							row
@@ -784,11 +772,15 @@ export const StepTwo: React.FC = () => {
 								control={<Checkbox />}
 								id="s2-candidato-lgpd"
 								label="Você concorda com o tratamento dos seus dados pessoais para fins de seleção de candidatos?"
-								// error={!!errors.lgpdBoolean}
-								// helperText={errors.lgpdBoolean?.message}
 								{...register("lgpdBoolean")}
 							/>
 						</FormGroup>
+						<Error
+							id={"mensagem-erro-lgpd"}
+							width={"100%"}
+						>
+							{errors.lgpdBoolean?.message}
+						</Error>
 					</Grid>
 
 					<Grid
@@ -821,7 +813,10 @@ export const StepTwo: React.FC = () => {
 							type="submit"
 							sx={{
 								width: "8rem",
+								
 							}}
+							disabled = {!curriculo?.[0] || !configuracoes?.[0]}
+
 						>
 							Enviar
 						</Button>

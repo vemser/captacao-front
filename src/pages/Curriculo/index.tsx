@@ -36,7 +36,8 @@ export const Curriculo = () => {
     deficiencia: false,
     configuracoes: 'string',
     motivo: 'string',
-    algoimportante: 'string'
+    algoimportante: 'string',
+    linguagens: ""
   }
 
   return (

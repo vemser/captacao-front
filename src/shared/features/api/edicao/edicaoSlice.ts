@@ -1,20 +1,23 @@
 import { apiSlice } from "../";
-import { Trilha, Trilhas } from "./types";
 
-const trilhaSlice = apiSlice.injectEndpoints({
+export interface Edicao {
+  nome: string;
+}
+
+const edicaoSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getTrilhas: builder.query<Trilhas[], void>({
+    getEdicaoAtual: builder.query<string, void>({
       query: () => ({
-        url: "trilha/listar",
+        url: "edicao/edicao-atual",
         method: "GET",
         headers: {
           // Authorization: `Bearer ${token}`,
         },
       }),
     }),
-    postNewTrilha: builder.mutation<Trilhas, Trilha>({
+    postNewEdicao: builder.mutation<void, Edicao>({
       query: (data) => ({
-        url: "trilha",
+        url: "edicao/criar-edicao",
         method: "POST",
         headers: {
           // Authorization: `Bearer ${token}`,
@@ -22,9 +25,9 @@ const trilhaSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    deleteTrilha: builder.mutation<void, number>({
+    deleteEdicao: builder.mutation<void, number>({
       query: (id) => ({
-        url: `trilha/${id}`,
+        url: `edicao/delete-fisico/${id}`,
         method: "DELETE",
         headers: {
           // Authorization: `Bearer ${token}`,
@@ -34,9 +37,3 @@ const trilhaSlice = apiSlice.injectEndpoints({
   }),
   overrideExisting: false,
 });
-
-export const {
-  useGetTrilhasQuery,
-  usePostNewTrilhaMutation,
-  useDeleteTrilhaMutation,
-} = trilhaSlice;

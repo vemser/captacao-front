@@ -3,7 +3,7 @@ import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
 export const PrivateRoute = () => {
-  const token = "cvxzcv";
+  const token = localStorage.getItem("token");
   return token ? (
     <DrawerContainer>
       <Outlet />

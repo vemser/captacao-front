@@ -62,5 +62,6 @@ export const objeto = {
   deficiencia:false,
   configuracoes: "string",
   motivo:"string",
-  algoimportante:"string"
+  algoimportante:"string",
+  linguagens: ""
 };

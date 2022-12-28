@@ -9,11 +9,11 @@ export interface SubscribeData {
   cidade: string;
   dataNascimento: string;
   neurodiversidade: string;
-  
+
   matriculado: boolean | TBoolean;
   turno: string;
   instituicao: string;
-  curso:string;
+  curso: string;
   ingles: string;
   espanhol: string;
   orientacao: string;
@@ -25,151 +25,91 @@ export interface SubscribeData {
   altruismoBoolean: boolean | TBoolean;
   provaBoolean: boolean | TBoolean;
   efetivacaoBoolean: boolean | TBoolean;
-  disponibilidadeBoolean:boolean | TBoolean;
-  algoimportante:string;
+  disponibilidadeBoolean: boolean | TBoolean;
+  algoimportante: string;
   github: string;
   linkedin: string;
   curriculo: any;
   lgpdBoolean: boolean;
-  resposta:string;
-  deficiencia:boolean | TBoolean;
+  resposta: string;
+  deficiencia: boolean | TBoolean;
   configuracoes: any;
-  motivo:string
-  rg: string
+  motivo: string;
+  rg: string;
+  linguagens: any;
 }
 
 export interface StepsState {
-  next: number
-  previous: number
-  current: number
-  data?: SubscribeData
+  next: number;
+  previous: number;
+  current: number;
+  data?: SubscribeData;
 }
 
-export type IFormQuery = Partial<SubscribeData>
+export type IFormQuery = Partial<SubscribeData>;
 
 export interface IFormResponse {
   data: {
-    formulario: IFormQuery
-  }
+    formulario: IFormQuery;
+  };
 }
 
 export interface IFormSubscribeText {
-  titulo: string
-  content?: string
+  titulo: string;
+  content?: string;
   backgroundImage?: {
-    url: string
-  }
+    url: string;
+  };
 }
 
 export interface IFormSubscribeTextResponse {
   data: {
-    formulario: IFormSubscribeText
-  }
+    formulario: IFormSubscribeText;
+  };
 }
 
 export interface IFormSubscribeFormResponse {
- data: {
-  formulario: {
-    s2Matriculado?:string,
-    s2Turno?:string,
-    s2Instituicao?:string,
-    s2Curso?:string,
-    s2InglS?:string,
-    s2Espanhol?:string,
-    s2OriSexual?:string,
-    s2GNero?:string,
-    s2Trilha?:string,
-    s2DeficiNcia?:string,
-    s2DefDesc?:string,
-    s2TextoMotivacao?:string,
-    s2SubtTextmotivacao?:string,
-    s2OutroMotivo?:string,
-    s2AlgoImp?:string,
-    s2TextoLingProva?:string,
-    s2TextoDisp?:string,
-    s2DispHaula?:string,
-    s2Github?:string,
-    s2Linkedin?:string,
-    s2Curriculo?:string,
-    s2ConfiguraEsDaMQuina?:string,
-  }
- } 
+  data: {
+    formulario: {
+      s2Matriculado?: string;
+      s2Turno?: string;
+      s2Instituicao?: string;
+      s2Curso?: string;
+      s2InglS?: string;
+      s2Espanhol?: string;
+      s2OriSexual?: string;
+      s2GNero?: string;
+      s2Trilha?: string;
+      s2DeficiNcia?: string;
+      s2DefDesc?: string;
+      s2TextoMotivacao?: string;
+      s2SubtTextmotivacao?: string;
+      s2OutroMotivo?: string;
+      s2AlgoImp?: string;
+      s2TextoLingProva?: string;
+      s2TextoDisp?: string;
+      s2DispHaula?: string;
+      s2Github?: string;
+      s2Linkedin?: string;
+      s2Curriculo?: string;
+      s2ConfiguraEsDaMQuina?: string;
+    };
+  };
 }
 
-export interface IEdicao {
-    nome: string;
+export interface ILoggedUser {
+  login: string;
+  cargos: ICargo[];
+  imagem: string[];
+  idUsuario: number;
 }
 
-export interface ILinguagens {
-  nome: string
-}
-export interface IElemento {
-  idInscricao: number
-  candidato: ICandidato
-  dataInscricao: string
-  avaliacao: any
+export interface ICargo {
+  nome: string;
+  descricao: string;
 }
 
-export interface IInscricao {
-  totalElementos: number;
-  quantidadePaginas: number;
-  pagina: number;
-  tamanho: number;
-  elementos: IElemento[]
-}
-
-export interface ICandidato {
-  idCandidato: number
-  nome: string
-  dataNascimento: string
-  email: string
-  telefone: string
-  rg: string
-  cpf: string
-  estado: string
-  cidade: string
-  observacoes: string
-  notaProva: number
-  notaEntrevistaComportamental: number
-  notaEntrevistaTecnica: number
-  ativo: string
-  parecerComportamental: string
-  parecerTecnico: string
-  media: number
-  linguagens: ILinguagens[]
-  edicao: IEdicao
-  formulario: IFormulario
-  pcdboolean: boolean
-}
-
-export interface IFormulario {
-  idFormulario: number
-  matriculado: string
-  curso: string
-  turno: string
-  instituicao: string
-  github: string
-  linkedin: string
-  desafios: string
-  problema: string
-  reconhecimento: string
-  altruismo: string
-  resposta: string
-  curriculo: number
-  lgpd: string
-  prova: string
-  ingles: string
-  espanhol: string
-  neurodiversidade: string
-  efetivacao: string
-  genero: string
-  orientacao: string
-  disponibilidade: string
-  trilhas: ITrilha[]
-  imagemConfigPc: number
-  importancia: string
-}
-export interface ITrilha {
-  nome: string
-  idTrilha: number
+export interface IUser {
+  username: string;
+  password: string;
 }

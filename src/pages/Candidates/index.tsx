@@ -16,9 +16,18 @@ import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate, Link } from "react-router-dom";
 import React from "react";
+import { useEffect } from "preact/hooks";
+import { useGetCandidatosQuery } from "shared/features/api/subscription/inscricaoSlice";
+import { useDispatch } from "react-redux";
 
 export const Registers: React.FC = () => {
   const navigate = useNavigate();
+  const {useGetCandidatosQuery} = inscricaoSlice()
+  const dispatch = useDispatch();
+
+  // useEffect() => {
+  //   dispatch(useGetCandidatosQuery()); 
+  // });
 
   const columns = [
     {
@@ -185,3 +194,7 @@ export const Registers: React.FC = () => {
     </Grid>
   );
 };
+function inscricaoSlice(): { useGetCandidatosQuery: any; } {
+  throw new Error("Function not implemented.");
+}
+

@@ -10,12 +10,16 @@ import {
   IconButton,
   Chip,
   Button,
-  Pagination
+  Pagination,
+  Skeleton,
+  Box,
+  CircularProgress
 } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { Link } from 'react-router-dom'
+import { useListReviewsQuery } from 'shared/features/avaliacao/avaliacaoSlice'
 
 const columns = [
   {
@@ -25,9 +29,9 @@ const columns = [
     renderCell: (params: any) => {
       return (
         <Chip
-          label={params.value}
+          label={params.value === 'T' ? 'Avaliado' : 'Não avaliado'}
           sx={{ borderRadius: 1, boxShadow: 1, width: '100%' }}
-          color={params.value === 'Apto' ? 'success' : 'primary'}
+          color={params.value === 'T' ? 'success' : 'primary'}
         />
       )
     }
@@ -75,28 +79,23 @@ const columns = [
   }
 ]
 
-const rows = [
-  {
-    id: 1,
-    nome: 'Daniel Jacon',
-    email: 'danieljacon@dbccompany.com.br',
-    status: 'Apto',
-    telefone: '(19)98765-7829',
-    turno: 'Manhã',
-    estado: 'SP'
-  },
-  {
-    id: 2,
-    nome: 'Daniel Jacon',
-    email: 'danieljacon@dbccompany.com.br',
-    status: 'Não apto',
-    telefone: '(19)98765-7829',
-    turno: 'Manhã',
-    estado: 'SP'
-  }
-]
-
 export const Aptos: React.FC = () => {
+  const { data, isLoading } = useListReviewsQuery({ pagina: 0 })
+
+  const list = data?.elementos
+  const rows = () =>
+    list?.map(dados => {
+      return {
+        id: 1,
+        nome: dados.inscricao.candidato.nome,
+        email: dados.inscricao.candidato.email,
+        status: dados.inscricao.avaliacao,
+        telefone: dados.inscricao.candidato.telefone,
+        turno: dados.inscricao.candidato.formulario?.turno,
+        estado: dados.inscricao.candidato.estado
+      }
+    })
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -158,16 +157,20 @@ export const Aptos: React.FC = () => {
         </Stack>
       </Grid>
       <Grid item xs={12} sx={{ height: 'calc(100vh - 211px)', width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          sx={{
-            boxShadow: 2
-          }}
-          hideFooter
-        />
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <DataGrid
+            rows={rows() || []}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            sx={{
+              boxShadow: 2
+            }}
+            hideFooter
+          />
+        )}
       </Grid>
       <Grid item xs={12} display="flex" justifyContent="center">
         <Pagination

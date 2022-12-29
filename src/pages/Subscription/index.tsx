@@ -14,6 +14,7 @@ import { Steps, stepsInfos } from "components/Steps";
 import { FormStepper } from "components/FormStepper";
 import { useGetSubscribeTextQuery } from "shared/features/api/subscription/formSlice";
 import parse from "html-react-parser";
+import { StepThree } from "components/Steps/StepThree";
 
 export const Subscription = () => {
   const { current, data } = useSelector(useSteps);
@@ -91,6 +92,11 @@ export const Subscription = () => {
             {current === 1 && (
               <Grid item xs={12}>
                 <StepTwo />
+              </Grid>
+            )}
+            {current === 2 && (
+              <Grid item xs={12}>
+                <StepThree />
               </Grid>
             )}
             {current === 0 && (

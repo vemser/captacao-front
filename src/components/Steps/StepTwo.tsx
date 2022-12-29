@@ -19,17 +19,15 @@ import {
   Stack,
   Tooltip,
   CircularProgress,
-  useMediaQuery,
-  useTheme,
-  FormHelperText,
-  Autocomplete,
   SelectChangeEvent,
   OutlinedInput,
   ListItemText,
+  FormHelperText,
 } from "@mui/material";
 import {
   previousStep,
   changeData,
+  nextStep,
 } from "../../shared/features/subscription/stepsSlice";
 import { useDispatch } from "react-redux";
 import { FormGrid } from "components/FormGrid";
@@ -57,10 +55,7 @@ export const StepTwo: React.FC = () => {
     const {
       target: { value },
     } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setPersonName(typeof value === "string" ? value.split(",") : value);
   };
 
   const ITEM_HEIGHT = 48;
@@ -87,7 +82,24 @@ export const StepTwo: React.FC = () => {
   });
 
   const onSubmit = (data: SubscribeData) => {
-    dispatch(changeData(data));
+    // transforma todos o "T" em true e "F" em false
+    data.resposta === "" && (data.resposta = "Nenhuma");
+    data.neurodiversidade === "" && (data.neurodiversidade = "Nenhuma");
+
+    const formValues = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [
+        key,
+        value === "T" ? true : value === "F" ? false : value,
+      ])
+    );
+
+    dispatch(nextStep());
+    dispatch(
+      changeData({
+        ...formValues,
+        linguagens: personName,
+      })
+    );
     // console.log(data);
   };
 
@@ -332,21 +344,21 @@ export const StepTwo: React.FC = () => {
             >
               <FormControlLabel
                 control={<Checkbox />}
-                value="backend"
+                value={0}
                 label="Back-end"
                 id="s2-trilha-backend"
                 {...register("trilhas")}
               />
               <FormControlLabel
                 control={<Checkbox />}
-                value="frontend"
+                value={1}
                 label="Front-end"
                 id="s2-trilha-frontend"
                 {...register("trilhas")}
               />
               <FormControlLabel
                 control={<Checkbox />}
-                value="qa"
+                value={2}
                 label="QA"
                 id="s2-trilha-qa"
                 {...register("trilhas")}
@@ -447,7 +459,6 @@ export const StepTwo: React.FC = () => {
                 control={<Checkbox />}
                 label="Outro motivo"
                 id="s2-candidato-outro"
-                {...register("altruismoBoolean")}
                 onChange={() => setAnotherReason((state) => !state)}
               />
               <Error id="mensagem-erro-outro-motivo" width={"100%"}>
@@ -641,7 +652,7 @@ export const StepTwo: React.FC = () => {
                   </Box>
                 ),
               }}
-              {...register("github")}
+              {...register("linkedin")}
             />
           </Grid>
           <Grid item xs={12} lg={6}>
@@ -676,7 +687,6 @@ export const StepTwo: React.FC = () => {
                     variant="outlined"
                     component="label"
                   >
-                    {" "}
                     <UploadFileIcon
                       sx={{
                         marginRight: "0.5rem",
@@ -693,6 +703,10 @@ export const StepTwo: React.FC = () => {
                 )}
               </Box>
             </Box>
+            {errors.curriculo && (
+              // @ts-ignore
+              <FormHelperText error>{errors.curriculo?.message}</FormHelperText>
+            )}
           </Grid>
           <Grid item xs={12} lg={6}>
             <Box display="flex" flexDirection="column">
@@ -735,6 +749,8 @@ export const StepTwo: React.FC = () => {
                     {configuracoes?.[0]?.name}
                     <input
                       id="s2-input-configuracoes-2"
+                      // aceita fomrato imagem apenas
+                      accept=""
                       hidden
                       type="file"
                       {...register("configuracoes")}
@@ -771,9 +787,8 @@ export const StepTwo: React.FC = () => {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
               gap: 2,
-              margin: "2rem 0",
             }}
           >
             <Button
@@ -796,7 +811,7 @@ export const StepTwo: React.FC = () => {
               sx={{
                 width: "8rem",
               }}
-              disabled={!curriculo?.[0] || !configuracoes?.[0]}
+              // disabled={!curriculo?.[0] || !configuracoes?.[0]}
             >
               Enviar
             </Button>

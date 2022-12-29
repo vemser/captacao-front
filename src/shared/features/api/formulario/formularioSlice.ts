@@ -50,4 +50,5 @@ export const {
   usePostNewFormularioMutation,
   useUploadCurriculoMutation,
   useUploadFileMutation,
+  useGetCurriculoQuery,
 } = formularioSlice;

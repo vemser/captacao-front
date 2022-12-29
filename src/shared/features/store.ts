@@ -9,6 +9,8 @@ export const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(apiSlice.middleware);
+    return getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(apiSlice.middleware);
   },
 });

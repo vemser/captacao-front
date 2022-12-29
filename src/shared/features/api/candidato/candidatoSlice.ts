@@ -27,4 +27,4 @@ const candidatoSlice = apiSlice.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { usePostCandidatoMutation } = candidatoSlice;
+export const { usePostCandidatoMutation, useUpdateNotaMutation } = candidatoSlice;

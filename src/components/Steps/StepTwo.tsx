@@ -19,10 +19,6 @@ import {
   Stack,
   Tooltip,
   CircularProgress,
-  useMediaQuery,
-  useTheme,
-  FormHelperText,
-  Autocomplete,
   SelectChangeEvent,
   OutlinedInput,
   ListItemText,
@@ -30,6 +26,7 @@ import {
 import {
   previousStep,
   changeData,
+  nextStep,
 } from "../../shared/features/subscription/stepsSlice";
 import { useDispatch } from "react-redux";
 import { FormGrid } from "components/FormGrid";
@@ -57,10 +54,7 @@ export const StepTwo: React.FC = () => {
     const {
       target: { value },
     } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setPersonName(typeof value === "string" ? value.split(",") : value);
   };
 
   const ITEM_HEIGHT = 48;
@@ -83,11 +77,25 @@ export const StepTwo: React.FC = () => {
     defaultValues: {
       matriculado: "T",
     },
-    resolver: yupResolver(stepTwoSchema),
+    // resolver: yupResolver(stepTwoSchema),
   });
 
   const onSubmit = (data: SubscribeData) => {
-    dispatch(changeData(data));
+    // transforma todos o "T" em true e "F" em false
+    const formValues = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [
+        key,
+        value === "T" ? true : value === "F" ? false : value,
+      ])
+    );
+
+    dispatch(nextStep());
+    dispatch(
+      changeData({
+        ...formValues,
+        linguagens: personName,
+      })
+    );
     // console.log(data);
   };
 
@@ -641,7 +649,7 @@ export const StepTwo: React.FC = () => {
                   </Box>
                 ),
               }}
-              {...register("github")}
+              {...register("linkedin")}
             />
           </Grid>
           <Grid item xs={12} lg={6}>
@@ -735,6 +743,8 @@ export const StepTwo: React.FC = () => {
                     {configuracoes?.[0]?.name}
                     <input
                       id="s2-input-configuracoes-2"
+                      // aceita fomrato imagem apenas
+                      accept=""
                       hidden
                       type="file"
                       {...register("configuracoes")}
@@ -771,9 +781,8 @@ export const StepTwo: React.FC = () => {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
               gap: 2,
-              margin: "2rem 0",
             }}
           >
             <Button

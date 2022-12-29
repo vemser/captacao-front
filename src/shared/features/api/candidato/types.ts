@@ -1,6 +1,8 @@
+export type TBoolean = "T" | "F";
+
 export interface CandidatoBody {
   nome: string;
-  dataNascimento: Date;
+  dataNascimento: Date | string;
   email: string;
   telefone: string;
   rg: string;
@@ -11,13 +13,13 @@ export interface CandidatoBody {
   linguagens: string[];
   edicao: Edicao;
   formulario: number;
-  pcdboolean: boolean;
+  pcdboolean: boolean | TBoolean;
 }
 
 export interface CandidatoResponse {
   idCandidato: number;
   nome: string;
-  dataNascimento: Date;
+  dataNascimento: string | Date;
   email: string;
   telefone: string;
   rg: string;
@@ -35,7 +37,7 @@ export interface CandidatoResponse {
   linguagens: Edicao[];
   edicao: Edicao;
   formulario: Formulario;
-  pcdboolean: boolean;
+  pcdboolean: boolean | TBoolean;
 }
 
 export interface Formulario {

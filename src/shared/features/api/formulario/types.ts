@@ -1,26 +1,28 @@
+export type TBoolean = "T" | "F";
+
 export interface IFormularioBody {
-  matriculadoBoolean: boolean;
+  matriculadoBoolean: boolean | TBoolean;
   curso: string;
   turno: string;
   instituicao: string;
   github: string;
   linkedin: string;
-  desafiosBoolean: boolean;
-  problemaBoolean: boolean;
-  reconhecimentoBoolean: boolean;
-  altruismoBoolean: boolean;
+  desafiosBoolean: boolean | TBoolean;
+  problemaBoolean: boolean | TBoolean;
+  reconhecimentoBoolean: boolean | TBoolean;
+  altruismoBoolean: boolean | TBoolean;
   resposta: string;
-  lgpdBoolean: boolean;
-  provaBoolean: boolean;
+  lgpdBoolean: boolean | TBoolean;
+  provaBoolean: boolean | TBoolean;
   ingles: string;
   espanhol: string;
   neurodiversidade: string;
   configuracoes: string;
-  efetivacaoBoolean: boolean;
-  disponibilidadeBoolean: boolean;
+  efetivacaoBoolean: boolean | TBoolean;
+  disponibilidadeBoolean: boolean | TBoolean;
   genero: string;
   orientacao: string;
-  trilhas: number[];
+  trilhas: number[] | string[];
   importancia: string;
 }
 

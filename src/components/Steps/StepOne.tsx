@@ -40,7 +40,6 @@ export const StepOne: React.FC = () => {
   const formulario = data?.data.formulario;
 
   const onSubmit = (data: SubscribeData) => {
-    data.telefone = data.telefone.replace(/[^0-9]/g, "");
     dispatch(nextStep());
     dispatch(changeData(data));
   };

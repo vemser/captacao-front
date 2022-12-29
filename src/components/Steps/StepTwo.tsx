@@ -22,6 +22,7 @@ import {
   SelectChangeEvent,
   OutlinedInput,
   ListItemText,
+  FormHelperText,
 } from "@mui/material";
 import {
   previousStep,
@@ -77,11 +78,14 @@ export const StepTwo: React.FC = () => {
     defaultValues: {
       matriculado: "T",
     },
-    // resolver: yupResolver(stepTwoSchema),
+    resolver: yupResolver(stepTwoSchema),
   });
 
   const onSubmit = (data: SubscribeData) => {
     // transforma todos o "T" em true e "F" em false
+    data.resposta === "" && (data.resposta = "Nenhuma");
+    data.neurodiversidade === "" && (data.neurodiversidade = "Nenhuma");
+
     const formValues = Object.fromEntries(
       Object.entries(data).map(([key, value]) => [
         key,
@@ -340,21 +344,21 @@ export const StepTwo: React.FC = () => {
             >
               <FormControlLabel
                 control={<Checkbox />}
-                value="backend"
+                value={0}
                 label="Back-end"
                 id="s2-trilha-backend"
                 {...register("trilhas")}
               />
               <FormControlLabel
                 control={<Checkbox />}
-                value="frontend"
+                value={1}
                 label="Front-end"
                 id="s2-trilha-frontend"
                 {...register("trilhas")}
               />
               <FormControlLabel
                 control={<Checkbox />}
-                value="qa"
+                value={2}
                 label="QA"
                 id="s2-trilha-qa"
                 {...register("trilhas")}
@@ -455,7 +459,6 @@ export const StepTwo: React.FC = () => {
                 control={<Checkbox />}
                 label="Outro motivo"
                 id="s2-candidato-outro"
-                {...register("altruismoBoolean")}
                 onChange={() => setAnotherReason((state) => !state)}
               />
               <Error id="mensagem-erro-outro-motivo" width={"100%"}>
@@ -684,7 +687,6 @@ export const StepTwo: React.FC = () => {
                     variant="outlined"
                     component="label"
                   >
-                    {" "}
                     <UploadFileIcon
                       sx={{
                         marginRight: "0.5rem",
@@ -701,6 +703,10 @@ export const StepTwo: React.FC = () => {
                 )}
               </Box>
             </Box>
+            {errors.curriculo && (
+              // @ts-ignore
+              <FormHelperText error>{errors.curriculo?.message}</FormHelperText>
+            )}
           </Grid>
           <Grid item xs={12} lg={6}>
             <Box display="flex" flexDirection="column">
@@ -805,7 +811,7 @@ export const StepTwo: React.FC = () => {
               sx={{
                 width: "8rem",
               }}
-              disabled={!curriculo?.[0] || !configuracoes?.[0]}
+              // disabled={!curriculo?.[0] || !configuracoes?.[0]}
             >
               Enviar
             </Button>

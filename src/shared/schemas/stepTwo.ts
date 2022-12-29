@@ -1,27 +1,23 @@
 import * as Yup from "yup";
 
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+
 export const stepTwoSchema = Yup.object().shape({
   instituicao: Yup.string().when("matriculado", {
     is: "T",
-    then: Yup
-      .string()
+    then: Yup.string()
       .required("Preencha o campo com o nome da instituição")
       .min(2, "É necessário 2 caracteres, no mínimo"),
-      
   }),
   curso: Yup.string().when("matriculado", {
     is: "T",
-    then: Yup
-      .string()
+    then: Yup.string()
       .required("Preencha o campo com o nome do curso")
       .min(2, "É necessário 2 caracteres, no mínimo"),
-      
   }),
- 
+
   // trilhas: Yup.array().min(1, "É necessário selecionar pelo menos uma trilha"),
-  motivo: Yup
-  .string()
-  .when(
+  motivo: Yup.string().when(
     [
       "altruismoBoolean",
       "reconhecimentoBoolean",
@@ -42,16 +38,27 @@ export const stepTwoSchema = Yup.object().shape({
           problemas === false
         );
       },
-      then: Yup
-        .string()
-        .required(
-          "Preencha o campo 'Outro motivo' ou selecione uma das opções acima"
-        ),
+      then: Yup.string().required(
+        "Preencha o campo 'Outro motivo' ou selecione uma das opções acima"
+      ),
       otherwise: Yup.string(),
     }
   ),
-  resposta:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
-  algoimportante:Yup.string().required("Campo obrigatório").max(255, "O campo deve ter no máximo 255 letras"),
+  resposta: Yup.string()
+    .required("Campo obrigatório")
+    .max(255, "O campo deve ter no máximo 255 letras"),
+  algoimportante: Yup.string()
+    .required("Campo obrigatório")
+    .max(255, "O campo deve ter no máximo 255 letras"),
   lgpdBoolean: Yup.boolean().oneOf([true], "É necessário aceitar os termos"),
-  deficiencia:Yup.string().required("Campo obrigatório").min(2,"É necessário 2 caracteres, no mínimo")
-})
+  deficiencia: Yup.string()
+    .required("Campo obrigatório")
+    .min(2, "É necessário 2 caracteres, no mínimo"),
+  // curriculo: tipo pdf e obrigatório
+  curriculo: Yup.mixed()
+    .required("O curriculo é obrigatório")
+    .test("fileSize", "The file is too large", (value) => {
+      if (!value.length) return true; // attachment is optional
+      return value[0].size <= 2000000;
+    }),
+});

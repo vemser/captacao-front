@@ -17,43 +17,6 @@ export const StepThree: React.FC = () => {
   const [postNewFormulario] = usePostNewFormularioMutation();
   const [postCandidato] = usePostCandidatoMutation();
 
-  const submitForm = () => {
-    // data &&
-    //   postNewFormulario({
-    //     matriculadoBoolean: data.matriculado,
-    //     curso: data.curso,
-    //     turno: data.turno,
-    //     instituicao: data.instituicao,
-    //     github: data.github,
-    //     linkedin: data.linkedin,
-    //     desafiosBoolean: data.desafiosBoolean,
-    //     problemaBoolean: data.problemasBoolean,
-    //     reconhecimentoBoolean: data.reconhecimentoBoolean,
-    //     altruismoBoolean: data.altruismoBoolean,
-    //     resposta: "sdffgsdf", // corrigir
-    //     lgpdBoolean: data.lgpdBoolean,
-    //     provaBoolean: data.provaBoolean,
-    //     ingles: data.ingles,
-    //     espanhol: data.espanhol,
-    //     neurodiversidade: "sadas",
-    //     configuracoes: "sdasd", // corrigir
-    //     efetivacaoBoolean: data.efetivacaoBoolean,
-    //     disponibilidadeBoolean: data.disponibilidadeBoolean,
-    //     genero: data.genero,
-    //     orientacao: data.orientacao,
-    //     trilhas: [1], // corrigir
-    //     importancia: data.algoimportante,
-    //   })
-    //     .unwrap()
-    //     .then((res) => {
-    //       console.log(res);
-    //       setIdFormulario(res.idFormulario);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-  };
-
   useEffect(() => {
     data &&
       postNewFormulario({
@@ -67,18 +30,18 @@ export const StepThree: React.FC = () => {
         problemaBoolean: data.problemasBoolean,
         reconhecimentoBoolean: data.reconhecimentoBoolean,
         altruismoBoolean: data.altruismoBoolean,
-        resposta: "sdffgsdf", // corrigir
+        resposta: data.resposta,
         lgpdBoolean: data.lgpdBoolean,
         provaBoolean: data.provaBoolean,
         ingles: data.ingles,
         espanhol: data.espanhol,
-        neurodiversidade: "sadas",
+        neurodiversidade: data.neurodiversidade,
         configuracoes: "sdasd", // corrigir
         efetivacaoBoolean: data.efetivacaoBoolean,
         disponibilidadeBoolean: data.disponibilidadeBoolean,
         genero: data.genero,
         orientacao: data.orientacao,
-        trilhas: [1], // corrigir
+        trilhas: data.trilhas,
         importancia: data.algoimportante,
       })
         .unwrap()
@@ -129,7 +92,6 @@ export const StepThree: React.FC = () => {
       >
         Voltar
       </button>
-      <button onClick={() => submitForm()}>Avançar</button>
     </div>
   );
 };

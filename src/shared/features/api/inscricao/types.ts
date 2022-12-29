@@ -1,3 +1,11 @@
+export interface IInscricao {
+  totalElementos: number;
+  quantidadePaginas: number;
+  pagina: number;
+  tamanho: number;
+  elementos: IElementos[]
+}
+
 export interface IEdicao {
     nome: string;
 }
@@ -9,15 +17,7 @@ export interface IElementos {
   idInscricao: number
   candidato: ICandidato
   dataInscricao: string
-  avaliacao: any
-}
-
-export interface IInscricao {
-  totalElementos: number;
-  quantidadePaginas: number;
-  pagina: number;
-  tamanho: number;
-  elementos: IElementos[]
+  avaliacao: string
 }
 
 export interface IGetInscritos{
@@ -47,7 +47,6 @@ export interface ICandidato {
   formulario: IFormulario
   pcdboolean: boolean
 }
-
 
 export interface IFormulario {
   idFormulario: number

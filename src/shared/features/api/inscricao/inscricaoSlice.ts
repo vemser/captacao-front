@@ -2,10 +2,14 @@ import {
 	IGetInscritos,
 	IInscricao,
 	ICandidato,
-	ITrilha,
 	IEdicao,
 } from "./types";
 import { apiSlice } from "..";
+
+
+interface ITrilha {
+	trilha: string
+}
 
 export const getToken = (): string => {
 	return localStorage.getItem("token") || "";
@@ -31,11 +35,11 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getListByTrilha: build.query<IInscricao, ITrilha>({
+		getInscricaoByTrilha: build.mutation<IInscricao[] | [], ITrilha>({
 			query: data => ({
 				url: "inscricao/list-by-trilha",
 				method: "GET",
-				params: {trilha: data.nome}
+				params: {trilha: data.trilha}
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
@@ -70,7 +74,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 export const {
 	useGetCandidatosQuery,
 	usePostCandidatoMutation,
-	useGetListByTrilhaQuery,
+	useGetInscricaoByTrilhaMutation,
 	useGetListByEdicaoQuery,
 	useGetListByIdQuery,
 	useGetListByEmailQuery,

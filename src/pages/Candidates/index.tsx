@@ -15,95 +15,93 @@ import {
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate, Link } from "react-router-dom";
-import React from "react";
-import { useGetCandidatosQuery } from "../../shared/features/api/inscricao/inscricaoSlice";
-import { useEffect } from "preact/hooks";
+import React, { useState } from "react";
+import {
+	useGetCandidatosQuery,
+	useGetInscricaoByTrilhaMutation,
+} from "../../shared/features/api/inscricao/inscricaoSlice";
+import { IInscricao } from "shared/features/api/inscricao/types";
+
+const columns = [
+	{
+		field: "status",
+		headerName: "Status",
+		width: 140,
+		renderCell: (params: any) => {
+			return (
+				<Chip
+					label={params.value === "T" ? "Avaliado" : "Não avaliado"}
+					sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
+					color={params.value === "T" ? "success" : "primary"}
+				/>
+			);
+		},
+	},
+	{
+		field: "nome",
+		headerName: "Nome",
+		minWidth: 180,
+		flex: 1,
+	},
+	{
+		field: "email",
+		headerName: "Email",
+		minWidth: 230,
+		flex: 1,
+	},
+	{
+		field: "telefone",
+		headerName: "Telefone",
+		minWidth: 160,
+	},
+	{
+		field: "turno",
+		headerName: "Turno",
+		minWidth: 90,
+	},
+	{
+		field: "estado",
+		headerName: "Estado",
+		minWidth: 90,
+	},
+	{
+		field: "acoes",
+		headerName: "Ações",
+		width: 120,
+		renderCell: () => {
+			return (
+				<Button variant="contained" id="">
+					Avaliar
+				</Button>
+			);
+		},
+	},
+];
 
 export const Registers: React.FC = () => {
 	const navigate = useNavigate();
-	const {data} = useGetCandidatosQuery({pagina: 0});
+	const { data } = useGetCandidatosQuery({ pagina: 0 });
 
-	console.log(data)
+	const [trilhaResult, setTrilhaResult] = useState<IInscricao[]>();
+	const [getInscricaoByTrilha] = useGetInscricaoByTrilhaMutation();
 
-	
-	const columns = [
-		{
-			field: "status",
-			headerName: "Status",
-			width: 140,
-			renderCell: (params: any) => {
-				return (
-					<Chip
-						label={params.value}
-						sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-						color={
-							params.value === "Avaliado" ? "success" : "primary"
-						}
-					/>
-				);
-			},
-		},
-		{
-			field: "nome",
-			headerName: "Nome",
-			minWidth: 180,
-			flex: 1,
-		},
-		{
-			field: "email",
-			headerName: "Email",
-			minWidth: 230,
-			flex: 1,
-		},
-		{
-			field: "telefone",
-			headerName: "Telefone",
-			minWidth: 160,
-		},
-		{
-			field: "turno",
-			headerName: "Turno",
-			minWidth: 90,
-		},
-		{
-			field: "estado",
-			headerName: "Estado",
-			minWidth: 90,
-		},
-		{
-			field: "acoes",
-			headerName: "Ações",
-			width: 120,
-			renderCell: () => {
-				return (
-					<Button variant="contained" id="">
-						Avaliar
-					</Button>
-				);
-			},
-		},
-	];
+	console.log(trilhaResult)
 
-	const rows = [
-		{
-			id: 1,
-			status: "Avaliado",
-			nome: "Daniel Jacon",
-			email: "danieljacon@dbccompany.com.br",
-			telefone: "(19)98765-7829",
-			turno: "Manhã",
-			estado: "SP",
-		},
-		{
-			id: 2,
-			status: "Não avaliado",
-			nome: "Daniel Jacon",
-			email: "danieljacon@dbccompany.com.br",
-			telefone: "(19)98765-7829",
-			turno: "Manhã",
-			estado: "SP",
-		},
-	];
+	const lista = data?.elementos;
+
+	const rows = () =>
+		lista?.map((dados) => {
+			return {
+				id: dados.idInscricao,
+				nome: dados.candidato.nome,
+				email: dados.candidato.email,
+				status: dados.avaliacao,
+				telefone: dados.candidato.telefone,
+				turno: dados.candidato.formulario?.turno,
+				estado: dados.candidato.estado,
+			};
+		});
+	// const filtrarPorEmail = () => {setEmail()}
 
 	return (
 		<Grid container spacing={2}>
@@ -139,12 +137,19 @@ export const Registers: React.FC = () => {
 							id="registros-filter-by-trilha"
 							// error={!!errors.estado}
 							defaultValue=""
+							onChange={(e) => {
+								getInscricaoByTrilha({
+									trilha: e.target.value,
+								})
+									.unwrap()
+									.then((data) => setTrilhaResult(data));
+							}}
 							// {...register("estado")}
 						>
 							<MenuItem value="" disabled></MenuItem>
-							<MenuItem value="qa">QA</MenuItem>
-							<MenuItem value="front">Front End</MenuItem>
-							<MenuItem value="back">Back End</MenuItem>
+							<MenuItem value="QA">QA</MenuItem>
+							<MenuItem value="FRONTEND">Front End</MenuItem>
+							<MenuItem value="BACKEND">Back End</MenuItem>
 						</Select>
 					</FormControl>
 					<FormControl fullWidth>
@@ -171,7 +176,7 @@ export const Registers: React.FC = () => {
 				sx={{ height: "calc(100vh - 211px)", width: "100%" }}
 			>
 				<DataGrid
-					rows={rows}
+					rows={rows() || []}
 					columns={columns}
 					pageSize={5}
 					rowsPerPageOptions={[5]}

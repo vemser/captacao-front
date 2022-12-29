@@ -39,7 +39,7 @@ import { stepTwoSchema } from "shared/schemas/stepTwo";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { Error } from "../error/index";
+import { Error } from "../TextError/index";
 import { useGetSubscribeFormQuery } from "shared/features/api/subscription/formSlice";
 
 const names = ["Javascript", "Typescript", "Java"];

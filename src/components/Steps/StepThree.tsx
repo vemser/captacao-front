@@ -30,7 +30,7 @@ export const StepThree: React.FC = () => {
         problemaBoolean: data.problemasBoolean,
         reconhecimentoBoolean: data.reconhecimentoBoolean,
         altruismoBoolean: data.altruismoBoolean,
-        resposta: data.resposta,
+        resposta: "sdfasd",
         lgpdBoolean: data.lgpdBoolean,
         provaBoolean: data.provaBoolean,
         ingles: data.ingles,

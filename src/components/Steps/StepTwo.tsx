@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   TextField,
@@ -49,13 +49,13 @@ export const StepTwo: React.FC = () => {
   const { data } = useGetSubscribeFormQuery();
   const formulario = data?.data.formulario;
 
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [languages, setLanguage] = React.useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleChange = (event: SelectChangeEvent<typeof languages>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
+    setLanguage(typeof value === "string" ? value.split(",") : value);
   };
 
   const ITEM_HEIGHT = 48;
@@ -78,13 +78,13 @@ export const StepTwo: React.FC = () => {
     defaultValues: {
       matriculado: "T",
     },
-    resolver: yupResolver(stepTwoSchema),
+    // resolver: yupResolver(stepTwoSchema),
   });
 
   const onSubmit = (data: SubscribeData) => {
-    // transforma todos o "T" em true e "F" em false
     data.resposta === "" && (data.resposta = "Nenhuma");
-    data.neurodiversidade === "" && (data.neurodiversidade = "Nenhuma");
+    data.linkedin.length === 0 && (data.linkedin = "Nenhum");
+    data.github.length === 0 && (data.github = "Nenhum");
 
     const formValues = Object.fromEntries(
       Object.entries(data).map(([key, value]) => [
@@ -97,17 +97,20 @@ export const StepTwo: React.FC = () => {
     dispatch(
       changeData({
         ...formValues,
-        linguagens: personName,
+        linguagens: languages,
       })
     );
-    // console.log(data);
+
+    console.log(formValues);
   };
 
   const FormName: React.FC<IFormQuery> = ({ nome }) => {
     return <>{nome ? nome : <CircularProgress size={22} />}</>;
   };
 
-  const { matriculado, curriculo, configuracoes } = watch();
+  const matriculado = watch("matriculado");
+  const curriculo = watch("curriculo");
+  const configuracoes = watch("configuracoes");
 
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
@@ -303,14 +306,18 @@ export const StepTwo: React.FC = () => {
 
           <Grid item xs={12} lg={6}>
             <FormControl fullWidth>
-              <InputLabel id="s2-select-linguagens">
+              <InputLabel
+                id="s2-select-linguagens"
+                error={languages.length === 0 ? true : false}
+              >
                 Linguagens de programação
               </InputLabel>
               <Select
                 labelId="s2-select-linguagens"
                 id="s2-select-linguagens-checkbox"
                 multiple
-                value={personName}
+                value={languages}
+                error={languages.length === 0 ? true : false}
                 onChange={handleChange}
                 input={<OutlinedInput label="Linguagens de programação" />}
                 renderValue={(selected) => selected.join(", ")}
@@ -318,12 +325,17 @@ export const StepTwo: React.FC = () => {
               >
                 {names.map((name) => (
                   <MenuItem key={name} value={name}>
-                    <Checkbox checked={personName.indexOf(name) > -1} />
+                    <Checkbox checked={languages.indexOf(name) > -1} />
                     <ListItemText primary={name} />
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
+            {languages.length === 0 && (
+              <FormHelperText error>
+                Selecione pelo menos uma linguagem
+              </FormHelperText>
+            )}
           </Grid>
 
           <Grid item xs={12} lg={6}>
@@ -364,6 +376,12 @@ export const StepTwo: React.FC = () => {
                 {...register("trilhas")}
               />
             </FormGroup>
+            {errors.trilhas && (
+              <FormHelperText error>
+                {/* @ts-ignore */}
+                {errors.trilhas?.message}
+              </FormHelperText>
+            )}
           </Grid>
 
           <Grid item xs={12}>
@@ -749,7 +767,6 @@ export const StepTwo: React.FC = () => {
                     {configuracoes?.[0]?.name}
                     <input
                       id="s2-input-configuracoes-2"
-                      // aceita fomrato imagem apenas
                       accept=""
                       hidden
                       type="file"
@@ -759,6 +776,12 @@ export const StepTwo: React.FC = () => {
                 )}
               </Box>
             </Box>
+            {errors.configuracoes && (
+              <FormHelperText error>
+                {/* @ts-ignore */}
+                {errors.configuracoes?.message}
+              </FormHelperText>
+            )}
           </Grid>
 
           <Grid item xs={12}>

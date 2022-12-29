@@ -78,7 +78,7 @@ export const StepTwo: React.FC = () => {
     defaultValues: {
       matriculado: "T",
     },
-    // resolver: yupResolver(stepTwoSchema),
+    resolver: yupResolver(stepTwoSchema),
   });
 
   const onSubmit = (data: SubscribeData) => {

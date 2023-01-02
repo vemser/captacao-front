@@ -19,8 +19,10 @@ import React, { useState } from "react";
 import {
 	useGetCandidatosQuery,
 	useGetInscricaoByTrilhaMutation,
+	useGetListByEdicaoMutation,
+	useGetListByEmailMutation,
 } from "../../shared/features/api/inscricao/inscricaoSlice";
-import { IInscricao } from "shared/features/api/inscricao/types";
+import { IElementos } from "shared/features/api/inscricao/types";
 
 const columns = [
 	{
@@ -30,7 +32,7 @@ const columns = [
 		renderCell: (params: any) => {
 			return (
 				<Chip
-					label={params.value === "T" ? "Avaliado" : "Não avaliado"}
+					label={params.value === null ? "Avaliado" : "Não avaliado"}
 					sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
 					color={params.value === "T" ? "success" : "primary"}
 				/>
@@ -82,27 +84,69 @@ export const Registers: React.FC = () => {
 	const navigate = useNavigate();
 	const { data } = useGetCandidatosQuery({ pagina: 0 });
 
-	const [trilhaResult, setTrilhaResult] = useState<IInscricao[]>();
+	const [trilhaResult, setTrilhaResult] = useState<IElementos[]>();
 	const [getInscricaoByTrilha] = useGetInscricaoByTrilhaMutation();
 
-	console.log(trilhaResult)
+	const [getInscricaoByEdicao] = useGetListByEdicaoMutation();
+	const [edicaoResult, setEdicaoResult] = useState<IElementos[]>();
+
+	const [getInscricaoByEmail] = useGetListByEmailMutation();
+	const [email, setEmail] = useState<string>("");
+	const [emailResult, setEmailResult] = useState<IElementos[]>();
 
 	const lista = data?.elementos;
 
-	const rows = () =>
-		lista?.map((dados) => {
-			return {
-				id: dados.idInscricao,
-				nome: dados.candidato.nome,
-				email: dados.candidato.email,
-				status: dados.avaliacao,
-				telefone: dados.candidato.telefone,
-				turno: dados.candidato.formulario?.turno,
-				estado: dados.candidato.estado,
-			};
-		});
-	// const filtrarPorEmail = () => {setEmail()}
-
+	const rows = () => {
+		if (trilhaResult) {
+			return trilhaResult?.map((dados) => {
+				return {
+					id: dados.idInscricao,
+					nome: dados.candidato.nome,
+					email: dados.candidato.email,
+					status: dados.avaliacao,
+					telefone: dados.candidato.telefone,
+					turno: dados.candidato.formulario?.turno,
+					estado: dados.candidato.estado,
+				};
+			});
+		} else if (edicaoResult) {
+			return edicaoResult?.map((dados) => {
+				return {
+					id: dados.idInscricao,
+					nome: dados.candidato.nome,
+					email: dados.candidato.email,
+					status: dados.avaliacao,
+					telefone: dados.candidato.telefone,
+					turno: dados.candidato.formulario?.turno,
+					estado: dados.candidato.estado,
+				};
+			});
+		} else if (emailResult) {
+			return emailResult?.map((dados) => {
+				return {
+					id: dados.idInscricao,
+					nome: dados.candidato.nome,
+					email: dados.candidato.email,
+					status: dados.avaliacao,
+					telefone: dados.candidato.telefone,
+					turno: dados.candidato.formulario?.turno,
+					estado: dados.candidato.estado,
+				};
+			});
+		} else {
+			return lista?.map((dados) => {
+				return {
+					id: dados.idInscricao,
+					nome: dados.candidato.nome,
+					email: dados.candidato.email,
+					status: dados.avaliacao,
+					telefone: dados.candidato.telefone,
+					turno: dados.candidato.formulario?.turno,
+					estado: dados.candidato.estado,
+				};
+			});
+		}
+	};
 	return (
 		<Grid container spacing={2}>
 			<Grid item xs={12}>
@@ -118,7 +162,16 @@ export const Registers: React.FC = () => {
 						<OutlinedInput
 							endAdornment={
 								<InputAdornment position="end">
-									<IconButton edge="end">
+									<IconButton
+										edge="end"
+										onClick={() => {
+											getInscricaoByEmail({
+												email: email,
+											})
+												.unwrap()
+												.then((data) => setEmailResult(data));
+										}}
+									>
 										<Search color="primary" />
 									</IconButton>
 								</InputAdornment>
@@ -128,6 +181,10 @@ export const Registers: React.FC = () => {
 							//   {...register("nome")}
 							id="registros-search-by-email"
 							label="Pesquisar por Email"
+							value={email}
+							onChange={(e) => {
+								setEmail(e.target.value);
+							}}
 						/>
 					</FormControl>
 					<FormControl fullWidth>
@@ -135,7 +192,6 @@ export const Registers: React.FC = () => {
 						<Select
 							label="Filtrar por trilha"
 							id="registros-filter-by-trilha"
-							// error={!!errors.estado}
 							defaultValue=""
 							onChange={(e) => {
 								getInscricaoByTrilha({
@@ -144,7 +200,6 @@ export const Registers: React.FC = () => {
 									.unwrap()
 									.then((data) => setTrilhaResult(data));
 							}}
-							// {...register("estado")}
 						>
 							<MenuItem value="" disabled></MenuItem>
 							<MenuItem value="QA">QA</MenuItem>
@@ -157,15 +212,20 @@ export const Registers: React.FC = () => {
 						<Select
 							label="Filtrar por edição"
 							id="registros-filter-by-edition"
-							// error={!!errors.estado}
-							// defaultValue="AC"
-							// {...register("estado")}
 							defaultValue=""
+							onChange={(e) => {
+								getInscricaoByEdicao({
+									edicao: e.target.value,
+								})
+									.unwrap()
+									.then((data) => setEdicaoResult(data));
+							}}
 						>
 							<MenuItem value="" disabled></MenuItem>
-							<MenuItem value="10">10°</MenuItem>
-							<MenuItem value="9">9</MenuItem>
-							<MenuItem value="8">8°</MenuItem>
+							<MenuItem value="VEMSER_1">1ª Edição</MenuItem>
+							<MenuItem value="VEMSER_8">8ª Edição</MenuItem>
+							<MenuItem value="VEMSER_10">10ª Edição</MenuItem>
+							<MenuItem value="VEMSER_11">11ª Edição</MenuItem>
 						</Select>
 					</FormControl>
 				</Stack>

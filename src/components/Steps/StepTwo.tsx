@@ -86,6 +86,10 @@ export const StepTwo: React.FC = () => {
     data.linkedin.length === 0 && (data.linkedin = "Nenhum");
     data.github.length === 0 && (data.github = "Nenhum");
 
+    // const trilhas = data.trilhas.map((item) => {
+    //   return parseInt(item);
+    // });
+
     const formValues = Object.fromEntries(
       Object.entries(data).map(([key, value]) => [
         key,

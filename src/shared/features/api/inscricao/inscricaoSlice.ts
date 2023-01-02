@@ -26,12 +26,11 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 				// headers: {Authorization: `Bearer ${getToken()}`},
 			}),
 		}),
-		postCandidato: build.mutation<ICandidato, ICandidato>({
+		postInscricao: build.mutation<void, number>({
 			query: data => ({
-				url: "inscricao",
+				url: "inscricao/cadastro",
 				method: "POST",
-				body: data,
-				params: {idCandidato: "idCandidato"}
+				params: {idCandidato: data}
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
@@ -73,7 +72,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 
 export const {
 	useGetCandidatosQuery,
-	usePostCandidatoMutation,
+	usePostInscricaoMutation,
 	useGetInscricaoByTrilhaMutation,
 	useGetListByEdicaoQuery,
 	useGetListByIdQuery,

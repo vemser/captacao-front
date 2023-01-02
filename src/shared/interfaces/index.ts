@@ -18,7 +18,7 @@ export interface SubscribeData {
   espanhol: string;
   orientacao: string;
   genero: string;
-  trilhas: string[];
+  trilhas: string[] | number[];
   desafiosBoolean: boolean | TBoolean;
   problemasBoolean: boolean | TBoolean;
   reconhecimentoBoolean: boolean | TBoolean;

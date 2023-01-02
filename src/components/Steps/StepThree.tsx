@@ -8,14 +8,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { usePostNewFormularioMutation } from "shared/features/api/formulario/formularioSlice";
 import { usePostCandidatoMutation } from "shared/features/api/candidato/candidatoSlice";
+import { usePostInscricaoMutation } from "shared/features/api/inscricao/inscricaoSlice";
 
 export const StepThree: React.FC = () => {
   const dispatch = useDispatch();
   const { data } = useSelector(useSteps);
   const [idFormulario, setIdFormulario] = useState<number | null>(null);
+  const [idInscricao, setIdInscricao] = useState<number | null>(null);
 
   const [postNewFormulario] = usePostNewFormularioMutation();
   const [postCandidato] = usePostCandidatoMutation();
+  const [postInscricao] = usePostInscricaoMutation();
 
   useEffect(() => {
     data &&
@@ -74,14 +77,22 @@ export const StepThree: React.FC = () => {
           formulario: idFormulario,
           pcdboolean: data.deficiencia,
         })
+          .unwrap()
           .then((res) => {
             console.log(res);
+            setIdInscricao(res.idCandidato);
           })
           .catch((err) => {
             console.log(err);
           });
     }
   }, [idFormulario]);
+
+  useEffect(() => {
+    if (idInscricao) {
+      data && postInscricao(idInscricao).unwrap();
+    }
+  }, [idInscricao]);
 
   return (
     <div>

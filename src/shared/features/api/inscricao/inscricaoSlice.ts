@@ -2,13 +2,19 @@ import {
 	IGetInscritos,
 	IInscricao,
 	ICandidato,
-	IEdicao,
+	IElementos,
 } from "./types";
 import { apiSlice } from "..";
 
 
 interface ITrilha {
 	trilha: string
+}
+interface IEdicao{
+	edicao: string
+}
+interface IEmail{
+	email: string
 }
 
 export const getToken = (): string => {
@@ -35,7 +41,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getInscricaoByTrilha: build.mutation<IInscricao[] | [], ITrilha>({
+		getInscricaoByTrilha: build.mutation<IElementos[] | [], ITrilha>({
 			query: data => ({
 				url: "inscricao/list-by-trilha",
 				method: "GET",
@@ -43,15 +49,15 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getListByEdicao: build.query<IInscricao, IEdicao>({
+		getListByEdicao: build.mutation<IElementos[] | [], IEdicao>({
 			query: data => ({
 				url: "inscricao/list-by-edicao",
 				method: "GET",
-				params: {edicao: data.nome}
+				params: {edicao: data.edicao}
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getListById: build.query<IInscricao, ICandidato>({
+		getListById: build.mutation<IInscricao, ICandidato>({
 			query: data => ({
 				url: "inscricao/by-id",
 				method: "GET",
@@ -59,7 +65,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getListByEmail: build.query<IInscricao, ICandidato>({
+		getListByEmail: build.mutation<IElementos[] | [], IEmail>({
 			query: data => ({
 				url: "inscricao/buscar-by-email",
 				method: "GET",
@@ -75,7 +81,7 @@ export const {
 	useGetCandidatosQuery,
 	usePostCandidatoMutation,
 	useGetInscricaoByTrilhaMutation,
-	useGetListByEdicaoQuery,
-	useGetListByIdQuery,
-	useGetListByEmailQuery,
+	useGetListByEdicaoMutation,
+	useGetListByIdMutation,
+	useGetListByEmailMutation,
 } = inscricaoSlice;

@@ -39,14 +39,15 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { Error } from "../TextError/index";
 import { useGetSubscribeFormQuery } from "shared/features/api/subscription/formSlice";
+import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 
 const names = ["Javascript", "Typescript", "Java"];
 
 export const StepTwo: React.FC = () => {
   const dispatch = useDispatch();
-  const [anotherReason, setAnotherReason] = useState(false);
   const [deficiencia, setDeficiencia] = useState("F");
   const { data } = useGetSubscribeFormQuery();
+  const { data: getTrilha, isLoading: isLoadingTrilha } = useGetTrilhasQuery();
   const formulario = data?.data.formulario;
 
   const [languages, setLanguage] = React.useState<string[]>([]);
@@ -101,7 +102,7 @@ export const StepTwo: React.FC = () => {
       })
     );
 
-    console.log(formValues);
+    // console.log(formValues);
   };
 
   const FormName: React.FC<IFormQuery> = ({ nome }) => {
@@ -306,9 +307,7 @@ export const StepTwo: React.FC = () => {
 
           <Grid item xs={12} lg={6}>
             <FormControl fullWidth>
-              <InputLabel
-                id="s2-select-linguagens"
-              >
+              <InputLabel id="s2-select-linguagens">
                 Linguagens de programação
               </InputLabel>
               <Select
@@ -324,7 +323,7 @@ export const StepTwo: React.FC = () => {
                 {names.map((name) => (
                   <MenuItem key={name} value={name}>
                     <Checkbox checked={languages.indexOf(name) > -1} />
-                    <ListItemText primary={name} />
+                    <ListItemText id={`s2-linguagens-${name}`} primary={name} />
                   </MenuItem>
                 ))}
               </Select>
@@ -347,27 +346,22 @@ export const StepTwo: React.FC = () => {
                 color: "GrayText",
               }}
             >
-              <FormControlLabel
-                control={<Checkbox />}
-                value={0}
-                label="Back-end"
-                id="s2-trilha-backend"
-                {...register("trilhas")}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                value={1}
-                label="Front-end"
-                id="s2-trilha-frontend"
-                {...register("trilhas")}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                value={2}
-                label="QA"
-                id="s2-trilha-qa"
-                {...register("trilhas")}
-              />
+              {isLoadingTrilha ? (
+                <CircularProgress />
+              ) : (
+                getTrilha?.map((trilha) => {
+                  return (
+                    <FormControlLabel
+                      key={trilha.nome}
+                      control={<Checkbox />}
+                      value={0}
+                      label={trilha.nome}
+                      id={`s2-trilha-${trilha.nome}`}
+                      {...register("trilhas")}
+                    />
+                  );
+                })
+              )}
             </FormGroup>
             {errors.trilhas && (
               <FormHelperText error>

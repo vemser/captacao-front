@@ -6,7 +6,11 @@ import {
   useSteps,
 } from "../../shared/features/subscription/stepsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { usePostNewFormularioMutation } from "shared/features/api/formulario/formularioSlice";
+import {
+  usePostNewFormularioMutation,
+  useUploadCurriculoMutation,
+  useUploadFileMutation,
+} from "shared/features/api/formulario/formularioSlice";
 import { usePostCandidatoMutation } from "shared/features/api/candidato/candidatoSlice";
 import { usePostInscricaoMutation } from "shared/features/api/inscricao/inscricaoSlice";
 
@@ -19,6 +23,11 @@ export const StepThree: React.FC = () => {
   const [postNewFormulario] = usePostNewFormularioMutation();
   const [postCandidato] = usePostCandidatoMutation();
   const [postInscricao] = usePostInscricaoMutation();
+  const [uploadFile] = useUploadFileMutation();
+  const [uploeadCurriculo] = useUploadCurriculoMutation();
+
+  const formDataCurriculo = new FormData();
+  const formDataConfiguracoes = new FormData();
 
   useEffect(() => {
     data &&
@@ -44,12 +53,12 @@ export const StepThree: React.FC = () => {
         disponibilidadeBoolean: data.disponibilidadeBoolean,
         genero: data.genero,
         orientacao: data.orientacao,
-        trilhas: [1],
+        trilhas: [1], // corrigir quando mudar no back end
         importancia: data.algoimportante,
       })
         .unwrap()
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setIdFormulario(res.idFormulario);
         })
         .catch((err) => {
@@ -79,12 +88,33 @@ export const StepThree: React.FC = () => {
         })
           .unwrap()
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             setIdInscricao(res.idCandidato);
           })
           .catch((err) => {
             console.log(err);
           });
+
+      if (data) {
+        formDataCurriculo.append("file", data.curriculo[0]);
+        formDataConfiguracoes.append("file", data.configuracoes[0]);
+
+        uploeadCurriculo({
+          file: formDataCurriculo,
+          idFormulario: idFormulario,
+        })
+          .unwrap()
+          .then(() => console.log("curriculo enviado"))
+          .catch((err) => console.log(err));
+
+        uploadFile({
+          file: formDataConfiguracoes,
+          idFormulario: 327,
+        })
+          .unwrap()
+          .then(() => console.log("configuracoes enviada"))
+          .catch((err) => console.log(err));
+      }
     }
   }, [idFormulario]);
 

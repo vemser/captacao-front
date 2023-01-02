@@ -61,5 +61,5 @@ export interface Trilha {
 
 export interface UploadFile {
   idFormulario: number;
-  file: File;
+  file: any;
 }

@@ -6,13 +6,13 @@ export interface Edicao {
 
 const edicaoSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getEdicaoAtual: builder.query<string, void>({
+    getEdicaoAtual: builder.mutation<string, void>({
       query: () => ({
         url: "edicao/edicao-atual",
-        method: "GET",
         headers: {
           // Authorization: `Bearer ${token}`,
         },
+        responseHandler: (response) => response.text(),
       }),
     }),
     postNewEdicao: builder.mutation<void, Edicao>({
@@ -37,3 +37,9 @@ const edicaoSlice = apiSlice.injectEndpoints({
   }),
   overrideExisting: false,
 });
+
+export const {
+  useGetEdicaoAtualMutation,
+  usePostNewEdicaoMutation,
+  useDeleteEdicaoMutation,
+} = edicaoSlice;

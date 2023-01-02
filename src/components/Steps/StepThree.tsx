@@ -13,23 +13,44 @@ import {
 } from "shared/features/api/formulario/formularioSlice";
 import { usePostCandidatoMutation } from "shared/features/api/candidato/candidatoSlice";
 import { usePostInscricaoMutation } from "shared/features/api/inscricao/inscricaoSlice";
+import { useGetEdicaoAtualMutation } from "shared/features/api/edicao/edicaoSlice";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 
 export const StepThree: React.FC = () => {
   const dispatch = useDispatch();
   const { data } = useSelector(useSteps);
+
   const [idFormulario, setIdFormulario] = useState<number | null>(null);
-  const [idInscricao, setIdInscricao] = useState<number | null>(null);
+  const [idCandidato, setIdCandidato] = useState<number | null>(null);
+  const [edicaoAtual, setEdicaoAtual] = useState<string | null>(null);
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const [postNewFormulario] = usePostNewFormularioMutation();
   const [postCandidato] = usePostCandidatoMutation();
   const [postInscricao] = usePostInscricaoMutation();
   const [uploadFile] = useUploadFileMutation();
   const [uploeadCurriculo] = useUploadCurriculoMutation();
+  const [getEdicaoAtual] = useGetEdicaoAtualMutation();
 
   const formDataCurriculo = new FormData();
   const formDataConfiguracoes = new FormData();
 
   useEffect(() => {
+    getEdicaoAtual()
+      .unwrap()
+      .then((res) => {
+        setEdicaoAtual(res);
+      });
+    setIsLoading(true);
+
     data &&
       postNewFormulario({
         matriculadoBoolean: data.matriculado,
@@ -48,7 +69,7 @@ export const StepThree: React.FC = () => {
         ingles: data.ingles,
         espanhol: data.espanhol,
         neurodiversidade: data.neurodiversidade,
-        configuracoes: "sdasd", // corrigir
+        configuracoes: "Não informado", // corrigir
         efetivacaoBoolean: data.efetivacaoBoolean,
         disponibilidadeBoolean: data.disponibilidadeBoolean,
         genero: data.genero,
@@ -58,42 +79,43 @@ export const StepThree: React.FC = () => {
       })
         .unwrap()
         .then((res) => {
-          // console.log(res);
           setIdFormulario(res.idFormulario);
         })
         .catch((err) => {
           console.log(err);
+          setIsLoading(false);
+          setIsError(true);
         });
   }, [data]);
 
   useEffect(() => {
-    if (idFormulario) {
-      data &&
-        postCandidato({
-          nome: data.nome,
-          dataNascimento: data.dataNascimento,
-          email: data.email,
-          telefone: data.telefone,
-          rg: data.rg,
-          cpf: data.cpf,
-          estado: data.estado,
-          cidade: data.cidade,
-          ativo: "T",
-          linguagens: data.linguagens,
-          edicao: {
-            nome: "VemSer12",
-          },
-          formulario: idFormulario,
-          pcdboolean: data.deficiencia,
+    if (idFormulario !== null && data && edicaoAtual) {
+      postCandidato({
+        nome: data.nome,
+        dataNascimento: data.dataNascimento,
+        email: data.email,
+        telefone: data.telefone,
+        rg: data.rg,
+        cpf: data.cpf,
+        estado: data.estado,
+        cidade: data.cidade,
+        ativo: "T",
+        linguagens: data.linguagens,
+        edicao: {
+          nome: edicaoAtual,
+        },
+        formulario: idFormulario,
+        pcdboolean: data.deficiencia,
+      })
+        .unwrap()
+        .then((res) => {
+          setIdCandidato(res.idCandidato);
         })
-          .unwrap()
-          .then((res) => {
-            // console.log(res);
-            setIdInscricao(res.idCandidato);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        .catch((err) => {
+          console.log(err);
+          setIsError(true);
+          setIsLoading(false);
+        });
 
       if (data) {
         formDataCurriculo.append("file", data.curriculo[0]);
@@ -104,38 +126,73 @@ export const StepThree: React.FC = () => {
           idFormulario: idFormulario,
         })
           .unwrap()
-          .then(() => console.log("curriculo enviado"))
           .catch((err) => console.log(err));
 
         uploadFile({
           file: formDataConfiguracoes,
-          idFormulario: 327,
+          idFormulario: idFormulario,
         })
           .unwrap()
-          .then(() => console.log("configuracoes enviada"))
           .catch((err) => console.log(err));
       }
     }
-  }, [idFormulario]);
+  }, [idFormulario, edicaoAtual]);
 
   useEffect(() => {
-    if (idInscricao) {
-      data &&
-        postInscricao(idInscricao)
-          .unwrap()
-          .then(() => console.log("Enviado tudo"));
+    if (idCandidato !== null) {
+      postInscricao(idCandidato)
+        .unwrap()
+        .catch((err) => {
+          console.log(err);
+          setIsError(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
-  }, [idInscricao]);
+  }, [idCandidato]);
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          dispatch(previousStep());
-        }}
-      >
-        Voltar
-      </button>
-    </div>
+    <>
+      {isLoading && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            mb: 2,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      {isError && (
+        <Box>
+          <Alert severity="warning">
+            <AlertTitle>Houve algum erro!</AlertTitle>
+            Houve algum erro ao enviar os dados da inscrição.
+          </Alert>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+            }}
+            onClick={() => {
+              dispatch(previousStep());
+            }}
+          >
+            Voltar
+          </Button>
+        </Box>
+      )}
+      {isLoading === false && isError === false && (
+        <Alert severity="success">
+          <AlertTitle>Inscrito com sucesso!</AlertTitle>
+          Sua inscrição foi <strong>enviada!</strong> Retornaremos seu resultado
+          em breve.
+        </Alert>
+      )}
+    </>
   );
 };

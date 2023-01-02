@@ -97,6 +97,17 @@ export interface Formulario {
   importancia: string
 }
 
+export interface ITrilha {
+  trilha: string
+}
+
+export interface IEdicao {
+  edicao: string
+}
+export interface IEmail {
+  email: string
+}
+
 export interface Trilha {
   nome: string
   idTrilha: number

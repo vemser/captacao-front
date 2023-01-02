@@ -86,10 +86,6 @@ export const StepTwo: React.FC = () => {
     data.linkedin.length === 0 && (data.linkedin = "Nenhum");
     data.github.length === 0 && (data.github = "Nenhum");
 
-    // const trilhas = data.trilhas.map((item) => {
-    //   return parseInt(item);
-    // });
-
     const formValues = Object.fromEntries(
       Object.entries(data).map(([key, value]) => [
         key,
@@ -312,7 +308,6 @@ export const StepTwo: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel
                 id="s2-select-linguagens"
-                error={languages.length === 0 ? true : false}
               >
                 Linguagens de programação
               </InputLabel>
@@ -321,7 +316,6 @@ export const StepTwo: React.FC = () => {
                 id="s2-select-linguagens-checkbox"
                 multiple
                 value={languages}
-                error={languages.length === 0 ? true : false}
                 onChange={handleChange}
                 input={<OutlinedInput label="Linguagens de programação" />}
                 renderValue={(selected) => selected.join(", ")}
@@ -335,11 +329,6 @@ export const StepTwo: React.FC = () => {
                 ))}
               </Select>
             </FormControl>
-            {languages.length === 0 && (
-              <FormHelperText error>
-                Selecione pelo menos uma linguagem
-              </FormHelperText>
-            )}
           </Grid>
 
           <Grid item xs={12} lg={6}>
@@ -430,7 +419,7 @@ export const StepTwo: React.FC = () => {
             </Grid>
           )}
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Typography
               variant="h6"
               component="h2"
@@ -496,6 +485,21 @@ export const StepTwo: React.FC = () => {
                 />
               )}
             </FormGroup>
+          </Grid> */}
+
+          <Grid item xs={12}>
+            <TextField
+              label={<FormName nome={formulario?.s2OutroMotivo} />}
+              multiline
+              minRows={4}
+              type="textArea"
+              size="medium"
+              fullWidth
+              error={!!errors.resposta}
+              helperText={errors.resposta?.message}
+              id="s2-candidato-motivo"
+              {...register("resposta")}
+            />
           </Grid>
 
           <Grid item xs={12}>

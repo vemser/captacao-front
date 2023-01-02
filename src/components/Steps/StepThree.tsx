@@ -29,11 +29,11 @@ export const StepThree: React.FC = () => {
         instituicao: data.instituicao,
         github: data.github,
         linkedin: data.linkedin,
-        desafiosBoolean: data.desafiosBoolean,
-        problemaBoolean: data.problemasBoolean,
-        reconhecimentoBoolean: data.reconhecimentoBoolean,
-        altruismoBoolean: data.altruismoBoolean,
-        resposta: "sdfasd",
+        desafiosBoolean: false,
+        problemaBoolean: false,
+        reconhecimentoBoolean: false,
+        altruismoBoolean: false,
+        resposta: data.resposta,
         lgpdBoolean: data.lgpdBoolean,
         provaBoolean: data.provaBoolean,
         ingles: data.ingles,
@@ -44,7 +44,7 @@ export const StepThree: React.FC = () => {
         disponibilidadeBoolean: data.disponibilidadeBoolean,
         genero: data.genero,
         orientacao: data.orientacao,
-        trilhas: data.trilhas,
+        trilhas: [1],
         importancia: data.algoimportante,
       })
         .unwrap()
@@ -90,7 +90,10 @@ export const StepThree: React.FC = () => {
 
   useEffect(() => {
     if (idInscricao) {
-      data && postInscricao(idInscricao).unwrap();
+      data &&
+        postInscricao(idInscricao)
+          .unwrap()
+          .then(() => console.log("Enviado tudo"));
     }
   }, [idInscricao]);
 

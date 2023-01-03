@@ -6,6 +6,12 @@ export interface Root {
   elementos: Elemento[]
 }
 
+export interface IAvaliacao {
+  aprovadoBoolean: boolean
+  idInscricao: number
+  emailGestor: string
+}
+
 export interface Elemento {
   idAvaliacao: number
   avaliador: Avaliador

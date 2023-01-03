@@ -7,7 +7,8 @@ import {
   ITrilha,
   Elemento,
   IEdicao,
-  IEmail
+  IEmail,
+  IAvaliacao
 } from './type'
 
 export const getToken = (): string => {
@@ -59,6 +60,20 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
       query: data => ({
         url: `avaliacao/buscar-by-email?email=${data.email}`,
         method: 'GET',
+        headers: {
+          // Authorization: `Bearer ${getToken()}`
+        }
+        // params: {
+
+        // }
+      })
+    }),
+    avaliarCandidato: build.mutation<Elemento[] | [], IAvaliacao>({
+      query: data => ({
+        url: `avaliacao/`,
+        method: 'POST',
+        body: data,
+        responseHandler: response => response.text(),
         headers: {
           // Authorization: `Bearer ${getToken()}`
         }

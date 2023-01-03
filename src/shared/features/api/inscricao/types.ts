@@ -56,10 +56,10 @@ export interface IFormulario {
   instituicao: string
   github: string
   linkedin: string
-  desafios: string
-  problema: string
-  reconhecimento: string
-  altruismo: string
+  // desafios: string
+  // problema: string
+  // reconhecimento: string
+  // altruismo: string
   resposta: string
   curriculo: number
   lgpd: string

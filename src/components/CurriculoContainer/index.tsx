@@ -124,6 +124,12 @@ export const CurriculoContainer: React.FC = () => {
       resposta: inscricaoResponse?.candidato.formulario?.genero,
     },
     {
+      id: 13,
+      tipo: "Pessoal",
+      pergunta: "PCD",
+      resposta: inscricaoResponse?.candidato.pcdboolean,
+    },
+    {
       id: 14,
       tipo: "Acadêmico",
       pergunta: "Curso",
@@ -165,12 +171,12 @@ export const CurriculoContainer: React.FC = () => {
       pergunta: "Disponibilidade de trabalho",
       resposta: inscricaoResponse?.candidato.formulario?.efetivacao,
     },
-    // {
-    //   id: 25,
-    //   tipo: "Outros",
-    //   pergunta: "Disponibilidade de estudo",
-    //   resposta: inscricaoResponse?.candidato.formulario.,
-    // },
+    {
+      id: 25,
+      tipo: "Outros",
+      pergunta: "Disponibilidade de estudo",
+      resposta: inscricaoResponse?.candidato.formulario?.disponibilidade,
+    },
     {
       id: 26,
       tipo: "Outros",
@@ -195,9 +201,19 @@ export const CurriculoContainer: React.FC = () => {
       pergunta: "LGPD",
       resposta: inscricaoResponse?.candidato.formulario?.lgpd,
     },
+    {
+      id: 32,
+      tipo: "Outros",
+      pergunta: "Interesse em TI",
+      resposta: inscricaoResponse?.candidato.formulario?.resposta,
+    },
+    {
+      id: 33,
+      tipo: "Outros",
+      pergunta: "Algo importante",
+      resposta: inscricaoResponse?.candidato.formulario?.importancia
+    },
   ];
-
-  const CARREGANDO = "Carregando" 
   
   return (
     

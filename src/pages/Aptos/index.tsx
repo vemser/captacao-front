@@ -18,7 +18,7 @@ import {
 import { Search } from '@mui/icons-material'
 import React, { useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   useListReviewsQuery,
   useSearchByEditionMutation,
@@ -26,7 +26,6 @@ import {
   useSearchByTrilhaMutation
 } from 'shared/features/avaliacao/avaliacaoSlice'
 import { Elemento, Inscricao } from 'shared/features/avaliacao/type'
-import { useEffect } from 'preact/hooks'
 
 const columns = [
   {
@@ -87,6 +86,7 @@ const columns = [
 ]
 
 export const Aptos: React.FC = () => {
+  const { state } = useLocation()
   const { data, isLoading } = useListReviewsQuery({ pagina: 0 })
 
   const [emailResult, setEmailResult] = useState<Elemento[]>()

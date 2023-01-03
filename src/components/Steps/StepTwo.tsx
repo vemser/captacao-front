@@ -28,8 +28,9 @@ import {
   previousStep,
   changeData,
   nextStep,
+  useSteps,
 } from "../../shared/features/subscription/stepsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FormGrid } from "components/FormGrid";
 import { IFormQuery, SubscribeData } from "shared/interfaces";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -48,9 +49,12 @@ export const StepTwo: React.FC = () => {
   const [deficiencia, setDeficiencia] = useState("F");
   const { data } = useGetSubscribeFormQuery();
   const { data: getTrilha, isLoading: isLoadingTrilha } = useGetTrilhasQuery();
+  const { data: formData } = useSelector(useSteps);
   const formulario = data?.data.formulario;
 
-  const [languages, setLanguage] = React.useState<string[]>([]);
+  const [languages, setLanguage] = React.useState<string[]>(
+    formData?.linguagens || []
+  );
 
   const handleChange = (event: SelectChangeEvent<typeof languages>) => {
     const {
@@ -113,6 +117,7 @@ export const StepTwo: React.FC = () => {
   const curriculo = watch("curriculo");
   const configuracoes = watch("configuracoes");
 
+
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
       <Grid item xs={12} lg={6}>
@@ -157,7 +162,9 @@ export const StepTwo: React.FC = () => {
               sx={{
                 color: "GrayText",
               }}
-              defaultValue="MANHA"
+              defaultValue={
+                formData?.turno ? formData.turno : "MANHA" || "MANHA"
+              }
             >
               <FormControlLabel
                 id="turno-manha"
@@ -190,6 +197,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               fullWidth
               id="instituicao-de-ensino-candidato"
+              defaultValue={formData?.instituicao}
               label={<FormName nome={formulario?.s2Instituicao} />}
               error={!!errors.instituicao}
               helperText={errors.instituicao?.message}
@@ -201,6 +209,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               fullWidth
               id="curso-candidato"
+              defaultValue={formData?.curso}
               label={<FormName nome={formulario?.s2Curso} />}
               error={!!errors.curso}
               helperText={errors.curso?.message}
@@ -220,7 +229,11 @@ export const StepTwo: React.FC = () => {
               <Select
                 id="s2-nivel-ingles-candidato"
                 label={<FormName nome={formulario?.s2InglS} />}
-                defaultValue="iniciante"
+                defaultValue={
+                  formData?.ingles
+                    ? formData.ingles
+                    : "iniciante" || "iniciante"
+                }
                 {...register("ingles")}
               >
                 <MenuItem value="iniciante">Iniciante</MenuItem>
@@ -242,7 +255,11 @@ export const StepTwo: React.FC = () => {
               <Select
                 label={<FormName nome={formulario?.s2Espanhol} />}
                 id="s2-nivel-espanhol-candidato"
-                defaultValue="iniciante"
+                defaultValue={
+                  formData?.espanhol
+                    ? formData.espanhol
+                    : "iniciante" || "iniciante"
+                }
                 {...register("espanhol")}
               >
                 <MenuItem value="iniciante">Iniciante</MenuItem>
@@ -265,7 +282,11 @@ export const StepTwo: React.FC = () => {
               <Select
                 id="orientacao-sexual-candidato"
                 label={<FormName nome={formulario?.s2OriSexual} />}
-                defaultValue="heterossexual"
+                defaultValue={
+                  formData?.orientacao
+                    ? formData.orientacao
+                    : "heterossexual" || "heterossexual"
+                }
                 {...register("orientacao")}
               >
                 <MenuItem value="heterossexual">Heterossexual</MenuItem>
@@ -290,7 +311,11 @@ export const StepTwo: React.FC = () => {
               <Select
                 id="s2-select-genero-candidato"
                 label={<FormName nome={formulario?.s2GNero} />}
-                defaultValue="cisgenero"
+                defaultValue={
+                  formData?.genero
+                    ? formData.genero
+                    : "cisgenero" || "cisgenero"
+                }
                 fullWidth
                 {...register("genero")}
               >
@@ -322,7 +347,10 @@ export const StepTwo: React.FC = () => {
               >
                 {names.map((name) => (
                   <MenuItem key={name} value={name}>
-                    <Checkbox checked={languages.indexOf(name) > -1} />
+                    <Checkbox
+                      checked={languages.indexOf(name) > -1}
+                      defaultChecked={formData?.linguagens.includes(name)}
+                    />
                     <ListItemText id={`s2-linguagens-${name}`} primary={name} />
                   </MenuItem>
                 ))}
@@ -353,9 +381,16 @@ export const StepTwo: React.FC = () => {
                   return (
                     <FormControlLabel
                       key={trilha.nome}
-                      control={<Checkbox />}
-                      value={0}
+                      control={
+                        <Checkbox
+                          defaultChecked={
+                            // @ts-ignore
+                            formData?.trilhas?.includes(trilha.nome)
+                          }
+                        />
+                      }
                       label={trilha.nome}
+                      value={trilha.nome}
                       id={`s2-trilha-${trilha.nome}`}
                       {...register("trilhas")}
                     />
@@ -405,6 +440,7 @@ export const StepTwo: React.FC = () => {
                 label={<FormName nome={formulario?.s2DefDesc} />}
                 variant="outlined"
                 sx={{ width: "100%" }}
+                defaultValue={formData?.deficiencia}
                 id="s2-candidato-deficiencia-descricao"
                 error={!!errors.deficiencia}
                 helperText={errors.deficiencia?.message}
@@ -413,78 +449,11 @@ export const StepTwo: React.FC = () => {
             </Grid>
           )}
 
-          {/* <Grid item xs={12}>
-            <Typography
-              variant="h6"
-              component="h2"
-              color="primary.main"
-              margin="1rem 0"
-            >
-              <FormName nome={formulario?.s2TextoMotivacao} />
-            </Typography>
-            ;
-            <FormLabel
-              sx={{
-                color: "GrayText",
-                fontWeight: "700",
-              }}
-            >
-              <FormName nome={formulario?.s2SubtTextmotivacao} />
-            </FormLabel>
-            <FormGroup
-              sx={{
-                color: "GrayText",
-              }}
-            >
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Por gostar de desafios"
-                id="s2-candidato-desafio"
-                {...register("desafiosBoolean")}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Por gostar de resolver problemas"
-                id="s2-candidato-problemas"
-                {...register("problemasBoolean")}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Pelo reconhecimento e valorização financeira do profissional de tecnologia"
-                id="s2-candidato-reconhecimento"
-                {...register("reconhecimentoBoolean")}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Por querer ajudar outras pessoas"
-                id="s2-candidato-altruismo"
-                {...register("altruismoBoolean")}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Outro motivo"
-                id="s2-candidato-outro"
-                onChange={() => setAnotherReason((state) => !state)}
-              />
-              <Error id="mensagem-erro-outro-motivo" width={"100%"}>
-                {errors.motivo?.message}
-              </Error>
-              {anotherReason && (
-                <TextField
-                  label={<FormName nome={formulario?.s2OutroMotivo} />}
-                  multiline={true}
-                  id="s2-candidato-motivo"
-                  error={!!errors.resposta}
-                  {...register("resposta")}
-                />
-              )}
-            </FormGroup>
-          </Grid> */}
-
           <Grid item xs={12}>
             <TextField
               label={<FormName nome={formulario?.s2OutroMotivo} />}
               multiline
+              defaultValue={formData?.resposta}
               minRows={4}
               type="textArea"
               size="medium"
@@ -500,6 +469,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               label={<FormName nome={formulario?.s2AlgoImp} />}
               multiline
+              defaultValue={formData?.algoimportante}
               minRows={4}
               type="textArea"
               size="medium"
@@ -523,7 +493,9 @@ export const StepTwo: React.FC = () => {
                 }}
               >
                 <RadioGroup
-                  defaultValue="F"
+                  defaultValue={
+                    formData?.provaBoolean === true ? "T" : "F" || "F"
+                  }
                   row
                   sx={{
                     color: "GrayText",
@@ -572,7 +544,9 @@ export const StepTwo: React.FC = () => {
                   sx={{
                     color: "GrayText",
                   }}
-                  defaultValue="F"
+                  defaultValue={
+                    formData?.disponibilidadeBoolean === true ? "T" : "F" || "F"
+                  }
                 >
                   <FormControlLabel
                     id="s2-candidato-efetivacao-sim"
@@ -609,7 +583,9 @@ export const StepTwo: React.FC = () => {
                   sx={{
                     color: "GrayText",
                   }}
-                  defaultValue="F"
+                  defaultValue={
+                    formData?.disponibilidadeBoolean === true ? "T" : "F" || "F"
+                  }
                 >
                   <FormControlLabel
                     value="T"
@@ -633,6 +609,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Github} />}
+              defaultValue={formData?.github}
               variant="outlined"
               sx={{
                 width: "100%",
@@ -656,6 +633,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Linkedin} />}
+              defaultValue={formData?.linkedin}
               variant="outlined"
               sx={{
                 width: "100%",
@@ -795,7 +773,7 @@ export const StepTwo: React.FC = () => {
               }}
             >
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox defaultChecked={formData?.lgpdBoolean} />}
                 id="s2-candidato-lgpd"
                 label="Você concorda com o tratamento dos seus dados pessoais para fins de seleção de candidatos?"
                 {...register("lgpdBoolean")}

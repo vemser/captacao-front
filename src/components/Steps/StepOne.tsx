@@ -16,8 +16,9 @@ import { FormGrid } from "../FormGrid";
 import {
   nextStep,
   changeData,
+  useSteps,
 } from "../../shared/features/subscription/stepsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IFormQuery, SubscribeData } from "shared/interfaces";
 import { estadosBrasileiros } from "shared/utils/states";
 import { stepOneSchema } from "shared/schemas/subscription";
@@ -26,6 +27,7 @@ import InputMask from "react-input-mask";
 
 export const StepOne: React.FC = () => {
   const [neurodiversidade, setNeurodiversidade] = useState("F");
+  const { data: formData } = useSelector(useSteps);
 
   const {
     register,
@@ -56,6 +58,7 @@ export const StepOne: React.FC = () => {
       <Grid item xs={12}>
         <TextField
           fullWidth
+          defaultValue={formData?.nome}
           label={<FormName nome={formulario?.nome} />}
           error={!!errors.nome}
           helperText={errors.nome?.message}
@@ -66,6 +69,7 @@ export const StepOne: React.FC = () => {
       <Grid item xs={12} lg={6}>
         <TextField
           fullWidth
+          defaultValue={formData?.email}
           label={<FormName nome={formulario?.email} />}
           error={!!errors.email}
           helperText={errors.email?.message}
@@ -76,6 +80,7 @@ export const StepOne: React.FC = () => {
       <Grid item xs={12} lg={6}>
         <TextField
           fullWidth
+          defaultValue={formData?.rg}
           label={<FormName nome={formulario?.rg} />}
           error={!!errors.rg}
           helperText={errors.rg?.message}
@@ -84,7 +89,12 @@ export const StepOne: React.FC = () => {
         />
       </Grid>
       <Grid item xs={6}>
-        <InputMask mask="999.999.999-99" maskChar=" " {...register("cpf")}>
+        <InputMask
+          mask="999.999.999-99"
+          maskChar=" "
+          {...register("cpf")}
+          defaultValue={formData?.cpf}
+        >
           {
             // @ts-ignore
             (inputProps) => (
@@ -104,7 +114,12 @@ export const StepOne: React.FC = () => {
         </InputMask>
       </Grid>
       <Grid item xs={6} display="flex" flexDirection="column">
-        <InputMask mask="(99)99999-9999" maskChar=" " {...register("telefone")}>
+        <InputMask
+          mask="(99)99999-9999"
+          maskChar=" "
+          {...register("telefone")}
+          defaultValue={formData?.telefone}
+        >
           {
             // @ts-ignore
             (inputProps) => (
@@ -137,6 +152,7 @@ export const StepOne: React.FC = () => {
         <TextField
           fullWidth
           label={<FormName nome={formulario?.cidade} />}
+          defaultValue={formData?.cidade}
           error={!!errors.cidade}
           helperText={errors.cidade?.message}
           id="step-1-cidade"
@@ -149,7 +165,7 @@ export const StepOne: React.FC = () => {
           <Select
             label={<FormName nome={formulario?.estado} />}
             error={!!errors.estado}
-            defaultValue="AC"
+            defaultValue={formData?.estado ? formData.estado : "AC"}
             id="step-1-estado"
             {...register("estado")}
           >
@@ -191,6 +207,7 @@ export const StepOne: React.FC = () => {
           <TextField
             fullWidth
             label="Qual neurodiversidade você possui?"
+            defaultValue={formData?.neurodiversidade}
             error={!!errors.neurodiversidade}
             helperText={errors.neurodiversidade?.message}
             id="step-1-neurodiversidade"

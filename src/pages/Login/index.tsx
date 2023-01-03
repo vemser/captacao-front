@@ -122,7 +122,10 @@ export const Login: React.FC = () => {
                 {...register('username')}
               />
 
-              <FormControl variant="outlined" sx={{ mb: 2, width: '100%' }}>
+              <FormControl
+                variant="outlined"
+                sx={{ mb: 1, mt: 2, width: '100%' }}
+              >
                 <InputLabel>Senha</InputLabel>
                 <OutlinedInput
                   {...register('password')}

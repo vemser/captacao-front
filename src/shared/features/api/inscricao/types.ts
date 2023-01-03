@@ -44,7 +44,7 @@ export interface ICandidato {
   media: number
   linguagens: ILinguagens[]
   edicao: IEdicao
-  formulario: IFormulario
+  formulario: IFormulario | null
   pcdboolean: boolean
 }
 

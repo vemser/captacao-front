@@ -1,7 +1,9 @@
 import { Button, Chip, Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import React from "react";
-import { SubscribeData } from "shared/interfaces";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useGetInscricaoByIdMutation } from "shared/features/api/inscricao/inscricaoSlice";
+import { IElementos } from "shared/features/api/inscricao/types";
 
 const columns = [
   {
@@ -38,186 +40,176 @@ const columns = [
   },
 ];
 
-interface IResposta {
-  resposta: SubscribeData;
-}
+export const CurriculoContainer: React.FC = () => {
+  const { state } = useLocation();
+	const [getInscricaoById] = useGetInscricaoByIdMutation();
+	const [inscricaoResponse, setInscricaoResponse] =
+	useState<IElementos | null>(null);
 
-export const CurriculoContainer: React.FC<IResposta> = ({ resposta }) => {
+	useEffect(() => {
+		getInscricaoById(state.id)
+			.unwrap()
+			.then((res) => setInscricaoResponse(res));
+	}, []);
+
+	useEffect(() => {
+		console.log(inscricaoResponse);
+	}, [inscricaoResponse]);
+
   const rows = [
     {
       id: 1,
       tipo: "Pessoal",
       pergunta: "Nome",
-      resposta: resposta.nome,
+      resposta: inscricaoResponse?.candidato.nome,
     },
     {
       id: 2,
       tipo: "Pessoal",
       pergunta: "Email",
-      resposta: resposta.email,
+      resposta: inscricaoResponse?.candidato.email,
     },
     {
       id: 3,
       tipo: "Pessoal",
       pergunta: "Telefone",
-      resposta: resposta.telefone,
+      resposta:  inscricaoResponse?.candidato.telefone,
     },
     {
       id: 4,
       tipo: "Pessoal",
       pergunta: "CPF",
-      resposta: resposta.cpf,
+      resposta: inscricaoResponse?.candidato.cpf,
     },
     {
       id: 5,
       tipo: "Pessoal",
       pergunta: "RG",
-      resposta: resposta.rg,
+      resposta: inscricaoResponse?.candidato.rg,
     },
     {
       id: 6,
       tipo: "Pessoal",
       pergunta: "Data de Nascimento",
-      resposta: resposta.dataNascimento,
+      resposta: inscricaoResponse?.candidato.dataNascimento,
     },
     {
       id: 7,
       tipo: "Pessoal",
       pergunta: "Estado",
-      resposta: resposta.estado,
+      resposta: inscricaoResponse?.candidato.estado,
     },
     {
       id: 8,
       tipo: "Pessoal",
       pergunta: "Cidade",
-      resposta: resposta.cidade,
+      resposta: inscricaoResponse?.candidato.cidade,
     },
     {
       id: 10,
       tipo: "Pessoal",
       pergunta: "Neurodiversidade",
-      resposta: resposta.neurodiversidade,
+      resposta:  inscricaoResponse?.candidato.formulario?.neurodiversidade,
     },
     {
       id: 11,
       tipo: "Pessoal",
       pergunta: "Orientação Sexual",
-      resposta: resposta.orientacao,
+      resposta: inscricaoResponse?.candidato.formulario?.orientacao,
     },
     {
       id: 12,
       tipo: "Pessoal",
       pergunta: "Gênero",
-      resposta: resposta.genero,
+      resposta: inscricaoResponse?.candidato.formulario?.genero,
     },
     {
       id: 14,
       tipo: "Acadêmico",
       pergunta: "Curso",
-      resposta: resposta.curso,
+      resposta: inscricaoResponse?.candidato.formulario?.curso,
     },
     {
       id: 15,
       tipo: "Acadêmico",
       pergunta: "Turno",
-      resposta: resposta.turno,
+      resposta: inscricaoResponse?.candidato.formulario?.turno,
     },
     {
       id: 16,
       tipo: "Acadêmico",
       pergunta: "Instituição",
-      resposta: resposta.instituicao,
+      resposta: inscricaoResponse?.candidato.formulario?.instituicao,
     },
     {
       id: 17,
       tipo: "Acadêmico",
       pergunta: "Nível de Inglês",
-      resposta: resposta.ingles,
+      resposta:inscricaoResponse?.candidato.formulario?.ingles,
     },
     {
       id: 18,
       tipo: "Acadêmico",
       pergunta: "Nível de Espanhol",
-      resposta: resposta.espanhol,
-    },
-    {
-      id: 19,
-      tipo: "Outros",
-      pergunta: "Motivo",
-      resposta: resposta.desafiosBoolean,
-    },
-    {
-      id: 20,
-      tipo: "Outros",
-      pergunta: "Gosta de resolver problemas",
-      resposta: resposta.problemasBoolean,
-    },
-    {
-      id: 21,
-      tipo: "Outros",
-      pergunta: "Gosta do reconhecimento da área",
-      resposta: resposta.reconhecimentoBoolean,
-    },
-    {
-      id: 22,
-      tipo: "Outros",
-      pergunta: "Quer ajudar as pessoas",
-      resposta: resposta.altruismoBoolean,
+      resposta: inscricaoResponse?.candidato.formulario?.espanhol,
     },
     {
       id: 23,
       tipo: "Outros",
       pergunta: "Conhecimentos básicos",
-      resposta: resposta.provaBoolean,
+      resposta: inscricaoResponse?.candidato.formulario?.prova,
     },
     {
       id: 24,
       tipo: "Outros",
       pergunta: "Disponibilidade de trabalho",
-      resposta: resposta.efetivacaoBoolean,
+      resposta: inscricaoResponse?.candidato.formulario?.efetivacao,
     },
-    {
-      id: 25,
-      tipo: "Outros",
-      pergunta: "Disponibilidade de estudo",
-      resposta: resposta.disponibilidadeBoolean,
-    },
+    // {
+    //   id: 25,
+    //   tipo: "Outros",
+    //   pergunta: "Disponibilidade de estudo",
+    //   resposta: inscricaoResponse?.candidato.formulario.,
+    // },
     {
       id: 26,
       tipo: "Outros",
       pergunta: "Trilhas",
-      resposta: resposta.trilhas,
+      resposta: inscricaoResponse?.candidato.formulario?.trilhas,
     },
     {
       id: 28,
       tipo: "Outros",
       pergunta: "Linkedin",
-      resposta: resposta.linkedin,
+      resposta: inscricaoResponse?.candidato.formulario?.linkedin,
     },
     {
       id: 29,
       tipo: "Outros",
       pergunta: "Github",
-      resposta: resposta.github,
+      resposta: inscricaoResponse?.candidato.formulario?.github,
     },
     {
       id: 31,
       tipo: "Outros",
       pergunta: "LGPD",
-      resposta: resposta.lgpdBoolean,
+      resposta: inscricaoResponse?.candidato.formulario?.lgpd,
     },
   ];
 
+  const CARREGANDO = "Carregando" 
+  
   return (
+    
     <DataGrid
-      rows={rows}
-      columns={columns}
-      // autoHeight
-      pageSize={rows.length}
-      sx={{
-        boxShadow: 2,
-      }}
-      hideFooter
-    />
+    rows={rows}
+    columns={columns}
+    // autoHeight
+    pageSize={rows.length}
+    sx={{
+      boxShadow: 2,
+    }}
+    hideFooter
+  />
   );
 };

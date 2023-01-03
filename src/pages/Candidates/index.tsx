@@ -18,9 +18,9 @@ import { useNavigate, Link } from "react-router-dom";
 import React, { useState } from "react";
 import {
 	useGetCandidatosQuery,
-	useGetInscricaoByTrilhaMutation,
-	useGetListByEdicaoMutation,
-	useGetListByEmailMutation,
+	useGetListInscricaoByEdicaoMutation,
+	useGetListInscricaoByEmailMutation,
+	useGetListInscricaoByTrilhaMutation,
 } from "../../shared/features/api/inscricao/inscricaoSlice";
 import { IElementos } from "shared/features/api/inscricao/types";
 
@@ -85,12 +85,12 @@ export const Registers: React.FC = () => {
 	const { data } = useGetCandidatosQuery({ pagina: 0 });
 
 	const [trilhaResult, setTrilhaResult] = useState<IElementos[]>();
-	const [getInscricaoByTrilha] = useGetInscricaoByTrilhaMutation();
+	const [getInscricaoByTrilha] = useGetListInscricaoByTrilhaMutation();
 
-	const [getInscricaoByEdicao] = useGetListByEdicaoMutation();
+	const [getInscricaoByEdicao] = useGetListInscricaoByEdicaoMutation();
 	const [edicaoResult, setEdicaoResult] = useState<IElementos[]>();
 
-	const [getInscricaoByEmail] = useGetListByEmailMutation();
+	const [getInscricaoByEmail] = useGetListInscricaoByEmailMutation();
 	const [email, setEmail] = useState<string>("");
 	const [emailResult, setEmailResult] = useState<IElementos[]>();
 

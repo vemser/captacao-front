@@ -85,7 +85,7 @@ export const InterviewCurriculum = () => {
         md={6}
         sx={{ height: "calc(100vh - 150px)", width: "100%" }}
       >
-        <CurriculoContainer resposta={objeto} />
+        <CurriculoContainer/>
       </Grid>
       <Grid
         item

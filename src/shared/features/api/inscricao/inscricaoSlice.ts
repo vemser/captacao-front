@@ -49,7 +49,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 			  // headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getInscricaoByTrilha: build.mutation<IElementos[] | [], ITrilha>({
+		getListInscricaoByTrilha: build.mutation<IElementos[] | [], ITrilha>({
 			query: data => ({
 				url: "inscricao/list-by-trilha",
 				method: "GET",
@@ -57,7 +57,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getListByEdicao: build.mutation<IElementos[] | [], IEdicao>({
+		getListInscricaoByEdicao: build.mutation<IElementos[] | [], IEdicao>({
 			query: data => ({
 				url: "inscricao/list-by-edicao",
 				method: "GET",
@@ -65,15 +65,15 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getListById: build.mutation<IInscricao, ICandidato>({
+		getInscricaoById: build.mutation<IElementos, number>({
 			query: data => ({
-				url: "inscricao/by-id",
+				url: "inscricao/find-by-idInscricao",
 				method: "GET",
-				params: {id: data.idCandidato}
+				params: {id: data}
 				// headers: { Authorization: `Bearer ${getToken()}`}
 			}),
 		}),
-		getListByEmail: build.mutation<IElementos[] | [], IEmail>({
+		getListInscricaoByEmail: build.mutation<IElementos[] | [], IEmail>({
 			query: data => ({
 				url: "inscricao/buscar-by-email",
 				method: "GET",
@@ -88,8 +88,8 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 export const {
 	useGetCandidatosQuery,
 	usePostInscricaoMutation,
-	useGetInscricaoByTrilhaMutation,
-	useGetListByEdicaoMutation,
-	useGetListByIdMutation,
-	useGetListByEmailMutation,
+	useGetListInscricaoByTrilhaMutation,
+	useGetListInscricaoByEdicaoMutation,
+	useGetInscricaoByIdMutation,
+	useGetListInscricaoByEmailMutation,
 } = inscricaoSlice;

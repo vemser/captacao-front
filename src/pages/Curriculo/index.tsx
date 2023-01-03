@@ -54,7 +54,7 @@ export const Curriculo = () => {
         md={6}
         sx={{ height: 'calc(100vh - 68px)', width: '100%' }}
       >
-        <CurriculoContainer resposta={objeto} />
+        <CurriculoContainer />
       </Grid>
     </Grid>
   )

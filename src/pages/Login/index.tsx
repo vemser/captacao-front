@@ -22,13 +22,7 @@ export const Login: React.FC = () => {
   const [authLogin] = useAuthLoginMutation();
   const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IUser>({
-    // resolver: yupResolver(UserAuthSchema),
-  });
+  const { register, handleSubmit } = useForm<IUser>();
 
   const handleLogin = async (data: IUser) => {
     await toast.promise(
@@ -112,8 +106,6 @@ export const Login: React.FC = () => {
                 label="Senha"
                 type="password"
                 {...register("password")}
-                // register={'...password'}
-                // error={!!errors.password}
               />
 
               <Button
@@ -124,18 +116,6 @@ export const Login: React.FC = () => {
               >
                 Login
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Esqueceu sua senha?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Não tem uma conta? Clique aqui"}
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
         </Box>

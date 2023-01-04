@@ -349,7 +349,7 @@ export const StepTwo: React.FC = () => {
                   <MenuItem key={name} value={name}>
                     <Checkbox
                       checked={languages.indexOf(name) > -1}
-                      defaultChecked={formData?.linguagens.includes(name)}
+                      // defaultChecked={formData?.linguagens.includes(name)}
                     />
                     <ListItemText id={`s2-linguagens-${name}`} primary={name} />
                   </MenuItem>
@@ -383,10 +383,10 @@ export const StepTwo: React.FC = () => {
                       key={trilha.nome}
                       control={
                         <Checkbox
-                          defaultChecked={
-                            // @ts-ignore
-                            formData?.trilhas?.includes(trilha.nome)
-                          }
+                          // defaultChecked={
+                          //   // @ts-ignore
+                          //   formData?.trilhas?.includes(trilha.nome)
+                          // }
                         />
                       }
                       label={trilha.nome}

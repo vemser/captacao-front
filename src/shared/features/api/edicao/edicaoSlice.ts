@@ -1,8 +1,10 @@
 import { apiSlice } from "../";
 
 export interface Edicao {
+  slice(arg0: number): unknown;
   nome: string;
 }
+export type Lista = Edicao[]
 
 const edicaoSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,6 +15,15 @@ const edicaoSlice = apiSlice.injectEndpoints({
           // Authorization: `Bearer ${token}`,
         },
         responseHandler: (response) => response.text(),
+      }),
+    }),
+    getListaEdicoes: builder.query<Edicao[], void>({
+      query: () => ({
+        url: "edicao/listar-todas",
+        method: "GET",
+        headers: {
+          // Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     postNewEdicao: builder.mutation<void, Edicao>({
@@ -42,4 +53,5 @@ export const {
   useGetEdicaoAtualMutation,
   usePostNewEdicaoMutation,
   useDeleteEdicaoMutation,
+  useGetListaEdicoesQuery,
 } = edicaoSlice;

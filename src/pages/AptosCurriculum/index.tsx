@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -10,55 +10,14 @@ import {
 } from '@mui/material'
 import { objeto } from 'shared/utils/states'
 import { CurriculoContainer } from '../../components/CurriculoContainer'
-
-const marks = [
-  {
-    value: 0,
-    label: '0'
-  },
-  {
-    value: 10,
-    label: '10'
-  },
-  {
-    value: 20,
-    label: '20'
-  },
-  {
-    value: 30,
-    label: '30'
-  },
-  {
-    value: 40,
-    label: '40'
-  },
-  {
-    value: 50,
-    label: '50'
-  },
-  {
-    value: 60,
-    label: '60'
-  },
-  {
-    value: 70,
-    label: '70'
-  },
-  {
-    value: 80,
-    label: '80'
-  },
-  {
-    value: 90,
-    label: '90'
-  },
-  {
-    value: 100,
-    label: '100'
-  }
-]
+import { useUpdateNotaMutation } from 'shared/features/api/candidato/candidatoSlice'
+import { UpdateNota } from 'shared/features/api/candidato/types'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const AptosCurriculum = () => {
+  const { state } = useLocation()
+  console.log(state)
+  const navigate = useNavigate()
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
@@ -68,6 +27,11 @@ export const AptosCurriculum = () => {
   const handleClose = () => {
     setOpen(false)
   }
+
+  const [appendNota, setAppendNota] = useState<UpdateNota>()
+  const [updateNota] = useUpdateNotaMutation()
+
+  const [valueNota, setValueNota] = useState<number>(0)
 
   return (
     <Grid container spacing={2}>
@@ -91,14 +55,27 @@ export const AptosCurriculum = () => {
               type="number"
               maxRows={4}
               sx={{ mt: 1 }}
-              onChange={e => console.log(e.target.value)}
+              value={valueNota}
+              onChange={e => setValueNota(parseInt(e.target.value))}
             />
           </DialogContent>
           <DialogActions>
             <Button id="botao-cancelar" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button id="botao-enviar" onClick={handleClose} autoFocus>
+            <Button
+              id="botao-enviar"
+              onClick={() => {
+                updateNota({
+                  nota: {
+                    notaProva: valueNota
+                  },
+                  idCandidato: state.idCandidato
+                })
+                navigate('/aptos')
+              }}
+              autoFocus
+            >
               Enviar
             </Button>
           </DialogActions>
@@ -111,7 +88,7 @@ export const AptosCurriculum = () => {
         md={6}
         sx={{ height: 'calc(100vh - 150px)', width: '100%' }}
       >
-        <CurriculoContainer/>
+        <CurriculoContainer />
       </Grid>
       <Grid
         item

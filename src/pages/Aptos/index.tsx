@@ -18,7 +18,7 @@ import {
 import { Search } from '@mui/icons-material'
 import React, { useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   useListReviewsQuery,
   useSearchByEditionMutation,
@@ -74,19 +74,13 @@ const columns = [
     headerName: 'Adicionar nota',
     width: 140,
     renderCell: (params: any) => {
-      return (
-        <Link to="/aptos/curriculo">
-          <Button variant="contained" id="" onClick={() => console.log(params)}>
-            Adicionar
-          </Button>
-        </Link>
-      )
+      return <Button variant="contained">Adicionar</Button>
     }
   }
 ]
 
 export const Aptos: React.FC = () => {
-  const { state } = useLocation()
+  const navigate = useNavigate()
   const { data, isLoading } = useListReviewsQuery({ pagina: 0 })
 
   const [emailResult, setEmailResult] = useState<Elemento[]>()
@@ -105,7 +99,8 @@ export const Aptos: React.FC = () => {
     if (trilhaResult) {
       return trilhaResult?.map(d => {
         return {
-          id: 1,
+          id: d.inscricao.idInscricao,
+          idCandidato: d.inscricao.candidato.idCandidato,
           nome: d.inscricao.candidato.nome,
           email: d.inscricao.candidato.email,
           status: d.inscricao.avaliacao,
@@ -117,7 +112,8 @@ export const Aptos: React.FC = () => {
     } else if (editionResult) {
       return editionResult?.map(d => {
         return {
-          id: 1,
+          id: d.inscricao.idInscricao,
+          idCandidato: d.inscricao.candidato.idCandidato,
           nome: d.inscricao.candidato.nome,
           email: d.inscricao.candidato.email,
           status: d.inscricao.avaliacao,
@@ -129,7 +125,8 @@ export const Aptos: React.FC = () => {
     } else if (emailResult) {
       return emailResult?.map(d => {
         return {
-          id: 1,
+          id: d.inscricao.idInscricao,
+          idCandidato: d.inscricao.candidato.idCandidato,
           nome: d.inscricao.candidato.nome,
           email: d.inscricao.candidato.email,
           status: d.inscricao.avaliacao,
@@ -141,7 +138,8 @@ export const Aptos: React.FC = () => {
     } else {
       return list?.map(dados => {
         return {
-          id: 1,
+          id: dados.inscricao.idInscricao,
+          idCandidato: dados.inscricao.candidato.idCandidato,
           nome: dados.inscricao.candidato.nome,
           email: dados.inscricao.candidato.email,
           status: dados.inscricao.avaliacao,
@@ -246,6 +244,9 @@ export const Aptos: React.FC = () => {
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
+            onRowClick={({ row }) => {
+              navigate('/aptos/curriculo', { state: row })
+            }}
             sx={{
               boxShadow: 2
             }}

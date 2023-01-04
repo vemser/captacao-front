@@ -117,7 +117,6 @@ export const StepTwo: React.FC = () => {
   const curriculo = watch("curriculo");
   const configuracoes = watch("configuracoes");
 
-
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
       <Grid item xs={12} lg={6}>
@@ -383,10 +382,10 @@ export const StepTwo: React.FC = () => {
                       key={trilha.nome}
                       control={
                         <Checkbox
-                          // defaultChecked={
-                          //   // @ts-ignore
-                          //   formData?.trilhas?.includes(trilha.nome)
-                          // }
+                        // defaultChecked={
+                        //   // @ts-ignore
+                        //   formData?.trilhas?.includes(trilha.nome)
+                        // }
                         />
                       }
                       label={trilha.nome}

@@ -2,30 +2,11 @@ import { Button, Chip, Grid } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { useGetInscricaoByIdMutation } from 'shared/features/api/inscricao/inscricaoSlice'
 import { IElementos } from 'shared/features/api/inscricao/types'
 
 const columns = [
-  {
-    field: 'tipo',
-    headerName: 'Tipo',
-    width: 120,
-    renderCell: (params: any) => {
-      return (
-        <Chip
-          label={params.value}
-          sx={{ borderRadius: 1, boxShadow: 1, width: '100%' }}
-          color={
-            params.value === 'Pessoal'
-              ? 'primary'
-              : params.value === 'Acadêmico'
-              ? 'success'
-              : 'secondary'
-          }
-        />
-      )
-    }
-  },
   {
     field: 'pergunta',
     headerName: 'Pergunta',
@@ -221,6 +202,9 @@ export const CurriculoContainer: React.FC = () => {
       rows={rows}
       columns={columns}
       // autoHeight
+      onRowClick={row => {
+        alert(row.row.resposta)
+      }}
       pageSize={rows.length}
       sx={{
         boxShadow: 2

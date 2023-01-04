@@ -74,7 +74,7 @@ export const StepThree: React.FC = () => {
         disponibilidadeBoolean: data.disponibilidadeBoolean,
         genero: data.genero,
         orientacao: data.orientacao,
-        trilhas: [1], // corrigir quando mudar no back end
+        trilhas: data.trilhas, // corrigir quando mudar no back end
         importancia: data.algoimportante,
       })
         .unwrap()

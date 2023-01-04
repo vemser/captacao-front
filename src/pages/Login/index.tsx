@@ -49,7 +49,13 @@ export const Login: React.FC = () => {
       {
         pending: 'Carregando...',
         success: 'Bem Vindo!',
-        error: 'Houve um erro ao fazer o login'
+        error: {
+          render({ data }: any) {
+            return data.status === 400
+              ? "Seu login ou senha estão incorretos."
+              : "Houve um erro ao tentar fazer login.";
+          },
+        },
       }
     )
   }
@@ -150,7 +156,7 @@ export const Login: React.FC = () => {
                 />
                 {/* {errors.password && (
                   <span
-                  
+
                     id="login-error-senha"
                   >
                     {errors.password.message}

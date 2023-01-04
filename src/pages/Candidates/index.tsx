@@ -32,9 +32,9 @@ const columns = [
     renderCell: (params: any) => {
       return (
         <Chip
-          label={params.value === null ? "Avaliado" : "Não avaliado"}
+          label={params.value === null ? "Não avaliado" : "Avaliado"}
           sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-          color={params.value === "T" ? "success" : "primary"}
+          // color={params.value === "T" ? "success" : "primary"}
         />
       );
     },
@@ -96,6 +96,7 @@ export const Registers: React.FC = () => {
   const [emailResult, setEmailResult] = useState<IElementos[]>();
 
   const lista = data?.elementos;
+  console.log(lista);
 
   const rows = () => {
     if (trilhaResult) {
@@ -248,7 +249,7 @@ export const Registers: React.FC = () => {
       </Grid>
       <Grid item xs={12} display="flex" justifyContent="center">
         <Pagination
-          count={5}
+          count={data?.quantidadePaginas}
           color="primary"
           size="small"
           onChange={(event, page) => {
@@ -259,6 +260,3 @@ export const Registers: React.FC = () => {
     </Grid>
   );
 };
-function inscricaoSlice(): { useGetCandidatosQuery: any } {
-  throw new Error("Function not implemented.");
-}

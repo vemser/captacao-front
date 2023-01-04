@@ -27,59 +27,59 @@ import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
 
 const columns = [
-	{
-		field: "status",
-		headerName: "Status",
-		width: 140,
-		renderCell: (params: any) => {
-			return (
-				<Chip
-					label={params.value === null ? "Avaliado" : "Não avaliado"}
-					sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-					color={params.value === "T" ? "success" : "primary"}
-				/>
-			);
-		},
-	},
-	{
-		field: "nome",
-		headerName: "Nome",
-		minWidth: 180,
-		flex: 1,
-	},
-	{
-		field: "email",
-		headerName: "Email",
-		minWidth: 230,
-		flex: 1,
-	},
-	{
-		field: "telefone",
-		headerName: "Telefone",
-		minWidth: 160,
-	},
-	{
-		field: "turno",
-		headerName: "Turno",
-		minWidth: 90,
-	},
-	{
-		field: "estado",
-		headerName: "Estado",
-		minWidth: 90,
-	},
-	{
-		field: "acoes",
-		headerName: "Ações",
-		width: 120,
-		renderCell: () => {
-			return (
-				<Button variant="contained" id="">
-					Avaliar
-				</Button>
-			);
-		},
-	},
+  {
+    field: "status",
+    headerName: "Status",
+    width: 140,
+    renderCell: (params: any) => {
+      return (
+        <Chip
+          label={params.value === null ? "Não avaliado" : "Avaliado"}
+          sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
+          // color={params.value === "T" ? "success" : "primary"}
+        />
+      );
+    },
+  },
+  {
+    field: "nome",
+    headerName: "Nome",
+    minWidth: 180,
+    flex: 1,
+  },
+  {
+    field: "email",
+    headerName: "Email",
+    minWidth: 230,
+    flex: 1,
+  },
+  {
+    field: "telefone",
+    headerName: "Telefone",
+    minWidth: 160,
+  },
+  {
+    field: "turno",
+    headerName: "Turno",
+    minWidth: 90,
+  },
+  {
+    field: "estado",
+    headerName: "Estado",
+    minWidth: 90,
+  },
+  {
+    field: "acoes",
+    headerName: "Ações",
+    width: 120,
+    renderCell: () => {
+      return (
+        <Button variant="contained" id="">
+          Avaliar
+        </Button>
+      );
+    },
+  },
 ];
 
 export const Registers: React.FC = () => {
@@ -260,7 +260,7 @@ export const Registers: React.FC = () => {
 				<DataGrid
 					rows={rows() || []}
 					columns={columns}
-					pageSize={5}
+					pageSize={20}
 					rowsPerPageOptions={[5]}
 					onRowClick={({ row }) => {
 						navigate("/candidatos/curriculo", { state: row });
@@ -273,7 +273,7 @@ export const Registers: React.FC = () => {
 			</Grid>
 			<Grid item xs={12} display="flex" justifyContent="center">
 				<Pagination
-					count={5}
+					 count={data?.quantidadePaginas}
 					color="primary"
 					size="small"
 					onChange={(event, page) => {
@@ -284,6 +284,3 @@ export const Registers: React.FC = () => {
 		</Grid>
 	);
 };
-function inscricaoSlice(): { useGetCandidatosQuery: any } {
-	throw new Error("Function not implemented.");
-}

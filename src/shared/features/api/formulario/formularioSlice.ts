@@ -1,5 +1,6 @@
 import { FormularioResponse, IFormularioBody, UploadFile } from "./types";
 import { apiSlice } from "../";
+import { getToken } from "shared/utils/getToken";
 
 const formularioSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,13 +34,14 @@ const formularioSlice = apiSlice.injectEndpoints({
         body: data.file,
       }),
     }),
-    getCurriculo: builder.query<string, number>({
+    getCurriculo: builder.mutation<string, number>({
       query: (idFormulario) => ({
-        url: `formulario/upload-curriculo/${idFormulario}`,
+        url: `formulario/recuperar-curriculo?idFormulario=${idFormulario}`,
         method: "GET",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
+        responseHandler: (response) => response.text(),
       }),
     }),
   }),
@@ -50,5 +52,5 @@ export const {
   usePostNewFormularioMutation,
   useUploadCurriculoMutation,
   useUploadFileMutation,
-  useGetCurriculoQuery,
+  useGetCurriculoMutation,
 } = formularioSlice;

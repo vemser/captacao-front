@@ -2,30 +2,11 @@ import { Button, Chip, Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useGetInscricaoByIdMutation } from "shared/features/api/inscricao/inscricaoSlice";
 import { IElementos } from "shared/features/api/inscricao/types";
 
 const columns = [
-  {
-    field: "tipo",
-    headerName: "Tipo",
-    width: 120,
-    renderCell: (params: any) => {
-      return (
-        <Chip
-          label={params.value}
-          sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-          color={
-            params.value === "Pessoal"
-              ? "primary"
-              : params.value === "Acadêmico"
-              ? "success"
-              : "secondary"
-          }
-        />
-      );
-    },
-  },
   {
     field: "pergunta",
     headerName: "Pergunta",
@@ -42,19 +23,20 @@ const columns = [
 
 export const CurriculoContainer: React.FC = () => {
   const { state } = useLocation();
-	const [getInscricaoById] = useGetInscricaoByIdMutation();
-	const [inscricaoResponse, setInscricaoResponse] =
-	useState<IElementos | null>(null);
+  const [getInscricaoById] = useGetInscricaoByIdMutation();
+  const [inscricaoResponse, setInscricaoResponse] = useState<IElementos | null>(
+    null
+  );
 
-	useEffect(() => {
-		getInscricaoById(state.id)
-			.unwrap()
-			.then((res) => setInscricaoResponse(res));
-	}, []);
+  useEffect(() => {
+    getInscricaoById(state.id)
+      .unwrap()
+      .then((res) => setInscricaoResponse(res));
+  }, []);
 
-	useEffect(() => {
-		console.log(inscricaoResponse);
-	}, [inscricaoResponse]);
+  useEffect(() => {
+    console.log(inscricaoResponse);
+  }, [inscricaoResponse]);
 
   const rows = [
     {
@@ -73,7 +55,7 @@ export const CurriculoContainer: React.FC = () => {
       id: 3,
       tipo: "Pessoal",
       pergunta: "Telefone",
-      resposta:  inscricaoResponse?.candidato.telefone,
+      resposta: inscricaoResponse?.candidato.telefone,
     },
     {
       id: 4,
@@ -109,7 +91,7 @@ export const CurriculoContainer: React.FC = () => {
       id: 10,
       tipo: "Pessoal",
       pergunta: "Neurodiversidade",
-      resposta:  inscricaoResponse?.candidato.formulario?.neurodiversidade,
+      resposta: inscricaoResponse?.candidato.formulario?.neurodiversidade,
     },
     {
       id: 11,
@@ -151,7 +133,7 @@ export const CurriculoContainer: React.FC = () => {
       id: 17,
       tipo: "Acadêmico",
       pergunta: "Nível de Inglês",
-      resposta:inscricaoResponse?.candidato.formulario?.ingles,
+      resposta: inscricaoResponse?.candidato.formulario?.ingles,
     },
     {
       id: 18,
@@ -211,21 +193,23 @@ export const CurriculoContainer: React.FC = () => {
       id: 33,
       tipo: "Outros",
       pergunta: "Algo importante",
-      resposta: inscricaoResponse?.candidato.formulario?.importancia
+      resposta: inscricaoResponse?.candidato.formulario?.importancia,
     },
   ];
-  
+
   return (
-    
     <DataGrid
-    rows={rows}
-    columns={columns}
-    // autoHeight
-    pageSize={rows.length}
-    sx={{
-      boxShadow: 2,
-    }}
-    hideFooter
-  />
+      rows={rows}
+      columns={columns}
+      // autoHeight
+      onRowClick={(row) => {
+        alert(row.row.resposta);
+      }}
+      pageSize={rows.length}
+      sx={{
+        boxShadow: 2,
+      }}
+      hideFooter
+    />
   );
 };

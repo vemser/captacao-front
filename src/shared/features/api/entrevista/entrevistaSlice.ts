@@ -50,14 +50,14 @@ const entervistaSlice = apiSlice.injectEndpoints({
     }),
     getEntrevistas: builder.query<EntrervistaResponse, EntrevistasParams>({
       query: (data) => ({
-        url: "entrevista/entrevista",
+        url: "entrevista",
         method: "GET",
         headers: {
           // Authorization: `Bearer ${token}`,
         },
         params: {
-          pagina: 0, // data.pagina,
-          tamanho: 10, // data.tamanho,
+          pagina: data.pagina, // data.pagina,
+          tamanho: data.tamanho, // data.tamanho,
         },
       }),
     }),

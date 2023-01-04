@@ -10,14 +10,34 @@ import {
   IconButton,
   Button,
   Pagination,
+  Skeleton,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useGetEntrevistasQuery } from "shared/features/api/entrevista/entrevistaSlice";
 
 export const Interview: React.FC = () => {
   const navigate = useNavigate();
+  const { data, isLoading } = useGetEntrevistasQuery({
+    pagina: 0,
+    tamanho: 20,
+  });
+  const lista = data?.elementos;
+
+  const rows = () => {
+    return lista?.map((dados) => {
+      return {
+        id: dados.idEntrevista,
+        nome: dados.candidatoDTO.nome,
+        email: dados.candidatoDTO.email,
+        telefone: dados.candidatoDTO.telefone,
+        turno: dados.candidatoDTO.formulario?.turno,
+        estado: dados.candidatoDTO.estado,
+      };
+    });
+  };
 
   const columns = [
     {
@@ -62,26 +82,28 @@ export const Interview: React.FC = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      nome: "Daniel Jacon",
-      email: "danieljacon@dbccompany.com.br",
-      nota: 10,
-      telefone: "(19)98765-7829",
-      turno: "Manhã",
-      estado: "SP",
-    },
-    {
-      id: 2,
-      nome: "Daniel Jacon",
-      email: "danieljacon@dbccompany.com.br",
-      nota: 6,
-      telefone: "(19)98765-7829",
-      turno: "Manhã",
-      estado: "SP",
-    },
-  ];
+  // const rows = [
+  //   {
+  //     id: 1,
+  //     nome: "Daniel Jacon",
+  //     email: "danieljacon@dbccompany.com.br",
+  //     nota: 10,
+  //     telefone: "(19)98765-7829",
+  //     turno: "Manhã",
+  //     estado: "SP",
+  //   },
+  //   {
+  //     id: 2,
+  //     nome: "Daniel Jacon",
+  //     email: "danieljacon@dbccompany.com.br",
+  //     nota: 6,
+  //     telefone: "(19)98765-7829",
+  //     turno: "Manhã",
+  //     estado: "SP",
+  //   },
+  // ];
+
+  console.log(data);
 
   return (
     <Grid container spacing={2}>
@@ -143,21 +165,35 @@ export const Interview: React.FC = () => {
           </FormControl>
         </Stack>
       </Grid>
-      <Grid item xs={12} sx={{ height: "calc(100vh - 211px)", width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          onRowClick={({ row }) => {
-            navigate(`/entrevista/curriculo`, { state: row });
-          }}
-          sx={{
-            boxShadow: 2,
-          }}
-          hideFooter
-        />
-      </Grid>
+      {isLoading ? (
+        <Grid
+          item
+          xs={12}
+          sx={{ height: "calc(100vh - 211px)", width: "100%" }}
+        >
+          <Skeleton variant="rectangular" width="100%" height={"100%"} />
+        </Grid>
+      ) : (
+        <Grid
+          item
+          xs={12}
+          sx={{ height: "calc(100vh - 211px)", width: "100%" }}
+        >
+          <DataGrid
+            rows={rows() || []}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            onRowClick={({ row }) => {
+              navigate(`/entrevista/curriculo`, { state: row });
+            }}
+            sx={{
+              boxShadow: 2,
+            }}
+            hideFooter
+          />
+        </Grid>
+      )}
       <Grid item xs={12} display="flex" justifyContent="center">
         <Pagination
           count={5}

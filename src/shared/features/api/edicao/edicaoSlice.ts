@@ -1,3 +1,4 @@
+import { getToken } from "shared/utils/getToken";
 import { apiSlice } from "../";
 
 export interface Edicao {
@@ -22,7 +23,7 @@ const edicaoSlice = apiSlice.injectEndpoints({
         url: "edicao/listar-todas",
         method: "GET",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }),
     }),
@@ -31,7 +32,7 @@ const edicaoSlice = apiSlice.injectEndpoints({
         url: "edicao/criar-edicao",
         method: "POST",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
         body: data,
       }),
@@ -41,7 +42,7 @@ const edicaoSlice = apiSlice.injectEndpoints({
         url: `edicao/delete-fisico/${id}`,
         method: "DELETE",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }),
     }),

@@ -1,3 +1,4 @@
+import { getToken } from "shared/utils/getToken";
 import { apiSlice } from "../";
 import { Trilha, Trilhas } from "./types";
 
@@ -8,7 +9,7 @@ const trilhaSlice = apiSlice.injectEndpoints({
         url: "trilha/listar",
         method: "GET",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }),
     }),
@@ -17,7 +18,7 @@ const trilhaSlice = apiSlice.injectEndpoints({
         url: "trilha",
         method: "POST",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
         body: data,
       }),
@@ -27,7 +28,7 @@ const trilhaSlice = apiSlice.injectEndpoints({
         url: `trilha/${id}`,
         method: "DELETE",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }),
     }),

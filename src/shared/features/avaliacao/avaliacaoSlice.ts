@@ -10,10 +10,7 @@ import {
   IEmail,
   IAvaliacao
 } from './type'
-
-export const getToken = (): string => {
-  return localStorage.getItem('token') || ''
-}
+import { getToken } from 'shared/utils/getToken'
 
 const avaliacaoSlice = apiSlice.injectEndpoints({
   endpoints: build => ({
@@ -22,7 +19,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         url: 'avaliacao',
         method: 'GET',
         headers: {
-          // Authorization: `Bearer ${getToken()}`
+          Authorization: `Bearer ${getToken()}`
         },
         params: {
           pagina: data.pagina,
@@ -37,7 +34,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         url: `avaliacao/list-by-trilha?trilha=${data.trilha}`,
         method: 'GET',
         headers: {
-          // Authorization: `Bearer ${getToken()}`
+          Authorization: `Bearer ${getToken()}`
         }
         // params: {
 
@@ -49,7 +46,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         url: `avaliacao/list-by-edicao?edicao=${data.edicao}`,
         method: 'GET',
         headers: {
-          // Authorization: `Bearer ${getToken()}`
+          Authorization: `Bearer ${getToken()}`
         }
         // params: {
 
@@ -61,7 +58,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         url: `avaliacao/buscar-by-email?email=${data.email}`,
         method: 'GET',
         headers: {
-          // Authorization: `Bearer ${getToken()}`
+          Authorization: `Bearer ${getToken()}`
         }
         // params: {
 
@@ -75,7 +72,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         body: data,
         responseHandler: response => response.text(),
         headers: {
-          // Authorization: `Bearer ${getToken()}`
+          Authorization: `Bearer ${getToken()}`
         }
         // params: {
 

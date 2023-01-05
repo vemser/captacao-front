@@ -5,7 +5,7 @@ export interface Edicao {
   slice(arg0: number): unknown;
   nome: string;
 }
-export type Lista = Edicao[]
+export type Lista = Edicao[];
 
 const edicaoSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,6 +14,7 @@ const edicaoSlice = apiSlice.injectEndpoints({
         url: "edicao/edicao-atual",
         headers: {
           // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhbmllbC5qYWNvbiIsImp0aSI6Ijk4IiwiY2FyZ29zIjpbIlJPTEVfSU5TVFJVVE9SIiwiUk9MRV9HRVNUQU9fREVfUEVTU09BUyIsIlJPTEVfQURNSU4iLCJST0xFX0FMVU5PIl0sImlhdCI6MTY3Mjg3ODA2OSwiZXhwIjoxNjc1NDcwMDY5fQ.LuuvwlX674eBlAgvKY3S4-ZzpCiKp-RPjB9K7vJRPFU`,
         },
         responseHandler: (response) => response.text(),
       }),

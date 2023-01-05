@@ -1,14 +1,19 @@
-import { Button, Chip, Grid, Menu, MenuItem } from "@mui/material";
+import { Button, Grid, Menu, MenuItem } from "@mui/material";
 import { CurriculoContainer } from "../../components/CurriculoContainer";
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useGetInscricaoByIdMutation } from "shared/features/api/inscricao/inscricaoSlice";
-import { objeto } from "shared/utils/states";
-import { IElementos, IInscricao } from "shared/features/api/inscricao/types";
-import { el } from "@fullcalendar/core/internal-common";
+import React from "react";
+import { useAvaliarCandidatoMutation } from "shared/features/avaliacao/avaliacaoSlice";
+import { useGetLoggedUserQuery } from "shared/features/api/usuario/authSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const CandidatesCurriculum = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [avaliarCandidato] = useAvaliarCandidatoMutation();
+  const { state } = useLocation();
+  console.log(state);
+
+  const { data } = useGetLoggedUserQuery();
+  const navigate = useNavigate();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,8 +51,62 @@ export const CandidatesCurriculum = () => {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem onClick={handleClose}>Apto</MenuItem>
-          <MenuItem onClick={handleClose}>Não apto</MenuItem>
+          <MenuItem
+            onClick={async () => {
+              await toast.promise(
+                avaliarCandidato({
+                  aprovadoBoolean: true,
+                  // emailGestor: `${data?.login}@dbccompany.com.br`,
+                  emailGestor: "admin@dbccompany.com.br",
+                  idInscricao: state.id,
+                })
+                  .unwrap()
+                  .then(() => {
+                    navigate("/candidatos");
+                  }),
+                {
+                  pending: "Carregando...",
+                  success: "Candidato avaliado com sucesso!",
+                  error: {
+                    render() {
+                      return "Houve um erro ao avaliar esse candidato.";
+                    },
+                  },
+                }
+              );
+              handleClose();
+            }}
+          >
+            Apto
+          </MenuItem>
+          <MenuItem
+            onClick={async () => {
+              await toast.promise(
+                avaliarCandidato({
+                  aprovadoBoolean: false,
+                  // emailGestor: `${data?.login}@dbccompany.com.br`,
+                  emailGestor: "admin@dbccompany.com.br",
+                  idInscricao: state.id,
+                })
+                  .unwrap()
+                  .then(() => {
+                    navigate("/candidatos");
+                  }),
+                {
+                  pending: "Carregando...",
+                  success: "Candidato reprovado com sucesso!",
+                  error: {
+                    render() {
+                      return "Houve um erro ao avaliar esse candidato.";
+                    },
+                  },
+                }
+              );
+              handleClose();
+            }}
+          >
+            Não apto
+          </MenuItem>
         </Menu>
       </Grid>
       <CurriculoContainer />

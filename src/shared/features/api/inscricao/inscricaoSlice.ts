@@ -20,7 +20,7 @@ interface IEmail {
 
 const inscricaoSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getCandidatos: build.query<IInscricao, IGetInscritos>({
+    getCandidatos: build.mutation<IInscricao, IGetInscritos>({
       query: (data) => ({
         url: "inscricao",
         method: "GET",
@@ -77,7 +77,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetCandidatosQuery,
+  useGetCandidatosMutation,
   usePostInscricaoMutation,
   useGetListInscricaoByTrilhaMutation,
   useGetListInscricaoByEdicaoMutation,

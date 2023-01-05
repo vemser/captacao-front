@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material";
 import { ptBR } from "@mui/x-data-grid";
+import type {} from "@mui/x-data-grid/themeAugmentation";
+
 
 export const theme = createTheme(
   {
@@ -25,11 +27,12 @@ export const theme = createTheme(
       },
     },
     components: {
-      MuiTextField: {
+      MuiDataGrid: {
         styleOverrides: {
           root: {
-            "& label": {
-              color: "#1E62FE",
+            border: "none",
+            "& .MuiDataGrid-cell": {
+              color: "#040C2C",
             },
           },
         },

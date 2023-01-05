@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -10,19 +10,24 @@ import {
   Select,
   MenuItem,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import { FormGrid } from "../FormGrid";
 import {
   nextStep,
   changeData,
+  useSteps,
 } from "../../shared/features/subscription/stepsSlice";
-import { useDispatch } from "react-redux";
-import { SubscribeData } from "shared/interfaces";
+import { useDispatch, useSelector } from "react-redux";
+import { IFormQuery, SubscribeData } from "shared/interfaces";
 import { estadosBrasileiros } from "shared/utils/states";
 import { stepOneSchema } from "shared/schemas/subscription";
+import { useGetInputsQuery } from "shared/features/api/subscription/formSlice";
+import InputMask from "react-input-mask";
 
 export const StepOne: React.FC = () => {
   const [neurodiversidade, setNeurodiversidade] = useState("F");
+  const { data: formData } = useSelector(useSteps);
 
   const {
     register,
@@ -33,10 +38,19 @@ export const StepOne: React.FC = () => {
   });
 
   const dispatch = useDispatch();
+  const { data } = useGetInputsQuery();
+  const formulario = data?.data.formulario;
 
   const onSubmit = (data: SubscribeData) => {
+    data.neurodiversidade?.length === undefined &&
+      (data.neurodiversidade = "Não possui");
+
     dispatch(nextStep());
     dispatch(changeData(data));
+  };
+
+  const FormName: React.FC<IFormQuery> = ({ nome }) => {
+    return <>{nome ? nome : <CircularProgress size={22} />}</>;
   };
 
   return (
@@ -44,46 +58,91 @@ export const StepOne: React.FC = () => {
       <Grid item xs={12}>
         <TextField
           fullWidth
-          label="Nome"
+          defaultValue={formData?.nome}
+          label={<FormName nome={formulario?.nome} />}
           error={!!errors.nome}
           helperText={errors.nome?.message}
+          id="step-1-nome"
           {...register("nome")}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} lg={6}>
         <TextField
           fullWidth
-          label="E-mail"
+          defaultValue={formData?.email}
+          label={<FormName nome={formulario?.email} />}
           error={!!errors.email}
           helperText={errors.email?.message}
+          id="step-1-email"
           {...register("email")}
         />
       </Grid>
       <Grid item xs={12} lg={6}>
         <TextField
           fullWidth
-          label="CPF"
-          error={!!errors.cpf}
-          helperText={errors.cpf?.message}
+          defaultValue={formData?.rg}
+          label={<FormName nome={formulario?.rg} />}
+          error={!!errors.rg}
+          helperText={errors.rg?.message}
+          id="step-1-rg"
+          {...register("rg")}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <InputMask
+          mask="999.999.999-99"
+          maskChar=" "
           {...register("cpf")}
-        />
+          defaultValue={formData?.cpf}
+        >
+          {
+            // @ts-ignore
+            (inputProps) => (
+              <TextField
+                {...inputProps}
+                label={<FormName nome={formulario?.cpf} />}
+                variant="outlined"
+                id="step-1-cpf"
+                helperText={errors.cpf?.message}
+                error={!!errors.cpf}
+                sx={{
+                  width: "100%",
+                }}
+              />
+            )
+          }
+        </InputMask>
       </Grid>
-      <Grid item xs={12} lg={6}>
-        <TextField
-          fullWidth
-          label="Telefone"
-          error={!!errors.telefone}
-          helperText={errors.telefone?.message}
+      <Grid item xs={6} display="flex" flexDirection="column">
+        <InputMask
+          mask="(99)99999-9999"
+          maskChar=" "
           {...register("telefone")}
-        />
+          defaultValue={formData?.telefone}
+        >
+          {
+            // @ts-ignore
+            (inputProps) => (
+              <TextField
+                {...inputProps}
+                label={<FormName nome={formulario?.telefone} />}
+                variant="outlined"
+                error={!!errors.telefone}
+                helperText={errors.telefone?.message}
+                id="step-1-telefone"
+              />
+            )
+          }
+        </InputMask>
       </Grid>
       <Grid item xs={12} lg={6}>
         <TextField
           fullWidth
-          label="Data de Nascimento"
+          label={<FormName nome={formulario?.dataNascimento} />}
           type="date"
           error={!!errors.dataNascimento}
           helperText={errors.dataNascimento?.message}
+          id="step-1-dataNascimento"
           InputLabelProps={{ shrink: true }}
           {...register("dataNascimento")}
         />
@@ -92,25 +151,22 @@ export const StepOne: React.FC = () => {
       <Grid item xs={12} lg={6}>
         <TextField
           fullWidth
-          label="Cidade"
+          label={<FormName nome={formulario?.cidade} />}
+          defaultValue={formData?.cidade}
           error={!!errors.cidade}
           helperText={errors.cidade?.message}
+          id="step-1-cidade"
           {...register("cidade")}
         />
       </Grid>
       <Grid item xs={12} lg={6}>
         <FormControl fullWidth>
-          <InputLabel
-            sx={{
-              color: "primary.main",
-            }}
-          >
-            Estado
-          </InputLabel>
+          <InputLabel>Estado</InputLabel>
           <Select
-            label="Estado"
+            label={<FormName nome={formulario?.estado} />}
             error={!!errors.estado}
-            defaultValue="AC"
+            defaultValue={formData?.estado ? formData.estado : "AC"}
+            id="step-1-estado"
             {...register("estado")}
           >
             {estadosBrasileiros.map((estado) => (
@@ -129,19 +185,16 @@ export const StepOne: React.FC = () => {
           arrow
         >
           <FormControl fullWidth>
-            <InputLabel
-              sx={{
-                color: "primary.main",
-              }}
-            >
-              Você possui alguma neurodiversidade?
+            <InputLabel>
+              {<FormName nome={formulario?.neurodiversidade} />}
             </InputLabel>
             <Select
-              label="Você possui alguma neurodiversidade?"
+              label={<FormName nome={formulario?.neurodiversidade} />}
               defaultValue="F"
               onChange={() => {
                 setNeurodiversidade(neurodiversidade === "F" ? "T" : "F");
               }}
+              id="step-1-neurodiversidade"
             >
               <MenuItem value="F">Não</MenuItem>
               <MenuItem value="T">Sim</MenuItem>
@@ -154,15 +207,17 @@ export const StepOne: React.FC = () => {
           <TextField
             fullWidth
             label="Qual neurodiversidade você possui?"
+            defaultValue={formData?.neurodiversidade}
             error={!!errors.neurodiversidade}
             helperText={errors.neurodiversidade?.message}
+            id="step-1-neurodiversidade"
             {...register("neurodiversidade")}
           />
         </Grid>
       )}
 
       <Grid item xs={12}>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" id="step-1-enviar">
           Próximo
         </Button>
       </Grid>

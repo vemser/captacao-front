@@ -17,22 +17,6 @@ export const FormGrid: React.FC<IFormGridProps> = ({ children, onSubmit }) => {
       transition={{ duration: 0.5 }}
       spacing={2}
       onSubmit={onSubmit}
-      sx={{
-        "& .MuiInput-underline:after": {
-          borderBottomColor: "primary.main",
-          color: "primary.main",
-        },
-        "& .MuiOutlinedInput-root": {
-          color: "primary.main",
-          "& fieldset": {
-            color: "primary.main",
-            borderColor: "primary.main",
-          },
-          "& .MuiFormLabel-root": {
-            color: "primary.main",
-          },
-        },
-      }}
     >
       {children}
     </Grid>

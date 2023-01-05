@@ -1,25 +1,25 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import LogoBlue from "assets/logo-blue.webp";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { Box, Button, Container, Stack, Typography } from '@mui/material'
+import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
+import LogoBlue from 'assets/logo-blue.webp'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 
 export const Home: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
-        width: "100%",
+        width: '100%',
         backgroundImage: {
-          xs: "none",
-          md: `url(${require("assets/circular-bullseye.png")})`,
+          xs: 'none',
+          md: `url(${require('assets/circular-bullseye.png')})`
         },
-        backgroundColor: "secondary.main",
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "right",
-        minHeight: "100vh",
-        color: "whitesmoke",
+        backgroundColor: 'secondary.main',
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'right',
+        minHeight: '100vh',
+        color: 'whitesmoke'
       }}
     >
       <Container maxWidth="md">
@@ -32,21 +32,21 @@ export const Home: React.FC = () => {
             spacing={4}
             minHeight="100vh"
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
                 gap: 2,
-                justifyContent: "center",
+                justifyContent: 'center',
                 pr: {
                   xs: 0,
-                  md: 4,
-                },
+                  md: 4
+                }
               }}
             >
               <Typography variant="body1" component="h1">
@@ -57,7 +57,7 @@ export const Home: React.FC = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  color: "primary.main",
+                  color: 'primary.main'
                 }}
               >
                 Vamos moldar o amanhã!
@@ -71,17 +71,18 @@ export const Home: React.FC = () => {
             </Box>
             <Box
               sx={{
-                display: "flex",
+                display: 'flex',
                 flexDirection: {
-                  xs: "column",
-                  md: "row",
+                  xs: 'column',
+                  md: 'row'
                 },
-                alignItems: "center",
+                alignItems: 'center',
                 justifyContent: {
-                  xs: "center",
-                  md: "flex-start",
+                  xs: 'center',
+                  md: 'flex-start'
                 },
                 gap: 4,
+                mb: '100px'
               }}
             >
               <Box
@@ -91,8 +92,8 @@ export const Home: React.FC = () => {
                 sx={{
                   maxWidth: {
                     xs: 120,
-                    md: 120,
-                  },
+                    md: 120
+                  }
                 }}
               />
               <Box
@@ -101,15 +102,15 @@ export const Home: React.FC = () => {
                 animate={{ x: 2 }}
                 transition={{
                   repeat: Infinity,
-                  repeatType: "reverse",
-                  duration: 0.5,
+                  repeatType: 'reverse',
+                  duration: 0.5
                 }}
                 sx={{
                   fontSize: 16,
                   width: {
-                    xs: "100%",
-                    md: "auto",
-                  },
+                    xs: '100%',
+                    md: 'auto'
+                  }
                 }}
               >
                 <Button
@@ -118,16 +119,35 @@ export const Home: React.FC = () => {
                   color="inherit"
                   endIcon={<NavigateNextIcon />}
                   onClick={() => {
-                    navigate("/subscription");
+                    navigate('/subscription')
                   }}
                 >
                   Ir para a inscrição
                 </Button>
               </Box>
             </Box>
+            <Box
+              sx={{
+                height: '80px',
+                display: 'flex',
+                alignItems: 'flex-end'
+              }}
+            >
+              <Button
+                variant="text"
+                size="small"
+                sx={{ ml: '-5px' }}
+                onClick={() => {
+                  navigate('/login')
+                }}
+                id="button-admin"
+              >
+                Entrar como administrador
+              </Button>
+            </Box>
           </Stack>
         </motion.div>
       </Container>
     </Box>
-  );
-};
+  )
+}

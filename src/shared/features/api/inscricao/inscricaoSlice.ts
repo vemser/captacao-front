@@ -66,7 +66,7 @@ const inscricaoSlice = apiSlice.injectEndpoints({
     }),
     getListInscricaoByEmail: build.mutation<IElementos[] | [], IEmail>({
       query: (data) => ({
-        url: "inscricao/buscar-by-email",
+        url: "inscricao/find-by-email",
         method: "GET",
         params: { email: data.email },
         headers: { Authorization: `Bearer ${getToken()}`}

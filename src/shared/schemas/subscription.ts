@@ -6,7 +6,7 @@ export const stepOneSchema = Yup.object().shape({
     .required("O nome é obrigatório")
     .min(3, "O nome deve ter no mínimo 3 letras")
     .max(50, "O nome deve ter no máximo 50 letras")
-    .matches(/^[a-zA-Z ]+$/, "O nome deve ter apenas letras e espaços")
+    .matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/, "O nome deve ter apenas letras e espaços")
     .test("nome", "O nome deve ter no mínimo sobrenome", (value: any) => {
       if (value) {
         const [nome, sobrenome] = value.split(" ");
@@ -42,7 +42,14 @@ export const stepOneSchema = Yup.object().shape({
   cidade: Yup.string()
     .required("A cidade é obrigatória")
     .min(3, "A cidade deve ter no mínimo 3 letras")
-    .max(50, "A cidade deve ter no máximo 50 letras"),
+    .max(50, "A cidade deve ter no máximo 50 letras")
+    .matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/, "A Cidade deve ter apenas letras e espaços")
+    .test("cidade", "A cidade não pode conter apenas espaço", (value: any) => {
+      if (value.trim().length == 0) {
+        return false;
+      }
+      return true;
+    }),
 
   dataNascimento: Yup.date()
     .required("A data de nascimento é obrigatória")

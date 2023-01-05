@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 export const AptosCurriculum = () => {
   const { state } = useLocation()
-  console.log(state)
+
   const navigate = useNavigate()
   const [open, setOpen] = React.useState(false)
 
@@ -32,12 +32,12 @@ export const AptosCurriculum = () => {
   const [updateNota] = useUpdateNotaMutation()
 
   const [valueNota, setValueNota] = useState<number>(0)
-
+  console.log(state.notaProva)
   return (
     <Grid container spacing={2}>
       <Grid xs={12} item>
         <Button variant="contained" onClick={handleClickOpen}>
-          Adicionar Nota
+          {state.notaProva > 1 ? ' Editar Nota' : 'Adicionar Nota'}
         </Button>
         <Dialog
           open={open}
@@ -72,7 +72,7 @@ export const AptosCurriculum = () => {
                   },
                   idCandidato: state.idCandidato
                 })
-                navigate('/aptos')
+                navigate('/prova')
               }}
               autoFocus
             >
@@ -85,7 +85,7 @@ export const AptosCurriculum = () => {
       <Grid
         item
         xs={12}
-        md={6}
+        md={12}
         sx={{ height: 'calc(100vh - 150px)', width: '100%' }}
       >
         <CurriculoContainer />

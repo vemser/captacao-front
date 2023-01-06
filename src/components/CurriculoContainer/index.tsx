@@ -26,6 +26,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { useGetCandidatosByEmailMutation } from "shared/features/api/candidato/candidatoSlice";
+import { Elemento } from "shared/features/api/candidato/types";
 
 const columns = [
   {
@@ -45,8 +47,8 @@ const columns = [
 
 export const CurriculoContainer: React.FC = () => {
   const { state } = useLocation();
-  const [getInscricaoById] = useGetInscricaoByIdMutation();
-  const [inscricaoResponse, setInscricaoResponse] = useState<IElementos | null>(
+  const [getCandidatosByEmail] = useGetCandidatosByEmailMutation();
+  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(
     null
   );
   const [curriculo, setCurriculo] = useState<string | null>(null);
@@ -61,9 +63,13 @@ export const CurriculoContainer: React.FC = () => {
     useState<string>("null");
 
   useEffect(() => {
-    getInscricaoById(state?.id)
+    getCandidatosByEmail(state?.email)
       .unwrap()
-      .then((res) => setInscricaoResponse(res));
+      .then((res) => {
+        setInscricaoResponse(res);
+        console.log(res);
+      })
+      .catch((e) => console.log(e));
   }, []);
 
   const [open, setOpen] = React.useState(false);
@@ -81,8 +87,8 @@ export const CurriculoContainer: React.FC = () => {
 
   const [getCurriculo] = useGetCurriculoMutation();
   useEffect(() => {
-    if (inscricaoResponse?.candidato.formulario?.idFormulario) {
-      getCurriculo(inscricaoResponse.candidato.formulario.idFormulario)
+    if (inscricaoResponse?.formulario?.idFormulario) {
+      getCurriculo(inscricaoResponse.formulario.idFormulario)
         .unwrap()
         .then((e) => {
           setCurriculo(e);
@@ -116,157 +122,162 @@ export const CurriculoContainer: React.FC = () => {
       id: 1,
       tipo: "Pessoal",
       pergunta: formulario?.nome,
-      resposta: inscricaoResponse?.candidato.nome,
+      resposta: inscricaoResponse?.nome,
     },
     {
       id: 2,
       tipo: "Pessoal",
       pergunta: formulario?.email,
-      resposta: inscricaoResponse?.candidato.email,
+      resposta: inscricaoResponse?.email,
     },
     {
       id: 3,
       tipo: "Pessoal",
       pergunta: formulario?.telefone,
-      resposta: inscricaoResponse?.candidato.telefone,
+      resposta: inscricaoResponse?.telefone,
     },
     {
       id: 4,
       tipo: "Pessoal",
       pergunta: formulario?.cpf,
-      resposta: inscricaoResponse?.candidato.cpf,
+      resposta: inscricaoResponse?.cpf,
     },
     {
       id: 5,
       tipo: "Pessoal",
       pergunta: formulario?.rg,
-      resposta: inscricaoResponse?.candidato.rg,
+      resposta: inscricaoResponse?.rg,
     },
     {
       id: 6,
       tipo: "Pessoal",
       pergunta: formulario?.dataNascimento,
-      resposta: inscricaoResponse?.candidato.dataNascimento,
+      resposta: inscricaoResponse?.dataNascimento,
     },
     {
       id: 7,
       tipo: "Pessoal",
       pergunta: formulario?.estado,
-      resposta: inscricaoResponse?.candidato.estado,
+      resposta: inscricaoResponse?.estado,
     },
     {
       id: 8,
       tipo: "Pessoal",
       pergunta: formulario?.cidade,
-      resposta: inscricaoResponse?.candidato.cidade,
+      resposta: inscricaoResponse?.cidade,
     },
     {
       id: 10,
       tipo: "Pessoal",
       pergunta: formulario?.neurodiversidade,
-      resposta: inscricaoResponse?.candidato.formulario?.neurodiversidade,
+      resposta: inscricaoResponse?.formulario?.neurodiversidade,
     },
     {
       id: 11,
       tipo: "Pessoal",
       pergunta: formularioCurriculo?.s2OriSexual,
-      resposta: inscricaoResponse?.candidato.formulario?.orientacao,
+      resposta: inscricaoResponse?.formulario?.orientacao,
     },
     {
       id: 12,
       tipo: "Pessoal",
       pergunta: formularioCurriculo?.s2GNero,
-      resposta: inscricaoResponse?.candidato.formulario?.genero,
+      resposta: inscricaoResponse?.formulario?.genero,
     },
     {
       id: 13,
       tipo: "Pessoal",
       pergunta: formularioCurriculo?.s2DeficiNcia,
-      resposta: inscricaoResponse?.candidato.pcdboolean,
+      resposta: inscricaoResponse?.pcdboolean,
     },
     {
       id: 14,
       tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Curso,
-      resposta: inscricaoResponse?.candidato.formulario?.curso,
+      resposta: inscricaoResponse?.formulario?.curso,
     },
     {
       id: 15,
       tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Turno,
-      resposta: inscricaoResponse?.candidato.formulario?.turno,
+      resposta: inscricaoResponse?.formulario?.turno,
     },
     {
       id: 16,
       tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Instituicao,
-      resposta: inscricaoResponse?.candidato.formulario?.instituicao,
+      resposta: inscricaoResponse?.formulario?.instituicao,
     },
     {
       id: 17,
       tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2InglS,
-      resposta: inscricaoResponse?.candidato.formulario?.ingles,
+      resposta: inscricaoResponse?.formulario?.ingles,
     },
     {
       id: 18,
       tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Espanhol,
-      resposta: inscricaoResponse?.candidato.formulario?.espanhol,
+      resposta: inscricaoResponse?.formulario?.espanhol,
     },
     {
       id: 23,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2TextoLingProva,
-      resposta: inscricaoResponse?.candidato.formulario?.prova,
+      resposta: inscricaoResponse?.formulario?.prova,
     },
     {
       id: 24,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2TextoDisp,
-      resposta: inscricaoResponse?.candidato.formulario?.efetivacao,
+      resposta: inscricaoResponse?.formulario?.efetivacao,
     },
     {
       id: 25,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2DispHaula,
-      resposta: inscricaoResponse?.candidato.formulario?.disponibilidade,
+      resposta: inscricaoResponse?.formulario?.disponibilidade,
     },
     {
       id: 26,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2Trilha,
-      resposta: inscricaoResponse?.candidato.formulario?.trilhas || "Nenhuma",
+      // resposta: inscricaoResponse?.formulario?.trilhas || "Nenhuma",
+      resposta: inscricaoResponse?.formulario?.trilhas
+        .map((trilha) => {
+          return trilha.nome;
+        })
+        .join(", "),
     },
     {
       id: 28,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2Linkedin,
-      resposta: inscricaoResponse?.candidato.formulario?.linkedin,
+      resposta: inscricaoResponse?.formulario?.linkedin,
     },
     {
       id: 29,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2Github,
-      resposta: inscricaoResponse?.candidato.formulario?.github,
+      resposta: inscricaoResponse?.formulario?.github,
     },
     {
       id: 31,
       tipo: "Outros",
       pergunta: "LGPD",
-      resposta: inscricaoResponse?.candidato.formulario?.lgpd,
+      resposta: inscricaoResponse?.formulario?.lgpd,
     },
     {
       id: 32,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2OutroMotivo,
-      resposta: inscricaoResponse?.candidato.formulario?.resposta,
+      resposta: inscricaoResponse?.formulario?.resposta,
     },
     {
       id: 33,
       tipo: "Outros",
       pergunta: formularioCurriculo?.s2AlgoImp,
-      resposta: inscricaoResponse?.candidato.formulario?.importancia,
+      resposta: inscricaoResponse?.formulario?.importancia,
     },
   ];
 
@@ -275,67 +286,71 @@ export const CurriculoContainer: React.FC = () => {
       id: 1,
       tipo: "Pessoal",
       pergunta: "Nome",
-      resposta: inscricaoResponse?.candidato.nome,
+      resposta: inscricaoResponse?.nome,
     },
     {
       id: 2,
       tipo: "Pessoal",
       pergunta: "Email",
-      resposta: inscricaoResponse?.candidato.email,
+      resposta: inscricaoResponse?.email,
     },
     {
       id: 3,
       tipo: "Pessoal",
       pergunta: "Telefone",
-      resposta: inscricaoResponse?.candidato.telefone,
+      resposta: inscricaoResponse?.telefone,
     },
     {
       id: 4,
       tipo: "Pessoal",
       pergunta: "CPF",
-      resposta: inscricaoResponse?.candidato.cpf,
+      resposta: inscricaoResponse?.cpf,
     },
     {
       id: 5,
       tipo: "Pessoal",
       pergunta: "RG",
-      resposta: inscricaoResponse?.candidato.rg,
+      resposta: inscricaoResponse?.rg,
     },
     {
       id: 6,
       tipo: "Pessoal",
       pergunta: "Data de Nascimento",
-      resposta: inscricaoResponse?.candidato.dataNascimento,
+      resposta: inscricaoResponse?.dataNascimento,
     },
     {
       id: 7,
       tipo: "Pessoal",
       pergunta: "Estado",
-      resposta: inscricaoResponse?.candidato.estado,
+      resposta: inscricaoResponse?.estado,
     },
     {
       id: 8,
       tipo: "Pessoal",
       pergunta: "Cidade",
-      resposta: inscricaoResponse?.candidato.cidade,
+      resposta: inscricaoResponse?.cidade,
     },
     {
       id: 9,
       tipo: "Pessoal",
       pergunta: "Neurodiversidade",
-      resposta: inscricaoResponse?.candidato.formulario?.neurodiversidade,
+      resposta: inscricaoResponse?.formulario?.neurodiversidade,
     },
     {
       id: 10,
       tipo: "Pessoal",
       pergunta: "PCD",
-      resposta: inscricaoResponse?.candidato.pcdboolean,
+      resposta: inscricaoResponse?.pcdboolean,
     },
     {
       id: 11,
       tipo: "Outros",
       pergunta: "Trilhas",
-      resposta: inscricaoResponse?.candidato.formulario?.trilhas,
+      resposta: inscricaoResponse?.formulario?.trilhas
+        .map((trilha) => {
+          return trilha.nome;
+        })
+        .join(", "),
     },
   ];
 
@@ -379,7 +394,12 @@ export const CurriculoContainer: React.FC = () => {
         }}
         spacing={1}
       >
-        <Grid item xs={12} lg={6} sx={{ height: "calc(100vh - 160px)", width: "100%" }}>
+        <Grid
+          item
+          xs={12}
+          lg={6}
+          sx={{ height: "calc(100vh - 160px)", width: "100%" }}
+        >
           <DataGrid
             rows={rowsDois}
             columns={columns}

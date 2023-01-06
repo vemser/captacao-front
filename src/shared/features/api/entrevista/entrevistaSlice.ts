@@ -1,4 +1,5 @@
 // import {  } from "./types";
+import { getToken } from "shared/utils/getToken";
 import { apiSlice } from "../";
 import {
   EntrevistaObsParams,
@@ -53,7 +54,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         url: "entrevista",
         method: "GET",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
         params: {
           pagina: data.pagina, // data.pagina,
@@ -61,6 +62,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    
     getEntrevistaPorMes: builder.query<
       EntrervistaResponse,
       EntrevistasMesParams

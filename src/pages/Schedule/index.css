@@ -3,6 +3,12 @@
   z-index: 10;
 }
 
+.fc-media-screen {
+  margin: 0 auto;
+  max-width: 80%;
+  max-height: 70vh;
+}
+
 .fc-direction-ltr .fc-daygrid-event.fc-event-end:hover {
   cursor: pointer;
 }
@@ -31,4 +37,7 @@
 
 .fc-toolbar-title {
   font-size: 25px !important;
+}
+.hide{
+  display: none;
 }

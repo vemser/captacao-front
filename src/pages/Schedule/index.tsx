@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Typography, useTheme } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useTheme } from '@mui/material'
 import { Box } from '@mui/system'
 import useMediaQuery from '@mui/material/useMediaQuery'
 // import { useAuth, useInterview } from '../../shared/contexts'
@@ -7,6 +7,8 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { useNavigate } from 'react-router-dom'
 import './index.css'
+import { useGetEntrevistasQuery } from 'shared/features/api/entrevista/entrevistaSlice'
+import { ILinguagens } from 'shared/interfaces'
 
 export const Schedule = () => {
   // const { getByMonthYear, schedulesFormated } = useInterview()
@@ -15,11 +17,66 @@ export const Schedule = () => {
   const navigate = useNavigate()
   const theme = useTheme()
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+  const [modalInfos, setModalInfos] = useState<any>()
+  const [open, setOpen] = React.useState(false);
+
 
   // useEffect(() => {
   //   let date = new Date()
   //   getByMonthYear(date.getMonth() + 1, date.getFullYear())
   // }, [])
+
+  const {data: entrevistasArray} = useGetEntrevistasQuery({pagina: 0, tamanho: 20})
+
+  console.log(entrevistasArray?.elementos);
+  
+
+  const entrevistasFilter = entrevistasArray?.elementos.map((entrevista) => {
+
+    let legendaColor = ''
+
+    entrevista.legenda == 'CONFIRMADA' ? legendaColor = '#4caf50' :
+    entrevista.legenda == 'PENDENTE' ? legendaColor = '#ffeb3b' :
+    entrevista.legenda == 'CANCELADA' ? legendaColor = '#f6685e' :
+    legendaColor = '#999' 
+
+
+    return {
+      date: entrevista.dataEntrevista,
+      title: entrevista.candidatoDTO.nome,
+      extendedProps: {
+        legenda: entrevista.legenda,
+        data: entrevista.dataEntrevista,
+        observacoes: entrevista.observacoes,
+        nascimento: String(entrevista.candidatoDTO.dataNascimento).split('-').reverse().join('/'),
+        cidade: entrevista.candidatoDTO.cidade,
+        estado: entrevista.candidatoDTO.estado,
+        telefone: entrevista.candidatoDTO.telefone,
+        email: entrevista.candidatoDTO.email,
+        linguagens: entrevista.candidatoDTO.linguagens,
+        notaProva: entrevista.candidatoDTO.notaProva,
+        observacoesTecnicas: entrevista.candidatoDTO.observacoes,
+        parecerComportamental: entrevista.candidatoDTO.parecerComportamental,
+        parecerTecnico: entrevista.candidatoDTO.parecerTecnico,
+
+      },
+      color: legendaColor
+
+    }
+  })
+
+  const handleModal = (info: any) => {
+    setOpen(!open)
+    setModalInfos(info.event)
+    console.log(info.event);
+    document.getElementById('modal-id')?.classList.toggle('hide')
+    document.getElementById('container-calendar-schedules')?.classList.toggle('blur')
+    document.getElementById('subtitle-legenda-schedules')?.classList.toggle('blur')
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -36,6 +93,10 @@ export const Schedule = () => {
           <Box width="100%" sx={{ paddingBottom: '5%' }}>
             <FullCalendar
               plugins={[dayGridPlugin]}
+              events={entrevistasFilter}
+              selectable={true} 
+              navLinks={true}
+              editable={true}
               initialView="dayGridMonth"
               // events={schedulesFormated}
               datesSet={arg => {
@@ -44,10 +105,21 @@ export const Schedule = () => {
                 // getByMonthYear(date.getMonth() + 2, date.getFullYear())
               }}
               locale="pt-br"
-              eventClick={info => {
-                navigate('/detail-interview', {
-                  state: info.event.extendedProps.state
-                })
+              eventClick={
+                function(info) {
+                  handleModal(info)
+                }
+              }
+              headerToolbar={{
+                left: 'dayGridMonth,dayGridWeek,dayGridDay',
+                center: 'title',
+                right: 'prev,next,today',
+              }}
+              buttonText={{
+                today: 'Hoje',
+                month: "Mês",
+                week: "Semana",
+                day: 'Dia'
               }}
             />
           </Box>
@@ -103,7 +175,7 @@ export const Schedule = () => {
           </Box>
           <Box width="45%" display="flex" flexDirection="column" gap="1rem">
             <Typography id="subtitle-editar-calendario-schedules">
-              Editar Calenário
+              Editar Calendário
             </Typography>
             {/* {!isAdmin || isGestor || isInstructor ? ( */}
             <Button
@@ -134,6 +206,119 @@ export const Schedule = () => {
             </Button>
           </Box>
         </Box>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle color="primary">Candidato {modalInfos?.title}</DialogTitle>
+          <DialogContent>
+
+            <Typography
+              component="h5"
+              variant="h5"
+              sx={{ fontWeight: 600, margin: '10px 0'}}
+            >
+              Dados Pessoais do Candidato:
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Data de nascimento: {modalInfos?.extendedProps.nascimento}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Cidade: {modalInfos?.extendedProps.cidade}/{modalInfos?.extendedProps.estado}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              telefone: {modalInfos?.extendedProps.telefone}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+              sx={{ fontWeight: 600, margin: '10px 0'}}
+            >
+              Dados Técnicos do Candidato:
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Linguagens: {modalInfos?.extendedProps.linguagens.map((linguagem:ILinguagens) => {
+                return <Typography
+                  component="h5"
+                  variant="h5"
+                >
+                {linguagem.nome}
+                </Typography>
+              })}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Nota da Prova: {modalInfos?.extendedProps.notaProva}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Observações Técnicas: {modalInfos?.extendedProps.observacoesTecnicas}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Parecer Comportamental: {modalInfos?.extendedProps.parecerComportamental}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Parecer Técnico: {modalInfos?.extendedProps.parecerTecnico}
+            </Typography>
+            
+
+            <Typography
+              component="h5"
+              variant="h5"
+              sx={{ fontWeight: 600, margin: '10px 0'}}
+            >
+              Informações da Entrevista:
+            </Typography>
+
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Status: {modalInfos?.extendedProps.legenda}
+            </Typography>
+
+            <Typography
+              component="h5"
+              variant="h5"
+            >
+              Observações: {modalInfos?.extendedProps.observacoes}
+            </Typography>
+        
+        
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Voltar</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </>
   )

@@ -1,4 +1,5 @@
 // import {  } from "./types";
+import { getToken } from "shared/utils/getToken";
 import { apiSlice } from "../";
 import {
   EntrevistaObsParams,
@@ -43,7 +44,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         url: `entrevista/marcar-entrevista`,
         method: "POST",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
         body: data,
       }),

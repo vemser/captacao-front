@@ -11,6 +11,7 @@ import {
   Button,
   Pagination,
   Skeleton,
+  Typography,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -39,6 +40,7 @@ export const Interview: React.FC = () => {
             return trilha.nome;
           })
           .join(", "),
+        notas: dados?.notaProva,
       };
     });
   };
@@ -69,9 +71,21 @@ export const Interview: React.FC = () => {
       flex: 1,
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: "notas",
+      headerName: "Notas",
       minWidth: 90,
+      renderCell: (params: any) => {
+        return (
+          <Typography
+            variant="body2"
+            sx={{
+              color: params.value >= 60 ? "success.main" : "error.main",
+            }}
+          >
+            {params.value}
+          </Typography>
+        );
+      },
     },
     {
       field: "entrervista",
@@ -82,27 +96,6 @@ export const Interview: React.FC = () => {
       },
     },
   ];
-
-  // const rows = [
-  //   {
-  //     id: 1,
-  //     nome: "Daniel Jacon",
-  //     email: "danieljacon@dbccompany.com.br",
-  //     nota: 10,
-  //     telefone: "(19)98765-7829",
-  //     turno: "Manhã",
-  //     estado: "SP",
-  //   },
-  //   {
-  //     id: 2,
-  //     nome: "Daniel Jacon",
-  //     email: "danieljacon@dbccompany.com.br",
-  //     nota: 6,
-  //     telefone: "(19)98765-7829",
-  //     turno: "Manhã",
-  //     estado: "SP",
-  //   },
-  // ];
 
   return (
     <Grid container spacing={2}>
@@ -124,9 +117,6 @@ export const Interview: React.FC = () => {
                   </IconButton>
                 </InputAdornment>
               }
-              //   error={!!errors.nome}
-              //   helperText={errors.nome?.message}
-              //   {...register("nome")}
               id="registros-search-by-email"
               label="Pesquisar por Email"
             />
@@ -136,9 +126,7 @@ export const Interview: React.FC = () => {
             <Select
               label="Filtrar por trilha"
               id="registros-filter-by-trilha"
-              // error={!!errors.estado}
               defaultValue=""
-              // {...register("estado")}
             >
               <MenuItem value="" disabled></MenuItem>
               <MenuItem value="qa">QA</MenuItem>
@@ -151,9 +139,6 @@ export const Interview: React.FC = () => {
             <Select
               label="Filtrar por edição"
               id="registros-filter-by-edition"
-              // error={!!errors.estado}
-              // defaultValue="AC"
-              // {...register("estado")}
               defaultValue=""
             >
               <MenuItem value="" disabled></MenuItem>

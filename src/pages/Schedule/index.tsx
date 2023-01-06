@@ -206,38 +206,47 @@ export const Schedule = () => {
             </Button>
           </Box>
         </Box>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle color="primary">Candidato {modalInfos?.title}</DialogTitle>
+        <Dialog open={open} onClose={handleClose} fullScreen>
+          <DialogTitle sx={{textAlign: 'center', marginTop: '40px', fontWeight: 600}} color="primary">Candidato {modalInfos?.title}</DialogTitle>
           <DialogContent>
 
-            <Typography
-              component="h5"
-              variant="h5"
-              sx={{ fontWeight: 600, margin: '10px 0'}}
-            >
-              Dados Pessoais do Candidato:
-            </Typography>
+            <Box sx={{display: 'flex', flexDirection: 'column', gap:'30px'}}>
+              <Typography
+                component="h5"
+                variant="h5"
+                sx={{ fontWeight: 600, margin: '10px 0'}}
+              >
+                Dados Pessoais do Candidato:
+              </Typography>
 
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Data de nascimento: {modalInfos?.extendedProps.nascimento}
-            </Typography>
+              <Typography
+                component="h5"
+                variant="h5"
+              >
+                Data de nascimento: {modalInfos?.extendedProps.nascimento}
+              </Typography>
 
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Cidade: {modalInfos?.extendedProps.cidade}/{modalInfos?.extendedProps.estado}
-            </Typography>
+              <Typography
+                component="h5"
+                variant="h5"
+              >
+                Cidade: {modalInfos?.extendedProps.cidade}/{modalInfos?.extendedProps.estado}
+              </Typography>
 
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              telefone: {modalInfos?.extendedProps.telefone}
-            </Typography>
+              <Typography
+                component="h5"
+                variant="h5"
+              >
+                telefone: {modalInfos?.extendedProps.telefone}
+              </Typography>
+
+
+            </Box>
+
+            
+
+
+           
 
             <Typography
               component="h5"

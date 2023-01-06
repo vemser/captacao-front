@@ -11,6 +11,7 @@ import {
   Button,
   Pagination,
   Skeleton,
+  Box,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -115,54 +116,102 @@ export const Interview: React.FC = () => {
           }}
           spacing={2}
         >
-          <FormControl fullWidth variant="outlined">
+           <FormControl fullWidth variant="outlined">
             <InputLabel>Pesquisar por Email</InputLabel>
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton edge="end">
+                  <IconButton
+                    edge="end"
+                    // value={email}
+                    // onClick={() => {
+                    //   getInscricaoByEmail({
+                    //     email: email,
+                    //   })
+                    //     .unwrap()
+                    //     .then((data) => setEmailResult(data));
+                    // }}
+                  >
                     <Search color="primary" />
                   </IconButton>
                 </InputAdornment>
               }
-              //   error={!!errors.nome}
-              //   helperText={errors.nome?.message}
-              //   {...register("nome")}
-              id="registros-search-by-email"
+              id="interview-search-by-email"
               label="Pesquisar por Email"
+              // value={valueEmail}
+              // onChange={e => setValueEmail(e.target.value)}
             />
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>Filtrar por trilha</InputLabel>
             <Select
               label="Filtrar por trilha"
-              id="registros-filter-by-trilha"
-              // error={!!errors.estado}
+              id="interview-filter-by-trilha"
               defaultValue=""
-              // {...register("estado")}
+              // key={estado}
+              // onChange={(e) => {
+              //   getInscricaoByTrilha({
+              //     trilha: e.target.value,
+              //   })
+              //     .unwrap()
+              //     .then((data) => setTrilhaResult(data));
+              // }}
             >
-              <MenuItem value="" disabled></MenuItem>
-              <MenuItem value="qa">QA</MenuItem>
-              <MenuItem value="front">Front End</MenuItem>
-              <MenuItem value="back">Back End</MenuItem>
+              {/* {getTrilha?.map((trilha) => {
+                return (
+                  <MenuItem
+                    key={trilha.nome}
+                    value={trilha.nome}
+                    id={`filtro-trilha-${trilha.nome}`}
+                  >
+                    {trilha.nome}
+                  </MenuItem>
+                );
+              })} */}
+              ;
             </Select>
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>Filtrar por edição</InputLabel>
             <Select
               label="Filtrar por edição"
-              id="registros-filter-by-edition"
-              // error={!!errors.estado}
-              // defaultValue="AC"
-              // {...register("estado")}
+              id="interview-search-by-edition"
               defaultValue=""
+              // key={estado}
+              // onChange={(e) => {
+              //   getInscricaoByEdicao({
+              //     edicao: e.target.value,
+              //   })
+              //     .unwrap()
+              //     .then((data) => setEdicaoResult(data));
+              // }}
             >
-              <MenuItem value="" disabled></MenuItem>
-              <MenuItem value="10">10°</MenuItem>
-              <MenuItem value="9">9</MenuItem>
-              <MenuItem value="8">8°</MenuItem>
+              {/* {getEdicoes?.map((edicao) => {
+                return (
+                  <MenuItem
+                    key={edicao.nome}
+                    value={edicao.nome}
+                    id={`filtro-edicao-${edicao.nome}`}
+                  >
+                    {edicao.nome}
+                  </MenuItem>
+                );
+              })}
+              ; */}
             </Select>
           </FormControl>
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <Button
+              fullWidth
+              sx={{
+                height: "3rem",
+              }}
+              variant="contained"
+              // onClick={resetFiltro}
+            >
+              Limpar
+            </Button>
+          </Box>
         </Stack>
       </Grid>
       {isLoading ? (

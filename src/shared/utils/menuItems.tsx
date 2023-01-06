@@ -1,4 +1,4 @@
-import { Home, Groups, WorkHistory, AutoStories } from '@mui/icons-material'
+import { Home, Groups, WorkHistory} from '@mui/icons-material'
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import FactCheckIcon from '@mui/icons-material/FactCheck'
 

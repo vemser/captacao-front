@@ -88,6 +88,15 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    // getEntrevistaFiltro: builder.query<EntrervistaResponse, string>({
+    //   query: (data) => ({
+    //     url: `/entrevista/buscar-entrevista-email-candidato/${data}`,
+    //     method: "GET",
+    //     headers: {
+    //       // Authorization: `Bearer ${token}`,
+    //     },
+    //   }),
+    // }),
   }),
   overrideExisting: false,
 });
@@ -99,4 +108,5 @@ export const {
   useGetEntrevistasQuery,
   useGetEntrevistaPorMesQuery,
   useGetEntrevistaByEmailQuery,
+  // useGetEntrevistaFiltroMutation,
 } = entervistaSlice;

@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <Router />

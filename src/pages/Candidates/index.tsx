@@ -11,96 +11,116 @@ import {
 	Chip,
 	Button,
 	Pagination,
+	Box,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate, Link } from "react-router-dom";
-import React, { useState } from "react";
+import { useNavigate, Link, useRouteLoaderData } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import {
-	useGetCandidatosQuery,
+	useGetCandidatosMutation,
+	// useGetCandidatosQuery,
 	useGetListInscricaoByEdicaoMutation,
 	useGetListInscricaoByEmailMutation,
 	useGetListInscricaoByTrilhaMutation,
 } from "../../shared/features/api/inscricao/inscricaoSlice";
-import { IElementos } from "shared/features/api/inscricao/types";
+import { IElementos, IInscricao } from "shared/features/api/inscricao/types";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
+import { height, padding } from "@mui/system";
 
 const columns = [
-  {
-    field: "status",
-    headerName: "Status",
-    width: 140,
-    renderCell: (params: any) => {
-      return (
-        <Chip
-          label={params.value === null ? "Não avaliado" : "Avaliado"}
-          sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-          // color={params.value === "T" ? "success" : "primary"}
-        />
-      );
-    },
-  },
-  {
-    field: "nome",
-    headerName: "Nome",
-    minWidth: 180,
-    flex: 1,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    minWidth: 230,
-    flex: 1,
-  },
-  {
-    field: "telefone",
-    headerName: "Telefone",
-    minWidth: 160,
-  },
-  {
-    field: "turno",
-    headerName: "Turno",
-    minWidth: 90,
-  },
-  {
-    field: "estado",
-    headerName: "Estado",
-    minWidth: 90,
-  },
-  {
-    field: "acoes",
-    headerName: "Ações",
-    width: 120,
-    renderCell: () => {
-      return (
-        <Button variant="contained" id="">
-          Avaliar
-        </Button>
-      );
-    },
-  },
+	{
+		field: "status",
+		headerName: "Status",
+		width: 140,
+		renderCell: (params: any) => {
+			return (
+				<Chip
+					label={params.value === null ? "Não avaliado" : "Avaliado"}
+					sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
+					// color={params.value === "T" ? "success" : "primary"}
+				/>
+			);
+		},
+	},
+	{
+		field: "nome",
+		headerName: "Nome",
+		minWidth: 180,
+		flex: 1,
+	},
+	{
+		field: "email",
+		headerName: "Email",
+		minWidth: 230,
+		flex: 1,
+	},
+	{
+		field: "telefone",
+		headerName: "Telefone",
+		minWidth: 160,
+	},
+	{
+		field: "turno",
+		headerName: "Turno",
+		minWidth: 90,
+	},
+	{
+		field: "estado",
+		headerName: "Estado",
+		minWidth: 90,
+	},
+	{
+		field: "acoes",
+		headerName: "Ações",
+		width: 120,
+		renderCell: () => {
+			return (
+				<Button variant="contained" id="">
+					Avaliar
+				</Button>
+			);
+		},
+	},
 ];
 
 export const Registers: React.FC = () => {
-  const navigate = useNavigate();
-  const [page, setPage] = useState<number>(0);
-  const { data } = useGetCandidatosQuery({ pagina: page });
+	const navigate = useNavigate();
+	const [page, setPage] = useState<number>(0);
+	const [getCandidatos] = useGetCandidatosMutation();
 
 	const [trilhaResult, setTrilhaResult] = useState<IElementos[]>();
 	const [getInscricaoByTrilha] = useGetListInscricaoByTrilhaMutation();
 	const { data: getTrilha } = useGetTrilhasQuery();
 	const { data: getEdicoes } = useGetListaEdicoesQuery();
+	const [inscricoes, setInscricoes] = useState<IInscricao | null>(null);
 
 	const [getInscricaoByEdicao] = useGetListInscricaoByEdicaoMutation();
 	const [edicaoResult, setEdicaoResult] = useState<IElementos[]>();
+	const [estado, setEstado] = useState(0);
 
 	const [getInscricaoByEmail] = useGetListInscricaoByEmailMutation();
 	const [email, setEmail] = useState<string>("");
 	const [emailResult, setEmailResult] = useState<IElementos[]>();
 
-	const lista = data?.elementos;
-	console.log(lista)
+	useEffect(() => {
+		getCandidatos({ pagina: page })
+			.unwrap()
+			.then((e) => setInscricoes(e));
+	}, []);
+
+	const resetFiltro = () => {
+		setEmail("");
+		setEstado(estado + 1);
+		setEdicaoResult(undefined)
+		setTrilhaResult(undefined)
+		getCandidatos({ pagina: page })
+			.unwrap()
+			.then((teste: any) => setInscricoes(teste));
+	};
+
+	const lista = inscricoes?.elementos;
 
 	const rows = () => {
 		if (trilhaResult) {
@@ -155,6 +175,7 @@ export const Registers: React.FC = () => {
 	};
 	return (
 		<Grid container spacing={2}>
+			{/* <Button onClick={()=> getCandidatos({ pagina: 0 }).unwrap().then((e)=> console.log(e))}>dfsfsd</Button> */}
 			<Grid item xs={12}>
 				<Stack
 					direction={{
@@ -170,6 +191,7 @@ export const Registers: React.FC = () => {
 								<InputAdornment position="end">
 									<IconButton
 										edge="end"
+										value={email}
 										onClick={() => {
 											getInscricaoByEmail({
 												email: email,
@@ -184,9 +206,6 @@ export const Registers: React.FC = () => {
 									</IconButton>
 								</InputAdornment>
 							}
-							//   error={!!errors.nome}
-							//   helperText={errors.nome?.message}
-							//   {...register("nome")}
 							id="registros-search-by-email"
 							label="Pesquisar por Email"
 							value={email}
@@ -201,6 +220,7 @@ export const Registers: React.FC = () => {
 							label="Filtrar por trilha"
 							id="registros-filter-by-trilha"
 							defaultValue=""
+							key={estado}
 							onChange={(e) => {
 								getInscricaoByTrilha({
 									trilha: e.target.value,
@@ -229,6 +249,7 @@ export const Registers: React.FC = () => {
 							label="Filtrar por edição"
 							id="registros-filter-by-edition"
 							defaultValue=""
+							key={estado}
 							onChange={(e) => {
 								getInscricaoByEdicao({
 									edicao: e.target.value,
@@ -251,6 +272,22 @@ export const Registers: React.FC = () => {
 							;
 						</Select>
 					</FormControl>
+					<Box
+						display="flex"
+						alignItems="center"
+						justifyContent="center"
+					>
+						<Button
+							fullWidth
+							sx={{
+								height: "3rem",
+							}}
+							variant="contained"
+							onClick={resetFiltro}
+						>
+							Limpar
+						</Button>
+					</Box>
 				</Stack>
 			</Grid>
 			<Grid
@@ -274,12 +311,12 @@ export const Registers: React.FC = () => {
 			</Grid>
 			<Grid item xs={12} display="flex" justifyContent="center">
 				<Pagination
-					 count={data?.quantidadePaginas}
+					count={inscricoes?.quantidadePaginas}
 					color="primary"
 					size="small"
 					onChange={(event, page) => {
 						setPage(page - 1);
-					  }}
+					}}
 				/>
 			</Grid>
 		</Grid>

@@ -15,8 +15,8 @@ export const menuItems: MenuItem[] = [
     icon: <Home />
   },
   {
-    text: 'Aptos',
-    path: '/aptos',
+    text: 'Em prova',
+    path: '/prova',
     icon: <Groups />
   },
   {

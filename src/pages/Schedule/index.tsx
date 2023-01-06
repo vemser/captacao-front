@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useTheme } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useTheme, Grid, Divider } from '@mui/material'
 import { Box } from '@mui/system'
 import useMediaQuery from '@mui/material/useMediaQuery'
 // import { useAuth, useInterview } from '../../shared/contexts'
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import './index.css'
 import { useGetEntrevistasQuery } from 'shared/features/api/entrevista/entrevistaSlice'
 import { ILinguagens } from 'shared/interfaces'
+import { DataGrid } from '@mui/x-data-grid'
 
 export const Schedule = () => {
   // const { getByMonthYear, schedulesFormated } = useInterview()
@@ -206,124 +207,167 @@ export const Schedule = () => {
             </Button>
           </Box>
         </Box>
+
         <Dialog open={open} onClose={handleClose} fullScreen>
-          <DialogTitle sx={{textAlign: 'center', marginTop: '40px', fontWeight: 600}} color="primary">Candidato {modalInfos?.title}</DialogTitle>
-          <DialogContent>
 
-            <Box sx={{display: 'flex', flexDirection: 'column', gap:'30px'}}>
-              <Typography
-                component="h5"
-                variant="h5"
-                sx={{ fontWeight: 600, margin: '10px 0'}}
-              >
-                Dados Pessoais do Candidato:
-              </Typography>
+            <Button onClick={handleClose} autoFocus sx={{ mr: 2, textAlig: 'justify' }}>
+                  Fechar
+            </Button> 
 
-              <Typography
-                component="h5"
-                variant="h5"
-              >
-                Data de nascimento: {modalInfos?.extendedProps.nascimento}
-              </Typography>
+          <DialogTitle sx={{marginTop: '40px', textAlign:'center', fontWeight: 600 }}>
+            <Box sx={{color: '#1e62fe'}} component='span'>{modalInfos?.title}</Box> 
+          </DialogTitle>
+          <DialogContent sx={{display:'flex', flexDirection:'column', gap: '30px', alignItems: 'space-between'}}>
 
-              <Typography
-                component="h5"
-                variant="h5"
-              >
-                Cidade: {modalInfos?.extendedProps.cidade}/{modalInfos?.extendedProps.estado}
-              </Typography>
+          
+              <Grid item sx={{ height: "calc(100vh - 90px)", display: 'flex', maxHeight: '50%', width: '70%', margin: '0 auto', justifyContent:'space-between'}}>
+                <Box sx={{display: 'flex', gap: '30px', flexDirection: 'column'}}>
+                  <Typography
+                    component="h5"
+                    variant="h5"
+                    sx={{ fontWeight: 600, margin: '10px 0', fontSize:'24px'}}
+                  >
+                    Dados Pessoais do Candidato:
+                  </Typography>
 
-              <Typography
-                component="h5"
-                variant="h5"
-              >
-                telefone: {modalInfos?.extendedProps.telefone}
-              </Typography>
+                  <Box sx={{display: 'flex', flexDirection:'column', gap:'30px'}}>
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px'}}
+                    >
+                      Data de nascimento:  <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.nascimento}</Box> 
+                    </Typography>
 
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px',}}
+                    >
+                      Cidade: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.cidade}/{modalInfos?.extendedProps.estado}</Box>
+                    </Typography>
 
+                    <Typography
+                    component="p"
+                    sx={{fontSize:'20px'}}
+                    >
+                      telefone: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.telefone}</Box>
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Box>
+                    <Typography
+                      component="h5"
+                      variant='h5'
+                      sx={{fontWeight: 600, margin: '10px 0', fontSize:'24px'}}
+                    >
+                      Dados Técnicos do Candidato:
+                    </Typography>
+
+                    <Box sx={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                      <Typography
+                      component="p"
+                      sx={{fontSize:'20px'}}
+                    >
+                      Linguagens: <Box sx={{fontWeight: 600}} component={'span'}> {modalInfos?.extendedProps.linguagens.map((linguagem:ILinguagens) => {
+                        return linguagem.nome + ' '
+                      })}</Box>
+                    </Typography>
+
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px'}}
+                    >
+                      Nota da Prova: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.notaProva}</Box> 
+                    </Typography>
+
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px'}}
+                    >
+                      Observações Técnicas: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.observacoesTecnicas}</Box> 
+                    </Typography>
+
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px'}}
+                    >
+                      Parecer Comportamental: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.parecerComportamental}</Box> 
+                    </Typography>
+
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px'}}
+                    >
+                      Parecer Técnico: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.parecerTecnico}</Box> 
+                    </Typography>
+                  </Box>
+                </Box>
+            </Grid>
+     
+            
+            <Divider/>
+            <Typography
+              component="h5"
+              variant="h5"
+              sx={{ fontWeight: 600, width: '70%', margin: '0 auto'}}
+            >
+             Atualizar Informações da Entrevista:
+            </Typography>
+            
+
+            <Box sx={{display: 'flex', width: '70%', margin: '0 auto', justifyContent:'space-between'}}>
+              <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
+                <Box sx={{ display:'flex', gap:'10%'}}>
+                  <TextField
+                    margin="dense"
+                    id="name"
+                    label="Parecer Compartamental"
+                  />  
+
+                  <TextField
+                    margin="dense"
+                    id="name"
+                    label="Nota Compartamental"
+                    type={'number'}
+                  />  
+                </Box>
+              </Box>  
+
+              <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
+                <Box sx={{ display:'flex', gap:'10%'}}>
+                  <TextField
+                    margin="dense"
+                    id="name"
+                    label="Parecer Técnico"
+                    
+                  />  
+
+                  <TextField
+                    margin="dense"
+                    id="name"
+                    label="Nota Técnica"
+                    type={'number'}
+                  /> 
+                </Box>
+              </Box>  
             </Box>
 
-            
-
-
-           
-
-            <Typography
-              component="h5"
-              variant="h5"
-              sx={{ fontWeight: 600, margin: '10px 0'}}
-            >
-              Dados Técnicos do Candidato:
-            </Typography>
-
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Linguagens: {modalInfos?.extendedProps.linguagens.map((linguagem:ILinguagens) => {
-                return <Typography
-                  component="h5"
-                  variant="h5"
-                >
-                {linguagem.nome}
-                </Typography>
-              })}
-            </Typography>
-
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Nota da Prova: {modalInfos?.extendedProps.notaProva}
-            </Typography>
-
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Observações Técnicas: {modalInfos?.extendedProps.observacoesTecnicas}
-            </Typography>
-
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Parecer Comportamental: {modalInfos?.extendedProps.parecerComportamental}
-            </Typography>
-
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Parecer Técnico: {modalInfos?.extendedProps.parecerTecnico}
-            </Typography>
-            
-
-            <Typography
-              component="h5"
-              variant="h5"
-              sx={{ fontWeight: 600, margin: '10px 0'}}
-            >
-              Informações da Entrevista:
-            </Typography>
-
-
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Status: {modalInfos?.extendedProps.legenda}
-            </Typography>
-
-            <Typography
-              component="h5"
-              variant="h5"
-            >
-              Observações: {modalInfos?.extendedProps.observacoes}
-            </Typography>
-        
-        
+            <TextField 
+                margin="dense"
+                sx={{
+                  mt: 1,
+                  width: '70%',
+                  margin: '0 auto'
+                }}
+                id="name"
+                label="Observações Técnicas"
+              />
           </DialogContent>
+
+          <Button>
+            Atualizar informações
+          </Button>
+
           <DialogActions>
             <Button onClick={handleClose}>Voltar</Button>
           </DialogActions>

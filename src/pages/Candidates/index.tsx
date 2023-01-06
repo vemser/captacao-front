@@ -100,6 +100,7 @@ export const Registers: React.FC = () => {
 	const [emailResult, setEmailResult] = useState<IElementos[]>();
 
 	const lista = data?.elementos;
+	console.log(lista)
 
 	const rows = () => {
 		if (trilhaResult) {

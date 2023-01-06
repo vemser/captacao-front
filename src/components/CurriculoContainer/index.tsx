@@ -394,7 +394,7 @@ export const CurriculoContainer: React.FC = () => {
           />
         </Grid>
         <Grid item xs={12} lg={6}>
-          <Box sx={{ width: "100%", typography: "body1", boxShadow: 2 }}>
+          <Box sx={{ typography: "body1", boxShadow: 2 }}>
             <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <TabList
@@ -402,8 +402,8 @@ export const CurriculoContainer: React.FC = () => {
                   aria-label="Abas de currículo e configurações"
                   sx={{ p: 0.45 }}
                 >
-                  <Tab sx={{width: "100%"}} label="Currículo" value="1" />
-                  <Tab sx={{width: "100%"}} label="Configurações" value="2" />
+                  <Tab label="Currículo" value="1" />
+                  <Tab label="Configurações" value="2" />
                 </TabList>
               </Box>
               <TabPanel value="1" sx={{ height: "calc(100vh - 224px)", p: 0 }}>

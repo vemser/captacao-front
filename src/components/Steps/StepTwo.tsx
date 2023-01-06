@@ -343,6 +343,7 @@ export const StepTwo: React.FC = () => {
                 input={<OutlinedInput label="Linguagens de programação" />}
                 renderValue={(selected) => selected.join(", ")}
                 MenuProps={MenuProps}
+                required={true}                
               >
                 {names.map((name) => (
                   <MenuItem key={name} value={name}>

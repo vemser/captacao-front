@@ -1,3 +1,4 @@
+import { getToken } from 'shared/utils/getToken'
 import { apiSlice } from '../'
 import { CandidatoBody, CandidatoResponse, UpdateNota } from './types'
 
@@ -8,7 +9,7 @@ const candidatoSlice = apiSlice.injectEndpoints({
         url: 'candidato',
         method: 'POST',
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`
         },
         body: data
       })
@@ -18,7 +19,7 @@ const candidatoSlice = apiSlice.injectEndpoints({
         url: `candidato/nota-prova/${data.idCandidato}`,
         method: 'PUT',
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`
         },
         body: data.nota
       })

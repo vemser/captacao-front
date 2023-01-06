@@ -4,17 +4,35 @@ import { useLocation } from "react-router-dom";
 import { useGetInscricaoByIdMutation } from "shared/features/api/inscricao/inscricaoSlice";
 import { useGetCurriculoMutation } from "shared/features/api/formulario/formularioSlice";
 import { IElementos } from "shared/features/api/inscricao/types";
-import { Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+} from "@mui/material";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import {
+  useGetInputsQuery,
+  useGetSubscribeFormQuery,
+} from "shared/features/api/subscription/formSlice";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 const columns = [
   {
     field: "pergunta",
     headerName: "Pergunta",
     minWidth: 180,
+    maxWidth: 550,
     flex: 1,
   },
   {
@@ -34,6 +52,11 @@ export const CurriculoContainer: React.FC = () => {
   const [curriculo, setCurriculo] = useState<string | null>(null);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
+  const { data } = useGetInputsQuery();
+  const { data: dataCurriculo } = useGetSubscribeFormQuery();
+  const formulario = data?.data.formulario;
+  const formularioCurriculo = dataCurriculo?.data.formulario;
+
   const [formattedCandidatePdf, setFormattedCandidatePdf] =
     useState<string>("null");
 
@@ -42,6 +65,19 @@ export const CurriculoContainer: React.FC = () => {
       .unwrap()
       .then((res) => setInscricaoResponse(res));
   }, []);
+
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [value, setValue] = React.useState("1");
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
 
   const [getCurriculo] = useGetCurriculoMutation();
   useEffect(() => {
@@ -73,7 +109,168 @@ export const CurriculoContainer: React.FC = () => {
     setFormattedCandidatePdf(url);
   }, [curriculo]);
 
+  //
+
   const rows = [
+    {
+      id: 1,
+      tipo: "Pessoal",
+      pergunta: formulario?.nome,
+      resposta: inscricaoResponse?.candidato.nome,
+    },
+    {
+      id: 2,
+      tipo: "Pessoal",
+      pergunta: formulario?.email,
+      resposta: inscricaoResponse?.candidato.email,
+    },
+    {
+      id: 3,
+      tipo: "Pessoal",
+      pergunta: formulario?.telefone,
+      resposta: inscricaoResponse?.candidato.telefone,
+    },
+    {
+      id: 4,
+      tipo: "Pessoal",
+      pergunta: formulario?.cpf,
+      resposta: inscricaoResponse?.candidato.cpf,
+    },
+    {
+      id: 5,
+      tipo: "Pessoal",
+      pergunta: formulario?.rg,
+      resposta: inscricaoResponse?.candidato.rg,
+    },
+    {
+      id: 6,
+      tipo: "Pessoal",
+      pergunta: formulario?.dataNascimento,
+      resposta: inscricaoResponse?.candidato.dataNascimento,
+    },
+    {
+      id: 7,
+      tipo: "Pessoal",
+      pergunta: formulario?.estado,
+      resposta: inscricaoResponse?.candidato.estado,
+    },
+    {
+      id: 8,
+      tipo: "Pessoal",
+      pergunta: formulario?.cidade,
+      resposta: inscricaoResponse?.candidato.cidade,
+    },
+    {
+      id: 10,
+      tipo: "Pessoal",
+      pergunta: formulario?.neurodiversidade,
+      resposta: inscricaoResponse?.candidato.formulario?.neurodiversidade,
+    },
+    {
+      id: 11,
+      tipo: "Pessoal",
+      pergunta: formularioCurriculo?.s2OriSexual,
+      resposta: inscricaoResponse?.candidato.formulario?.orientacao,
+    },
+    {
+      id: 12,
+      tipo: "Pessoal",
+      pergunta: formularioCurriculo?.s2GNero,
+      resposta: inscricaoResponse?.candidato.formulario?.genero,
+    },
+    {
+      id: 13,
+      tipo: "Pessoal",
+      pergunta: formularioCurriculo?.s2DeficiNcia,
+      resposta: inscricaoResponse?.candidato.pcdboolean,
+    },
+    {
+      id: 14,
+      tipo: "Acadêmico",
+      pergunta: formularioCurriculo?.s2Curso,
+      resposta: inscricaoResponse?.candidato.formulario?.curso,
+    },
+    {
+      id: 15,
+      tipo: "Acadêmico",
+      pergunta: formularioCurriculo?.s2Turno,
+      resposta: inscricaoResponse?.candidato.formulario?.turno,
+    },
+    {
+      id: 16,
+      tipo: "Acadêmico",
+      pergunta: formularioCurriculo?.s2Instituicao,
+      resposta: inscricaoResponse?.candidato.formulario?.instituicao,
+    },
+    {
+      id: 17,
+      tipo: "Acadêmico",
+      pergunta: formularioCurriculo?.s2InglS,
+      resposta: inscricaoResponse?.candidato.formulario?.ingles,
+    },
+    {
+      id: 18,
+      tipo: "Acadêmico",
+      pergunta: formularioCurriculo?.s2Espanhol,
+      resposta: inscricaoResponse?.candidato.formulario?.espanhol,
+    },
+    {
+      id: 23,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2TextoLingProva,
+      resposta: inscricaoResponse?.candidato.formulario?.prova,
+    },
+    {
+      id: 24,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2TextoDisp,
+      resposta: inscricaoResponse?.candidato.formulario?.efetivacao,
+    },
+    {
+      id: 25,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2DispHaula,
+      resposta: inscricaoResponse?.candidato.formulario?.disponibilidade,
+    },
+    {
+      id: 26,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2Trilha,
+      resposta: inscricaoResponse?.candidato.formulario?.trilhas || "Nenhuma",
+    },
+    {
+      id: 28,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2Linkedin,
+      resposta: inscricaoResponse?.candidato.formulario?.linkedin,
+    },
+    {
+      id: 29,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2Github,
+      resposta: inscricaoResponse?.candidato.formulario?.github,
+    },
+    {
+      id: 31,
+      tipo: "Outros",
+      pergunta: "LGPD",
+      resposta: inscricaoResponse?.candidato.formulario?.lgpd,
+    },
+    {
+      id: 32,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2OutroMotivo,
+      resposta: inscricaoResponse?.candidato.formulario?.resposta,
+    },
+    {
+      id: 33,
+      tipo: "Outros",
+      pergunta: formularioCurriculo?.s2AlgoImp,
+      resposta: inscricaoResponse?.candidato.formulario?.importancia,
+    },
+  ];
+
+  const rowsDois = [
     {
       id: 1,
       tipo: "Pessoal",
@@ -123,155 +320,120 @@ export const CurriculoContainer: React.FC = () => {
       resposta: inscricaoResponse?.candidato.cidade,
     },
     {
-      id: 10,
+      id: 9,
       tipo: "Pessoal",
       pergunta: "Neurodiversidade",
       resposta: inscricaoResponse?.candidato.formulario?.neurodiversidade,
     },
     {
-      id: 11,
-      tipo: "Pessoal",
-      pergunta: "Orientação Sexual",
-      resposta: inscricaoResponse?.candidato.formulario?.orientacao,
-    },
-    {
-      id: 12,
-      tipo: "Pessoal",
-      pergunta: "Gênero",
-      resposta: inscricaoResponse?.candidato.formulario?.genero,
-    },
-    {
-      id: 13,
+      id: 10,
       tipo: "Pessoal",
       pergunta: "PCD",
       resposta: inscricaoResponse?.candidato.pcdboolean,
     },
     {
-      id: 14,
-      tipo: "Acadêmico",
-      pergunta: "Curso",
-      resposta: inscricaoResponse?.candidato.formulario?.curso,
-    },
-    {
-      id: 15,
-      tipo: "Acadêmico",
-      pergunta: "Turno",
-      resposta: inscricaoResponse?.candidato.formulario?.turno,
-    },
-    {
-      id: 16,
-      tipo: "Acadêmico",
-      pergunta: "Instituição",
-      resposta: inscricaoResponse?.candidato.formulario?.instituicao,
-    },
-    {
-      id: 17,
-      tipo: "Acadêmico",
-      pergunta: "Nível de Inglês",
-      resposta: inscricaoResponse?.candidato.formulario?.ingles,
-    },
-    {
-      id: 18,
-      tipo: "Acadêmico",
-      pergunta: "Nível de Espanhol",
-      resposta: inscricaoResponse?.candidato.formulario?.espanhol,
-    },
-    {
-      id: 23,
-      tipo: "Outros",
-      pergunta: "Conhecimentos básicos",
-      resposta: inscricaoResponse?.candidato.formulario?.prova,
-    },
-    {
-      id: 24,
-      tipo: "Outros",
-      pergunta: "Disponibilidade de trabalho",
-      resposta: inscricaoResponse?.candidato.formulario?.efetivacao,
-    },
-    {
-      id: 25,
-      tipo: "Outros",
-      pergunta: "Disponibilidade de estudo",
-      resposta: inscricaoResponse?.candidato.formulario?.disponibilidade,
-    },
-    {
-      id: 26,
+      id: 11,
       tipo: "Outros",
       pergunta: "Trilhas",
       resposta: inscricaoResponse?.candidato.formulario?.trilhas,
     },
-    {
-      id: 28,
-      tipo: "Outros",
-      pergunta: "Linkedin",
-      resposta: inscricaoResponse?.candidato.formulario?.linkedin,
-    },
-    {
-      id: 29,
-      tipo: "Outros",
-      pergunta: "Github",
-      resposta: inscricaoResponse?.candidato.formulario?.github,
-    },
-    {
-      id: 31,
-      tipo: "Outros",
-      pergunta: "LGPD",
-      resposta: inscricaoResponse?.candidato.formulario?.lgpd,
-    },
-    {
-      id: 32,
-      tipo: "Outros",
-      pergunta: "Interesse em TI",
-      resposta: inscricaoResponse?.candidato.formulario?.resposta,
-    },
-    {
-      id: 33,
-      tipo: "Outros",
-      pergunta: "Algo importante",
-      resposta: inscricaoResponse?.candidato.formulario?.importancia,
-    },
   ];
 
   return (
-    <Grid
-      container
-      sx={{
-        maxHeight: "calc(100vh - 180px)",
-      }}
-    >
-      <Grid item xs={6} sx={{ height: "calc(100vh - 160px)", width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          // autoHeight
-          onRowClick={(row) => {
-            alert(row.row.resposta);
-          }}
-          pageSize={rows.length}
-          sx={{
-            boxShadow: 2,
-          }}
-          hideFooter
-        />
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        lg={6}
-        sx={{
-          maxHeight: "calc(100vh - 159px)",
-          maxWidth: "100%",
-        }}
+    <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullScreen
       >
-        {formattedCandidatePdf !== "" && (
-          <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js">
-            <Viewer
-              fileUrl={formattedCandidatePdf}
-              plugins={[defaultLayoutPluginInstance]}
+        <DialogTitle id="alert-dialog-title">
+          <Button onClick={handleClose} autoFocus sx={{ mr: 2 }}>
+            Fechar
+          </Button>
+          Informações do candidato
+        </DialogTitle>
+        <DialogContent>
+          <Grid item sx={{ height: "calc(100vh - 90px)", width: "100%" }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={rows.length}
+              getRowHeight={() => "auto"}
+              sx={{
+                boxShadow: 2,
+                ".MuiDataGrid-cell": {
+                  padding: "20px 10px",
+                },
+              }}
+              hideFooter
             />
-          </Worker>
-        )}
+          </Grid>
+        </DialogContent>
+      </Dialog>
+      <Grid
+        container
+        sx={{
+          maxHeight: "calc(100vh - 180px)",
+        }}
+        spacing={1}
+      >
+        <Grid item xs={12} lg={6} sx={{ height: "calc(100vh - 160px)", width: "100%" }}>
+          <DataGrid
+            rows={rowsDois}
+            columns={columns}
+            onRowClick={(row) => {
+              setOpen((prev) => !prev);
+            }}
+            pageSize={rows.length}
+            sx={{
+              boxShadow: 2,
+            }}
+            hideFooter
+          />
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <Box sx={{ typography: "body1", boxShadow: 2 }}>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <TabList
+                  onChange={handleChange}
+                  aria-label="Abas de currículo e configurações"
+                  sx={{ p: 0.45 }}
+                >
+                  <Tab label="Currículo" value="1" />
+                  <Tab label="Configurações" value="2" />
+                </TabList>
+              </Box>
+              <TabPanel value="1" sx={{ height: "calc(100vh - 224px)", p: 0 }}>
+                {formattedCandidatePdf !== "" && (
+                  <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js">
+                    <Viewer
+                      fileUrl={formattedCandidatePdf}
+                      plugins={[defaultLayoutPluginInstance]}
+                    />
+                  </Worker>
+                )}
+              </TabPanel>
+              <TabPanel value="2" sx={{ height: "calc(100vh - 224px)", p: 0 }}>
+                <Zoom>
+                  <Box
+                    component="img"
+                    alt=""
+                    sx={{
+                      width: "100%",
+                      height: "calc(100vh - 224px)",
+                      objectFit: "cover",
+                    }}
+                    src="https://rpearce.github.io/react-medium-image-zoom/static/media/laura-smetsers-H-TW2CoNtTk-unsplash-smaller.4d1fd239.jpg"
+                  />
+                </Zoom>
+              </TabPanel>
+            </TabContext>
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };

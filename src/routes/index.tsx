@@ -2,7 +2,7 @@ import { Home } from '../pages/Home'
 import { Subscription } from '../pages/Subscription'
 import { PrivateRoute } from 'pages/PrivateRoute'
 import { Registers } from 'pages/Candidates'
-import { Aptos } from 'pages/Aptos'
+
 import { ToastContainer } from 'react-toastify'
 import { Routes, Route } from 'react-router-dom'
 import { Login } from 'pages/Login'
@@ -14,6 +14,7 @@ import { CandidatesCurriculum } from 'pages/CandidatesCurriculum'
 import { InterviewCurriculum } from 'pages/InterviewCurriculum'
 import { ResultCurriculum } from 'pages/ResultCurriculum'
 import { AptosCurriculum } from 'pages/AptosCurriculum'
+import { Prova } from 'pages/Aptos'
 
 export const Router = () => {
   return (
@@ -31,8 +32,8 @@ export const Router = () => {
             element={<CandidatesCurriculum />}
           />
 
-          <Route path="/aptos" element={<Aptos />} />
-          <Route path="/aptos/curriculo" element={<AptosCurriculum />} />
+          <Route path="/prova" element={<Prova />} />
+          <Route path="/prova/curriculo" element={<AptosCurriculum />} />
 
           <Route path="/entrevista" element={<Interview />} />
           <Route

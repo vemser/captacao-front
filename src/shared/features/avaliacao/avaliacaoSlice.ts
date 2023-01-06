@@ -2,8 +2,6 @@ import { apiSlice } from "../api";
 import {
   IPagination,
   Root,
-  Inscricao,
-  Formulario,
   ITrilha,
   Elemento,
   IEdicao,
@@ -18,6 +16,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: "avaliacao",
         method: "GET",
+        providesTags: ["Avaliacao"],
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -27,6 +26,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
           tamanho: 10,
           order: 0,
         },
+        invalidatesTags: ["Avaliacao"],
       }),
     }),
     searchByTrilha: build.mutation<Elemento[] | [], ITrilha>({

@@ -13,7 +13,8 @@ import {
   Pagination,
   Skeleton,
   Box,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import React, { useState } from 'react'
@@ -26,62 +27,13 @@ import {
   useSearchByTrilhaMutation
 } from 'shared/features/avaliacao/avaliacaoSlice'
 import { Elemento, Inscricao } from 'shared/features/avaliacao/type'
+import CheckBoxIcon from '@mui/icons-material/CheckBox'
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox'
 
-const columns = [
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 140,
-    renderCell: (params: any) => {
-      return (
-        <Chip
-          label={params.value === 'T' ? 'Avaliado' : 'Não avaliado'}
-          sx={{ borderRadius: 1, boxShadow: 1, width: '100%' }}
-          color={params.value === 'T' ? 'success' : 'primary'}
-        />
-      )
-    }
-  },
-  {
-    field: 'nome',
-    headerName: 'Nome',
-    minWidth: 180,
-    flex: 1
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    minWidth: 230,
-    flex: 1
-  },
-  {
-    field: 'telefone',
-    headerName: 'Telefone',
-    minWidth: 160
-  },
-  {
-    field: 'turno',
-    headerName: 'Turno',
-    minWidth: 90
-  },
-  {
-    field: 'estado',
-    headerName: 'Estado',
-    minWidth: 90
-  },
-  {
-    field: 'nota',
-    headerName: 'Adicionar nota',
-    width: 140,
-    renderCell: (params: any) => {
-      return <Button variant="contained">Adicionar</Button>
-    }
-  }
-]
-
-export const Aptos: React.FC = () => {
+export const Prova: React.FC = () => {
   const navigate = useNavigate()
-  const { data, isLoading } = useListReviewsQuery({ pagina: 0 })
+  const [page, setPage] = useState<number>(0)
+  const { data, isLoading } = useListReviewsQuery({ pagina: page })
 
   const [emailResult, setEmailResult] = useState<Elemento[]>()
   const [getSearchByEmail] = useSearchByEmailMutation()
@@ -90,11 +42,101 @@ export const Aptos: React.FC = () => {
   const [getAvaliacaoByEdition] = useSearchByEditionMutation()
 
   const [trilhaResult, setTrilhaResult] = useState<Elemento[]>()
+  console.log(trilhaResult)
   const [getAvaliacaoByTrilhaTeste] = useSearchByTrilhaMutation()
 
   const [valueEmail, setValueEmail] = useState<string>('')
 
   const list = data?.elementos
+
+  const columns = [
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 140,
+      renderCell: (params: any) => {
+        return (
+          <Typography
+            sx={{ color: params.row.resultado === 'T' ? 'green' : 'red' }}
+          >
+            {params.row.resultado === 'T' ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                <CheckBoxIcon />
+                <Typography
+                  sx={{
+                    fontSize: '14px'
+                  }}
+                >
+                  Apto
+                </Typography>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                <IndeterminateCheckBoxIcon />{' '}
+                <Typography
+                  sx={{
+                    fontSize: '14px'
+                  }}
+                >
+                  Inapto
+                </Typography>
+              </Box>
+            )}
+          </Typography>
+        )
+      }
+    },
+    {
+      field: 'nome',
+      headerName: 'Nome',
+      minWidth: 180,
+      flex: 1
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      minWidth: 230,
+      flex: 1
+    },
+    {
+      field: 'telefone',
+      headerName: 'Telefone',
+      minWidth: 160
+    },
+    {
+      field: 'turno',
+      headerName: 'Turno',
+      minWidth: 90
+    },
+    {
+      field: 'estado',
+      headerName: 'Estado',
+      minWidth: 90
+    },
+    {
+      field: 'nota',
+      headerName: 'Adicionar nota',
+      width: 140,
+      renderCell: (params: any) => {
+        return <Button variant="contained">Adicionar</Button>
+      }
+    }
+  ]
+  console.log(data)
   const rows = () => {
     if (trilhaResult) {
       return trilhaResult?.map(d => {
@@ -106,7 +148,9 @@ export const Aptos: React.FC = () => {
           status: d.inscricao.avaliacao,
           telefone: d.inscricao.candidato.telefone,
           turno: d.inscricao.candidato.formulario?.turno,
-          estado: d.inscricao.candidato.estado
+          estado: d.inscricao.candidato.estado,
+          notaProva: d.inscricao.candidato.notaProva,
+          resultado: d.aprovado
         }
       })
     } else if (editionResult) {
@@ -119,7 +163,9 @@ export const Aptos: React.FC = () => {
           status: d.inscricao.avaliacao,
           telefone: d.inscricao.candidato.telefone,
           turno: d.inscricao.candidato.formulario?.turno,
-          estado: d.inscricao.candidato.estado
+          estado: d.inscricao.candidato.estado,
+          notaProva: d.inscricao.candidato.notaProva,
+          resultado: d.aprovado
         }
       })
     } else if (emailResult) {
@@ -132,7 +178,9 @@ export const Aptos: React.FC = () => {
           status: d.inscricao.avaliacao,
           telefone: d.inscricao.candidato.telefone,
           turno: d.inscricao.candidato.formulario?.turno,
-          estado: d.inscricao.candidato.estado
+          estado: d.inscricao.candidato.estado,
+          notaProva: d.inscricao.candidato.notaProva,
+          resultado: d.aprovado
         }
       })
     } else {
@@ -145,7 +193,9 @@ export const Aptos: React.FC = () => {
           status: dados.inscricao.avaliacao,
           telefone: dados.inscricao.candidato.telefone,
           turno: dados.inscricao.candidato.formulario?.turno,
-          estado: dados.inscricao.candidato.estado
+          estado: dados.inscricao.candidato.estado,
+          notaProva: dados.inscricao.candidato.notaProva,
+          resultado: dados.aprovado
         }
       })
     }
@@ -180,9 +230,6 @@ export const Aptos: React.FC = () => {
                   </IconButton>
                 </InputAdornment>
               }
-              //   error={!!errors.nome}
-              //   helperText={errors.nome?.message}
-              //   {...register("nome")}
               id="registros-search-by-email"
               label="Pesquisar por Email"
               value={valueEmail}
@@ -194,7 +241,6 @@ export const Aptos: React.FC = () => {
             <Select
               label="Filtrar por trilha"
               id="registros-filter-by-trilha"
-              // error={!!errors.estado}
               defaultValue=""
               onChange={e => {
                 getAvaliacaoByTrilhaTeste({
@@ -215,9 +261,6 @@ export const Aptos: React.FC = () => {
             <Select
               label="Filtrar por edição"
               id="registros-filter-by-edition"
-              // error={!!errors.estado}
-              // defaultValue="AC"
-              // {...register("estado")}
               defaultValue=""
               onChange={e => {
                 getAvaliacaoByEdition({
@@ -242,10 +285,10 @@ export const Aptos: React.FC = () => {
           <DataGrid
             rows={rows() || []}
             columns={columns}
-            pageSize={5}
+            pageSize={20}
             rowsPerPageOptions={[5]}
             onRowClick={({ row }) => {
-              navigate('/aptos/curriculo', { state: row })
+              navigate('/prova/curriculo', { state: row })
             }}
             sx={{
               boxShadow: 2
@@ -256,12 +299,12 @@ export const Aptos: React.FC = () => {
       </Grid>
       <Grid item xs={12} display="flex" justifyContent="center">
         <Pagination
-          count={5}
+          count={data?.quantidadePaginas}
           color="primary"
           size="small"
-          // onChange={(event, page) => {
-          //   getCandidates(page - 1);
-          // }}
+          onChange={(event, page) => {
+            setPage(page - 1)
+          }}
         />
       </Grid>
     </Grid>

@@ -203,7 +203,7 @@ export const DrawerContainer = (props: Props) => {
             Olá,
           </Box>
 
-          {data?.login.split('.').join(' ')}
+          {' ' + data?.login.split('.').join(' ')}
         </Typography>
       </Toolbar>
       <Divider />

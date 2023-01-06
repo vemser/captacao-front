@@ -14,32 +14,41 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetEntrevistasQuery } from "shared/features/api/entrevista/entrevistaSlice";
+import { useGetCandidatosByNotaQuery } from "shared/features/api/candidato/candidatoSlice";
 
 export const Interview: React.FC = () => {
+  const [page, setPage] = useState<number>(0);
   const navigate = useNavigate();
-  const { data, isLoading } = useGetEntrevistasQuery({
-    pagina: 0,
+  const { data, isLoading } = useGetCandidatosByNotaQuery({
+    pagina: page,
     tamanho: 20,
   });
   const lista = data?.elementos;
+  console.log(lista);
 
   const rows = () => {
     return lista?.map((dados) => {
       return {
-        id: dados.idEntrevista,
-        nome: dados.candidatoDTO.nome,
-        email: dados.candidatoDTO.email,
-        telefone: dados.candidatoDTO.telefone,
-        turno: dados.candidatoDTO.formulario?.turno,
-        estado: dados.candidatoDTO.estado,
+        id: dados.idCandidato,
+        nome: dados.nome,
+        email: dados.email,
+        trilha: dados?.formulario?.trilhas
+          .map((trilha) => {
+            return trilha.nome;
+          })
+          .join(", "),
       };
     });
   };
 
   const columns = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 60,
+    },
     {
       field: "nome",
       headerName: "Nome",
@@ -53,23 +62,15 @@ export const Interview: React.FC = () => {
       flex: 1,
     },
     {
-      field: "nota",
-      headerName: "Nota da Prova",
-      minWidth: 130,
-    },
-    {
-      field: "telefone",
-      headerName: "Telefone",
-      minWidth: 160,
-    },
-    {
-      field: "turno",
-      headerName: "Turno",
+      field: "trilha",
+      headerName: "Trilhas",
       minWidth: 90,
+      maxWidth: 200,
+      flex: 1,
     },
     {
-      field: "estado",
-      headerName: "Estado",
+      field: "status",
+      headerName: "Status",
       minWidth: 90,
     },
     {
@@ -102,8 +103,6 @@ export const Interview: React.FC = () => {
   //     estado: "SP",
   //   },
   // ];
-
-  console.log(data);
 
   return (
     <Grid container spacing={2}>
@@ -182,8 +181,7 @@ export const Interview: React.FC = () => {
           <DataGrid
             rows={rows() || []}
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
+            pageSize={20}
             onRowClick={({ row }) => {
               navigate(`/entrevista/curriculo`, { state: row });
             }}
@@ -196,12 +194,12 @@ export const Interview: React.FC = () => {
       )}
       <Grid item xs={12} display="flex" justifyContent="center">
         <Pagination
-          count={5}
+          count={data?.quantidadePaginas}
           color="primary"
           size="small"
-          // onChange={(event, page) => {
-          //   getCandidates(page - 1);
-          // }}
+          onChange={(_, page) => {
+            setPage(page - 1);
+          }}
         />
       </Grid>
     </Grid>

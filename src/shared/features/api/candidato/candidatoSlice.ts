@@ -1,32 +1,68 @@
-import { getToken } from 'shared/utils/getToken'
-import { apiSlice } from '../'
-import { CandidatoBody, CandidatoResponse, UpdateNota } from './types'
+import { getToken } from "shared/utils/getToken";
+import { apiSlice } from "../";
+import {
+  CandidatoBody,
+  CandidatoByNota,
+  CandidatoByNotaBody,
+  CandidatoResponse,
+  Elemento,
+  UpdateNota,
+} from "./types";
 
 const candidatoSlice = apiSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     postCandidato: builder.mutation<CandidatoResponse, CandidatoBody>({
-      query: data => ({
-        url: 'candidato',
-        method: 'POST',
+      query: (data) => ({
+        url: "candidato",
+        method: "POST",
         headers: {
-          Authorization: `Bearer ${getToken()}`
+          Authorization: `Bearer ${getToken()}`,
         },
-        body: data
-      })
+        body: data,
+      }),
     }),
     updateNota: builder.mutation<void, UpdateNota>({
-      query: data => ({
+      query: (data) => ({
         url: `candidato/nota-prova/${data.idCandidato}`,
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          Authorization: `Bearer ${getToken()}`
+          Authorization: `Bearer ${getToken()}`,
         },
-        body: data.nota
-      })
-    })
+        body: data.nota,
+      }),
+    }),
+    getCandidatosByNota: builder.query<CandidatoByNota, CandidatoByNotaBody>({
+      query: (data) => ({
+        url: "candidato/find-by-nota",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+        params: {
+          pagina: data.pagina,
+          tamanho: data.tamanho,
+        },
+      }),
+    }),
+    getCandidatosByEmail: builder.mutation<Elemento, string>({
+      query: (data) => ({
+        url: "candidato/findbyemails",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+        params: {
+          email: data,
+        },
+      }),
+    }),
   }),
-  overrideExisting: false
-})
+  overrideExisting: false,
+});
 
-export const { usePostCandidatoMutation, useUpdateNotaMutation } =
-  candidatoSlice
+export const {
+  usePostCandidatoMutation,
+  useUpdateNotaMutation,
+  useGetCandidatosByNotaQuery,
+  useGetCandidatosByEmailMutation,
+} = candidatoSlice;

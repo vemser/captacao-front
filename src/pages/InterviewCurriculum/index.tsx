@@ -82,17 +82,9 @@ export const InterviewCurriculum = () => {
       <Grid
         item
         xs={12}
-        md={6}
-        sx={{ height: "calc(100vh - 150px)", width: "100%" }}
       >
         <CurriculoContainer/>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        lg={6}
-        sx={{ height: "calc(100vh - 150px)", width: "100%" }}
-      ></Grid>
     </Grid>
   );
 };

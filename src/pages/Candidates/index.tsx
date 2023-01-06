@@ -36,7 +36,6 @@ const columns = [
         <Chip
           label={params.value === null ? "Não avaliado" : "Avaliado"}
           sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-          // color={params.value === "T" ? "success" : "primary"}
         />
       );
     },
@@ -107,12 +106,6 @@ export const Registers: React.FC = () => {
       .then((e) => setInscricoes(e));
   }, [page]);
 
-//   useEffect(() => {
-//     getCandidatos({ pagina: page })
-//       .unwrap()
-//       .then((e) => setInscricoes(e));
-//   }, [page]);
-
   const resetFiltro = () => {
     setEmail("");
     setEstado(estado + 1);
@@ -178,7 +171,6 @@ export const Registers: React.FC = () => {
   };
   return (
     <Grid container spacing={2}>
-      {/* <Button onClick={()=> getCandidatos({ pagina: 0 }).unwrap().then((e)=> console.log(e))}>dfsfsd</Button> */}
       <Grid item xs={12}>
         <Stack
           direction={{

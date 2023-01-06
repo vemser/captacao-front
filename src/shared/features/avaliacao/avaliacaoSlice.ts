@@ -78,6 +78,18 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         // }
       }),
     }),
+    // getAvalaiacaoFiltro: build.mutation<Elemento[] | [], IEmail>({
+    //   query: (data) => ({
+    //     url: `avaliacao/buscar-by-email?email=${data.email}`,
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: `Bearer ${getToken()}`,
+    //     },
+    //     // params: {
+
+    //     // }
+    //   }),
+    // }),
   }),
 
   overrideExisting: false,
@@ -89,4 +101,5 @@ export const {
   useSearchByEditionMutation,
   useSearchByEmailMutation,
   useAvaliarCandidatoMutation,
+  // useGetAvalaiacaoFiltroMutation,
 } = avaliacaoSlice;

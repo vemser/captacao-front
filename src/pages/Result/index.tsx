@@ -10,6 +10,7 @@ import {
   IconButton,
   Button,
   Pagination,
+  Box,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -79,47 +80,102 @@ export const Result: React.FC = () => {
           }}
           spacing={2}
         >
-          <FormControl fullWidth variant="outlined">
+           <FormControl fullWidth variant="outlined">
             <InputLabel>Pesquisar por Email</InputLabel>
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton edge="end">
+                  <IconButton
+                    edge="end"
+                    // value={email}
+                    // onClick={() => {
+                    //   getInscricaoByEmail({
+                    //     email: email,
+                    //   })
+                    //     .unwrap()
+                    //     .then((data) => setEmailResult(data));
+                    // }}
+                  >
                     <Search color="primary" />
                   </IconButton>
                 </InputAdornment>
               }
-              //   error={!!errors.nome}
-              //   helperText={errors.nome?.message}
-              //   {...register("nome")}
-              id="registros-search-by-email"
+              id="result-search-by-email"
               label="Pesquisar por Email"
+              // value={valueEmail}
+              // onChange={e => setValueEmail(e.target.value)}
             />
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>Filtrar por trilha</InputLabel>
             <Select
               label="Filtrar por trilha"
-              id="registros-filter-by-trilha"
-              // error={!!errors.estado}
-              // defaultValue="AC"
-              // {...register("estado")}
+              id="result-filter-by-trilha"
+              defaultValue=""
+              // key={estado}
+              // onChange={(e) => {
+              //   getInscricaoByTrilha({
+              //     trilha: e.target.value,
+              //   })
+              //     .unwrap()
+              //     .then((data) => setTrilhaResult(data));
+              // }}
             >
-              <MenuItem value="QA">QA</MenuItem>
+              {/* {getTrilha?.map((trilha) => {
+                return (
+                  <MenuItem
+                    key={trilha.nome}
+                    value={trilha.nome}
+                    id={`filtro-trilha-${trilha.nome}`}
+                  >
+                    {trilha.nome}
+                  </MenuItem>
+                );
+              })} */}
+              ;
             </Select>
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>Filtrar por edição</InputLabel>
             <Select
               label="Filtrar por edição"
-              id="registros-filter-by-edition"
-              // error={!!errors.estado}
-              // defaultValue="AC"
-              // {...register("estado")}
+              id="result-search-by-edition"
+              defaultValue=""
+              // key={estado}
+              // onChange={(e) => {
+              //   getInscricaoByEdicao({
+              //     edicao: e.target.value,
+              //   })
+              //     .unwrap()
+              //     .then((data) => setEdicaoResult(data));
+              // }}
             >
-              <MenuItem value="10">10°</MenuItem>
+              {/* {getEdicoes?.map((edicao) => {
+                return (
+                  <MenuItem
+                    key={edicao.nome}
+                    value={edicao.nome}
+                    id={`filtro-edicao-${edicao.nome}`}
+                  >
+                    {edicao.nome}
+                  </MenuItem>
+                );
+              })}
+              ; */}
             </Select>
           </FormControl>
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <Button
+              fullWidth
+              sx={{
+                height: "3rem",
+              }}
+              variant="contained"
+              // onClick={resetFiltro}
+            >
+              Limpar
+            </Button>
+          </Box>
         </Stack>
       </Grid>
       <Grid item xs={12} sx={{ height: "calc(100vh - 211px)", width: "100%" }}>

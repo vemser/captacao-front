@@ -216,17 +216,18 @@ export const Prova: React.FC = () => {
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton edge="end">
-                    <Search
-                      color="primary"
-                      onClick={e => {
-                        getSearchByEmail({
-                          email: valueEmail
-                        })
-                          .unwrap()
-                          .then(data => setEmailResult(data))
-                      }}
-                    />
+                  <IconButton
+                    edge="end"
+                    // value={email}
+                    // onClick={() => {
+                    //   getInscricaoByEmail({
+                    //     email: email,
+                    //   })
+                    //     .unwrap()
+                    //     .then((data) => setEmailResult(data));
+                    // }}
+                  >
+                    <Search color="primary" />
                   </IconButton>
                 </InputAdornment>
               }
@@ -242,40 +243,70 @@ export const Prova: React.FC = () => {
               label="Filtrar por trilha"
               id="registros-filter-by-trilha"
               defaultValue=""
-              onChange={e => {
-                getAvaliacaoByTrilhaTeste({
-                  trilha: e.target.value
-                })
-                  .unwrap()
-                  .then(data => setTrilhaResult(data))
-              }}
+              // key={estado}
+              // onChange={(e) => {
+              //   getInscricaoByTrilha({
+              //     trilha: e.target.value,
+              //   })
+              //     .unwrap()
+              //     .then((data) => setTrilhaResult(data));
+              // }}
             >
-              <MenuItem value="" disabled></MenuItem>
-              <MenuItem value="QA">QA</MenuItem>
-              <MenuItem value="FRONTEND">Front End</MenuItem>
-              <MenuItem value="BACKEND">Back End</MenuItem>
+              {/* {getTrilha?.map((trilha) => {
+                return (
+                  <MenuItem
+                    key={trilha.nome}
+                    value={trilha.nome}
+                    id={`filtro-trilha-${trilha.nome}`}
+                  >
+                    {trilha.nome}
+                  </MenuItem>
+                );
+              })} */}
+              ;
             </Select>
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>Filtrar por edição</InputLabel>
             <Select
               label="Filtrar por edição"
-              id="registros-filter-by-edition"
+              id="registros-search-by-edition"
               defaultValue=""
-              onChange={e => {
-                getAvaliacaoByEdition({
-                  edicao: e.target.value
-                })
-                  .unwrap()
-                  .then(data => setEditionResult(data))
-              }}
+              // key={estado}
+              // onChange={(e) => {
+              //   getInscricaoByEdicao({
+              //     edicao: e.target.value,
+              //   })
+              //     .unwrap()
+              //     .then((data) => setEdicaoResult(data));
+              // }}
             >
-              <MenuItem value="" disabled></MenuItem>
-              <MenuItem value="1ª Edição">1°</MenuItem>
-              <MenuItem value="9">9</MenuItem>
-              <MenuItem value="8">8°</MenuItem>
+              {/* {getEdicoes?.map((edicao) => {
+                return (
+                  <MenuItem
+                    key={edicao.nome}
+                    value={edicao.nome}
+                    id={`filtro-edicao-${edicao.nome}`}
+                  >
+                    {edicao.nome}
+                  </MenuItem>
+                );
+              })}
+              ; */}
             </Select>
           </FormControl>
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <Button
+              fullWidth
+              sx={{
+                height: "3rem",
+              }}
+              variant="contained"
+              // onClick={resetFiltro}
+            >
+              Limpar
+            </Button>
+          </Box>
         </Stack>
       </Grid>
       <Grid item xs={12} sx={{ height: 'calc(100vh - 211px)', width: '100%' }}>

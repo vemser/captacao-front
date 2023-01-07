@@ -1,23 +1,24 @@
 export interface IInscricao {
-  totalElementos: number;
-  quantidadePaginas: number;
-  pagina: number;
-  tamanho: number;
+  totalElementos: number
+  quantidadePaginas: number
+  pagina: number
+  tamanho: number
   elementos: IElementos[]
+}
+
+export interface IElementos {
+  idInscricao: number
+  candidato: ICandidato
+  dataInscricao: string
+  avaliado: string
 }
 
 export interface IEdicao {
     nome: string;
 }
 
-export interface ILinguagens {
+export interface ILinguagen {
   nome: string
-}
-export interface IElementos {
-  idInscricao: number
-  candidato: ICandidato
-  dataInscricao: string
-  avaliacao: string
 }
 
 export interface IGetInscritos{
@@ -42,9 +43,10 @@ export interface ICandidato {
   parecerComportamental: string
   parecerTecnico: string
   media: number
-  linguagens: ILinguagens[]
+  linguagens: ILinguagen[]
   edicao: IEdicao
   formulario: IFormulario | null
+  imagem: number
   pcdboolean: boolean
 }
 
@@ -56,10 +58,10 @@ export interface IFormulario {
   instituicao: string
   github: string
   linkedin: string
-  // desafios: string
-  // problema: string
-  // reconhecimento: string
-  // altruismo: string
+  desafios: string
+  problema: string
+  reconhecimento: string
+  altruismo: string
   resposta: string
   curriculo: number
   lgpd: string

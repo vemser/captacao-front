@@ -1,24 +1,15 @@
-import { IGetInscritos, IInscricao, ICandidato, IElementos } from "./types";
+import { IGetInscritos, IInscricao, IElementos} from "./types";
 import { apiSlice } from "..";
 import { getToken } from "shared/utils/getToken";
 
-interface ITrilha {
-  trilha: string;
-}
-interface IEdicao {
-  edicao: string;
-}
-interface IEmail {
-  email: string;
-}
-interface IEdicao {
-  edicao: string;
-}
-interface IEmail {
-  email: string;
+interface IFiltros {
+  email?: string;
+  trilha?: string;
+  edicao?: string;
 }
 
 const inscricaoSlice = apiSlice.injectEndpoints({
+
   endpoints: (build) => ({
     getCandidatos: build.mutation<IInscricao, IGetInscritos>({
       query: (data) => ({
@@ -40,22 +31,6 @@ const inscricaoSlice = apiSlice.injectEndpoints({
         params: { idCandidato: data },
       }),
     }),
-    getListInscricaoByTrilha: build.mutation<IElementos[] | [], ITrilha>({
-      query: (data) => ({
-        url: "inscricao/list-by-trilha",
-        method: "GET",
-        params: { trilha: data.trilha },
-        headers: { Authorization: `Bearer ${getToken()}`}
-      }),
-    }),
-    getListInscricaoByEdicao: build.mutation<IElementos[] | [], IEdicao>({
-      query: (data) => ({
-        url: "inscricao/list-by-edicao",
-        method: "GET",
-        params: { edicao: data.edicao },
-        headers: { Authorization: `Bearer ${getToken()}`}
-      }),
-    }),
     getInscricaoById: build.mutation<IElementos, number>({
       query: (data) => ({
         url: "inscricao/find-by-idInscricao",
@@ -64,12 +39,17 @@ const inscricaoSlice = apiSlice.injectEndpoints({
         headers: { Authorization: `Bearer ${getToken()}`}
       }),
     }),
-    getListInscricaoByEmail: build.mutation<IElementos[] | [], IEmail>({
+    getInscricaoFiltro: build.mutation<IInscricao, IFiltros>({
       query: (data) => ({
-        url: "inscricao/find-by-email",
+     
+        url: `inscricao/filtro-inscricao?pagina=0&tamanho=20`,
         method: "GET",
-        params: { email: data.email },
-        headers: { Authorization: `Bearer ${getToken()}`}
+        headers: { Authorization: `Bearer ${getToken()}`},
+        params: {
+          email: data.email,
+          edicao: data.edicao,
+          trilha: data.trilha,
+        },
       }),
     }),
   }),
@@ -79,8 +59,6 @@ const inscricaoSlice = apiSlice.injectEndpoints({
 export const {
   useGetCandidatosMutation,
   usePostInscricaoMutation,
-  useGetListInscricaoByTrilhaMutation,
-  useGetListInscricaoByEdicaoMutation,
   useGetInscricaoByIdMutation,
-  useGetListInscricaoByEmailMutation,
+  useGetInscricaoFiltroMutation,
 } = inscricaoSlice;

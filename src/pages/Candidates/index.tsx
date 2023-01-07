@@ -12,6 +12,7 @@ import {
 	Button,
 	Pagination,
 	Box,
+	CircularProgress,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -101,17 +102,17 @@ export const Registers: React.FC = () => {
 		if (!edicao && !email && !trilha) {
 			getCandidatos({ pagina: page })
 				.unwrap()
-				.then((e) => setInscricoes(e));
+				.then((data) => setInscricoes(data));
 		} else {
 			getInscricaoFiltro({ email, edicao, trilha })
 				.unwrap()
-				.then((e) => setInscricoes(e));
+				.then((data) => setInscricoes(data));
 		}
 	}, [email, edicao, trilha, page]);
 
 	const resetFiltro = () => {
 		setEmail("");
-    setEmailInput("");
+		setEmailInput("");
 		setEdicao("");
 		setTrilha("");
 	};

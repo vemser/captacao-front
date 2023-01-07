@@ -1,4 +1,4 @@
-export interface Root {
+export interface IListaAvaliacao {
   totalElementos: number
   quantidadePaginas: number
   pagina: number

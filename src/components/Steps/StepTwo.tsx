@@ -52,7 +52,8 @@ const names = [
   'Ruby',
   'Python',
   'Swift',
-  'C'
+  'C',
+  'Outras'
 ]
 
 export const StepTwo: React.FC = () => {

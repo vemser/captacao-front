@@ -9,6 +9,12 @@ import {
   UpdateNota,
 } from "./types";
 
+interface IFiltros {
+  email?: string;
+  trilha?: string;
+  edicao?: string;
+}
+
 const candidatoSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     postCandidato: builder.mutation<CandidatoResponse, CandidatoBody>({
@@ -31,7 +37,7 @@ const candidatoSlice = apiSlice.injectEndpoints({
         body: data.nota,
       }),
     }),
-    getCandidatosByNota: builder.query<CandidatoByNota, CandidatoByNotaBody>({
+    getCandidatosByNota: builder.mutation<CandidatoByNota, CandidatoByNotaBody>({
       query: (data) => ({
         url: "candidato/find-by-nota",
         method: "GET",
@@ -56,6 +62,18 @@ const candidatoSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getCandidatosFiltro: builder.mutation<CandidatoByNota, IFiltros>({
+      query: (data) => ({
+        url: `candidato/filtro-candidato?pagina=0&tamanho=20`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${getToken()}`},
+        params: {
+          email: data.email,
+          edicao: data.edicao,
+          trilha: data.trilha,
+        },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -63,6 +81,7 @@ const candidatoSlice = apiSlice.injectEndpoints({
 export const {
   usePostCandidatoMutation,
   useUpdateNotaMutation,
-  useGetCandidatosByNotaQuery,
+  useGetCandidatosByNotaMutation,
   useGetCandidatosByEmailMutation,
+  useGetCandidatosFiltroMutation
 } = candidatoSlice;

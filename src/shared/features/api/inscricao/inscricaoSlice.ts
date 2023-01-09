@@ -41,7 +41,6 @@ const inscricaoSlice = apiSlice.injectEndpoints({
     }),
     getInscricaoFiltro: build.mutation<IInscricao, IFiltros>({
       query: (data) => ({
-     
         url: `inscricao/filtro-inscricao?pagina=0&tamanho=20`,
         method: "GET",
         headers: { Authorization: `Bearer ${getToken()}`},

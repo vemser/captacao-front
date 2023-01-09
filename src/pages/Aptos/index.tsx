@@ -75,6 +75,32 @@ export const Prova: React.FC = () => {
 	const list = data?.elementos;
 
 	const columns = [
+
+
+		{
+			field: "id",
+			headerName: "ID",
+			width: 60,
+		},
+		{
+			field: "nome",
+			headerName: "Nome",
+			minWidth: 180,
+			flex: 1,
+		},
+		{
+			field: "email",
+			headerName: "Email",
+			minWidth: 230,
+			flex: 1,
+		},
+		{
+			field: "trilha",
+			headerName: "Trilhas",
+			minWidth: 90,
+			maxWidth: 200,
+			flex: 1,
+		},
 		{
 			field: "status",
 			headerName: "Status",
@@ -129,33 +155,6 @@ export const Prova: React.FC = () => {
 			},
 		},
 		{
-			field: "nome",
-			headerName: "Nome",
-			minWidth: 180,
-			flex: 1,
-		},
-		{
-			field: "email",
-			headerName: "Email",
-			minWidth: 230,
-			flex: 1,
-		},
-		{
-			field: "telefone",
-			headerName: "Telefone",
-			minWidth: 160,
-		},
-		{
-			field: "turno",
-			headerName: "Turno",
-			minWidth: 90,
-		},
-		{
-			field: "estado",
-			headerName: "Estado",
-			minWidth: 90,
-		},
-		{
 			field: "nota",
 			headerName: "Adicionar nota",
 			width: 140,
@@ -165,6 +164,9 @@ export const Prova: React.FC = () => {
 		},
 	];
 
+
+	
+
 	const rows = () => {
 		if (trilhaResult) {
 			return trilhaResult?.map((d) => {
@@ -173,6 +175,11 @@ export const Prova: React.FC = () => {
 					idCandidato: d.inscricao.candidato.idCandidato,
 					nome: d.inscricao.candidato.nome,
 					email: d.inscricao.candidato.email,
+					trilha: d.inscricao.candidato.formulario?.trilhas
+						.map((trilha) => {
+							return trilha.nome;
+							})
+						.join(", "),
 					status: d.inscricao.avaliacao,
 					telefone: d.inscricao.candidato.telefone,
 					turno: d.inscricao.candidato.formulario?.turno,
@@ -188,6 +195,11 @@ export const Prova: React.FC = () => {
 					idCandidato: d.inscricao.candidato.idCandidato,
 					nome: d.inscricao.candidato.nome,
 					email: d.inscricao.candidato.email,
+					trilha: d.inscricao.candidato.formulario?.trilhas
+						.map((trilha) => {
+							return trilha.nome;
+							})
+						.join(", "),
 					status: d.inscricao.avaliacao,
 					telefone: d.inscricao.candidato.telefone,
 					turno: d.inscricao.candidato.formulario?.turno,
@@ -203,6 +215,11 @@ export const Prova: React.FC = () => {
 					idCandidato: d.inscricao.candidato.idCandidato,
 					nome: d.inscricao.candidato.nome,
 					email: d.inscricao.candidato.email,
+					trilha: d.inscricao.candidato.formulario?.trilhas
+						.map((trilha) => {
+							return trilha.nome;
+							})
+						.join(", "),
 					status: d.inscricao.avaliacao,
 					telefone: d.inscricao.candidato.telefone,
 					turno: d.inscricao.candidato.formulario?.turno,
@@ -218,6 +235,11 @@ export const Prova: React.FC = () => {
 					idCandidato: dados.inscricao.candidato.idCandidato,
 					nome: dados.inscricao.candidato.nome,
 					email: dados.inscricao.candidato.email,
+					trilha: dados.inscricao.candidato.formulario?.trilhas
+						.map((trilha) => {
+							return trilha.nome;
+							})
+						.join(", "),
 					status: dados.inscricao.avaliacao,
 					telefone: dados.inscricao.candidato.telefone,
 					turno: dados.inscricao.candidato.formulario?.turno,

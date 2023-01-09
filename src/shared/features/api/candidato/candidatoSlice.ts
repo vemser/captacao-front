@@ -85,8 +85,8 @@ const candidatoSlice = apiSlice.injectEndpoints({
         params: {
           idCandidato: data.idCandidato
         }
-      })
-    })
+      }),
+    }),
   }),
   overrideExisting: false
 })
@@ -97,5 +97,5 @@ export const {
   useUpdateNotaParecerTecnicoMutation,
   useUpdateNotaParecerComportamentalMutation,
   useGetCandidatosByNotaQuery,
-  useGetCandidatosByEmailMutation
-} = candidatoSlice
+  useGetCandidatosByEmailMutation,
+} = candidatoSlice;

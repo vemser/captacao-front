@@ -1,6 +1,7 @@
 // import {  } from "./types";
 import { getToken } from "shared/utils/getToken";
 import { apiSlice } from "../";
+import { CandidatoByNota } from "../candidato/types";
 import {
   EntrevistaObsParams,
   EntrevistaUpdateParams,
@@ -9,6 +10,12 @@ import {
   EntrevistasParams,
   EntrevistasMesParams,
 } from "./types";
+
+interface IFiltros {
+  email?: string;
+  trilha?: string;
+  edicao?: string;
+}
 
 const entervistaSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -90,15 +97,18 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    // getEntrevistaFiltro: builder.query<EntrervistaResponse, string>({
-    //   query: (data) => ({
-    //     url: `/entrevista/buscar-entrevista-email-candidato/${data}`,
-    //     method: "GET",
-    //     headers: {
-    //       // Authorization: `Bearer ${token}`,
-    //     },
-    //   }),
-    // }),
+    getEntrevistaFiltro: builder.mutation<CandidatoByNota, IFiltros>({
+      query: (data) => ({
+        url: `candidato/filtro-candidato?pagina=0&tamanho=20`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${getToken()}`},
+        params: {
+          email: data.email,
+          edicao: data.edicao,
+          trilha: data.trilha,
+        },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -110,5 +120,5 @@ export const {
   useGetEntrevistasMutation,
   useGetEntrevistaPorMesQuery,
   useGetEntrevistaByEmailQuery,
-  // useGetEntrevistaFiltroMutation,
+  useGetEntrevistaFiltroMutation,
 } = entervistaSlice;

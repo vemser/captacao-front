@@ -13,7 +13,7 @@ interface IFiltros {
 }
 const avaliacaoSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    listReviews: build.query<IListaAvaliacao, IPagination>({
+    listReviews: build.mutation<IListaAvaliacao, IPagination>({
       query: (data) => ({
         url: "avaliacao",
         method: "GET",
@@ -62,7 +62,7 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useListReviewsQuery,
+  useListReviewsMutation,
   useAvaliarCandidatoMutation,
   useGetAvaliacaoFiltroMutation,
 } = avaliacaoSlice;

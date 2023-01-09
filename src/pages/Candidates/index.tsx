@@ -162,7 +162,7 @@ export const Registers: React.FC = () => {
 									</IconButton>
 								</InputAdornment>
 							}
-							id="registros-search-by-email"
+							id="candidatos-search-by-email"
 							label="Pesquisar por Email"
 							value={emailInput}
 							onChange={(e) => {
@@ -174,7 +174,7 @@ export const Registers: React.FC = () => {
 						<InputLabel>Filtrar por trilha</InputLabel>
 						<Select
 							label="Filtrar por trilha"
-							id="registros-filter-by-trilha"
+							id="candidatos-filter-by-trilha"
 							defaultValue=""
 							value={trilha}
 							onChange={(e) => {

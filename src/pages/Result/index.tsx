@@ -14,8 +14,10 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
+import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
 
 const columns = [
   {
@@ -47,29 +49,57 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    nome: "Daniel Jacon",
-    email: "danieljacon@dbccompany.com.br",
-    nota: 10,
-    telefone: "(19)98765-7829",
-    turno: "Manhã",
-    estado: "SP",
-  },
-  {
-    id: 2,
-    nome: "Daniel Jacon",
-    email: "danieljacon@dbccompany.com.br",
-    nota: 6,
-    telefone: "(19)98765-7829",
-    turno: "Manhã",
-    estado: "SP",
-  },
-];
-
 export const Result: React.FC = () => {
   const navigate = useNavigate();
+
+  const { data: getTrilha } = useGetTrilhasQuery();
+	const { data: getEdicoes } = useGetListaEdicoesQuery();
+
+  const [email, setEmail] = useState("");
+	const [emailInput, setEmailInput] = useState("");
+	const [edicao, setEdicao] = useState("");
+	const [trilha, setTrilha] = useState("");
+
+  // useEffect(() => {
+	// 	if (!edicao && !email && !trilha) {
+	// 		getCandidatosByNota({ pagina: page, tamanho: 20 })
+	// 			.unwrap()
+	// 			.then((data) => setListaEntrevistas(data))		
+	// 	} else {
+	// 		getCandidatosFiltro({ email, edicao, trilha })
+	// 			.unwrap()
+	// 			.then((data) => setListaEntrevistas(data))	
+	// 	}
+	// }, [email, edicao, trilha, page]);
+
+	const resetFiltro = () => {
+		setEmail("");
+		setEmailInput("");
+		setEdicao("");
+		setTrilha("");
+	};
+
+  const rows = [
+    {
+      id: 1,
+      nome: "Daniel Jacon",
+      email: "danieljacon@dbccompany.com.br",
+      nota: 10,
+      telefone: "(19)98765-7829",
+      turno: "Manhã",
+      estado: "SP",
+    },
+    {
+      id: 2,
+      nome: "Daniel Jacon",
+      email: "danieljacon@dbccompany.com.br",
+      nota: 6,
+      telefone: "(19)98765-7829",
+      turno: "Manhã",
+      estado: "SP",
+    },
+  ];
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -83,86 +113,73 @@ export const Result: React.FC = () => {
            <FormControl fullWidth variant="outlined">
             <InputLabel>Pesquisar por Email</InputLabel>
             <OutlinedInput
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    edge="end"
-                    // value={email}
-                    // onClick={() => {
-                    //   getInscricaoByEmail({
-                    //     email: email,
-                    //   })
-                    //     .unwrap()
-                    //     .then((data) => setEmailResult(data));
-                    // }}
-                  >
-                    <Search color="primary" />
-                  </IconButton>
-                </InputAdornment>
-              }
-              id="result-search-by-email"
-              label="Pesquisar por Email"
-              // value={valueEmail}
-              // onChange={e => setValueEmail(e.target.value)}
-            />
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										onClick={() => setEmail(emailInput)}
+										edge="end"
+									>
+										<Search color="primary" />
+									</IconButton>
+								</InputAdornment>
+							}
+							id="avaliacao-filtrar-por-email"
+							label="Pesquisar por Email"
+							value={emailInput}
+							onChange={(e) => {
+								setEmailInput(e.target.value);
+							}}
+						/>
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>Filtrar por trilha</InputLabel>
             <Select
-              label="Filtrar por trilha"
-              id="result-filter-by-trilha"
-              defaultValue=""
-              // key={estado}
-              // onChange={(e) => {
-              //   getInscricaoByTrilha({
-              //     trilha: e.target.value,
-              //   })
-              //     .unwrap()
-              //     .then((data) => setTrilhaResult(data));
-              // }}
-            >
-              {/* {getTrilha?.map((trilha) => {
-                return (
-                  <MenuItem
-                    key={trilha.nome}
-                    value={trilha.nome}
-                    id={`filtro-trilha-${trilha.nome}`}
-                  >
-                    {trilha.nome}
-                  </MenuItem>
-                );
-              })} */}
-              ;
-            </Select>
+							label="Filtrar por trilha"
+							id="select-avaliacao-filtro-por-trilha"
+							defaultValue=""
+							value={trilha}
+							onChange={(e) => {
+								setTrilha(e.target.value);
+							}}
+						>
+							{getTrilha?.map((trilha) => {
+								return (
+									<MenuItem
+										key={trilha.nome}
+										value={trilha.nome}
+										id={`opcao-avaliacao-filtro-trilha-${trilha.nome}`}
+									>
+										{trilha.nome}
+									</MenuItem>
+								);
+							})}
+							;
+						</Select>
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>Filtrar por edição</InputLabel>
             <Select
-              label="Filtrar por edição"
-              id="result-search-by-edition"
-              defaultValue=""
-              // key={estado}
-              // onChange={(e) => {
-              //   getInscricaoByEdicao({
-              //     edicao: e.target.value,
-              //   })
-              //     .unwrap()
-              //     .then((data) => setEdicaoResult(data));
-              // }}
-            >
-              {/* {getEdicoes?.map((edicao) => {
-                return (
-                  <MenuItem
-                    key={edicao.nome}
-                    value={edicao.nome}
-                    id={`filtro-edicao-${edicao.nome}`}
-                  >
-                    {edicao.nome}
-                  </MenuItem>
-                );
-              })}
-              ; */}
-            </Select>
+							label="Filtrar por edição"
+							id="avaliacao-filtro-por-editicao"
+							defaultValue=""
+							value={edicao}
+							onChange={(e) => {
+								setEdicao(e.target.value);
+							}}
+						>
+							{getEdicoes?.map((edicao) => {
+								return (
+									<MenuItem
+										key={edicao.nome}
+										value={edicao.nome}
+										id={`opcao-avaliacao-filtro-edicao-${edicao.nome}`}
+									>
+										{edicao.nome}
+									</MenuItem>
+								);
+							})}
+							;
+						</Select>
           </FormControl>
           <Box display="flex" alignItems="center" justifyContent="center">
             <Button
@@ -171,7 +188,7 @@ export const Result: React.FC = () => {
                 height: "3rem",
               }}
               variant="contained"
-              // onClick={resetFiltro}
+              onClick={resetFiltro}
             >
               Limpar
             </Button>
@@ -193,11 +210,11 @@ export const Result: React.FC = () => {
       </Grid>
       <Grid item xs={12} display="flex" justifyContent="center">
         <Pagination
-          count={5}
-          color="primary"
-          size="small"
-          // onChange={(event, page) => {
-          //   getCandidates(page - 1);
+          // count={lista?.quantidadePaginas}
+          // color="primary"
+          // size="small"
+          // onChange={(_, page) => {
+          //   setPage(page - 1);
           // }}
         />
       </Grid>

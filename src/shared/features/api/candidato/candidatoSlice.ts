@@ -9,7 +9,14 @@ import {
   UpdateNota,
   UpdateNotaParecerComportamental,
   UpdateNotaParecerTecnico
-} from './types'
+
+} from "./types";
+
+interface IFiltros {
+  email?: string;
+  trilha?: string;
+  edicao?: string;
+}
 
 const candidatoSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -33,10 +40,10 @@ const candidatoSlice = apiSlice.injectEndpoints({
         body: data.nota
       })
     }),
-    getCandidatosByNota: builder.query<CandidatoByNota, CandidatoByNotaBody>({
-      query: data => ({
-        url: 'candidato/find-by-nota',
-        method: 'GET',
+    getCandidatosByNota: builder.mutation<CandidatoByNota, CandidatoByNotaBody>({
+      query: (data) => ({
+        url: "candidato/find-by-nota",
+        method: "GET",
         headers: {
           Authorization: `Bearer ${getToken()}`
         },
@@ -87,6 +94,18 @@ const candidatoSlice = apiSlice.injectEndpoints({
         }
       }),
     }),
+    getCandidatosFiltro: builder.mutation<CandidatoByNota, IFiltros>({
+      query: (data) => ({
+        url: `candidato/filtro-candidato?pagina=0&tamanho=20`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${getToken()}`},
+        params: {
+          email: data.email,
+          edicao: data.edicao,
+          trilha: data.trilha,
+        },
+      }),
+    }),
   }),
   overrideExisting: false
 })
@@ -96,6 +115,7 @@ export const {
   useUpdateNotaMutation,
   useUpdateNotaParecerTecnicoMutation,
   useUpdateNotaParecerComportamentalMutation,
-  useGetCandidatosByNotaQuery,
+  useGetCandidatosByNotaMutation,
   useGetCandidatosByEmailMutation,
-} = candidatoSlice;
+  useGetCandidatosFiltroMutation
+} = candidatoSlice

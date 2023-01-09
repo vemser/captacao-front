@@ -1,56 +1,56 @@
-import { FormularioResponse, IFormularioBody, UploadFile } from "./types";
-import { apiSlice } from "../";
-import { getToken } from "shared/utils/getToken";
+import { FormularioResponse, IFormularioBody, UploadFile } from './types'
+import { apiSlice } from '../'
+import { getToken } from 'shared/utils/getToken'
 
 const formularioSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     postNewFormulario: builder.mutation<FormularioResponse, IFormularioBody>({
-      query: (data) => ({
-        url: "formulario/cadastro",
-        method: "POST",
+      query: data => ({
+        url: 'formulario/cadastro',
+        method: 'POST',
         headers: {
           // Authorization: `Bearer ${token}`,
         },
-        body: data,
-      }),
+        body: data
+      })
     }),
     uploadFile: builder.mutation<void, UploadFile>({
-      query: (data) => ({
+      query: data => ({
         url: `formulario/upload-print-config-pc/${data.idFormulario}`,
-        method: "PUT",
+        method: 'PUT',
         headers: {
           // Authorization: `Bearer ${token}`,
         },
-        body: data.file,
-      }),
+        body: data.file
+      })
     }),
     uploadCurriculo: builder.mutation<void, UploadFile>({
-      query: (data) => ({
+      query: data => ({
         url: `formulario/upload-curriculo/${data.idFormulario}`,
-        method: "PUT",
+        method: 'PUT',
         headers: {
           // Authorization: `Bearer ${token}`,
         },
-        body: data.file,
-      }),
+        body: data.file
+      })
     }),
     getCurriculo: builder.mutation<string, number>({
-      query: (idFormulario) => ({
+      query: idFormulario => ({
         url: `formulario/recuperar-curriculo?idFormulario=${idFormulario}`,
-        method: "GET",
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
-        responseHandler: (response) => response.text(),
-      }),
-    }),
+        responseHandler: response => response.text()
+      })
+    })
   }),
-  overrideExisting: false,
-});
+  overrideExisting: false
+})
 
 export const {
   usePostNewFormularioMutation,
   useUploadCurriculoMutation,
   useUploadFileMutation,
-  useGetCurriculoMutation,
-} = formularioSlice;
+  useGetCurriculoMutation
+} = formularioSlice

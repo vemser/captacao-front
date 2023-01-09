@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 import { useGetCandidatosByNotaMutation, useGetCandidatosFiltroMutation} from "shared/features/api/candidato/candidatoSlice";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
-import { useGetEntrevistaFiltroMutation } from "shared/features/api/entrevista/entrevistaSlice";
 import { CandidatoByNota } from "shared/features/api/candidato/types";
 
 export const Interview: React.FC = () => {

@@ -18,7 +18,7 @@ const candidatoSlice = apiSlice.injectEndpoints({
         url: 'candidato',
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${getToken()}`
+          // Authorization: `Bearer ${getToken()}`
         },
         body: data
       })

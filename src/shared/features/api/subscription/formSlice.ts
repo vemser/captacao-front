@@ -1,16 +1,20 @@
-import { IFormResponse, IFormSubscribeFormResponse, IFormSubscribeTextResponse } from "shared/interfaces";
-import { apiSlice } from "../";
+import {
+  IFormResponse,
+  IFormSubscribeFormResponse,
+  IFormSubscribeTextResponse
+} from 'shared/interfaces'
+import { apiSlice } from '../'
 
-const token = "1031609a66722e535e436d70d478ce";
+const token = '1031609a66722e535e436d70d478ce'
 const formSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getInputs: builder.query<IFormResponse, void>({
       query: () => ({
-        url: "https://graphql.datocms.com/",
-        method: "POST",
+        url: 'https://graphql.datocms.com/',
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           query: `
@@ -27,17 +31,17 @@ const formSlice = apiSlice.injectEndpoints({
               neurodiversidade
             }
           }
-        `,
-        }),
-      }),
+        `
+        })
+      })
     }),
     getSubscribeForm: builder.query<IFormSubscribeFormResponse, void>({
       query: () => ({
-        url: "https://graphql.datocms.com/",
-        method: "POST",
+        url: 'https://graphql.datocms.com/',
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           query: `
@@ -67,17 +71,17 @@ const formSlice = apiSlice.injectEndpoints({
               s2ConfiguraEsDaMQuina
             }
           }
-        `,
-        }),
-      }),
+        `
+        })
+      })
     }),
     getSubscribeText: builder.query<IFormSubscribeTextResponse, void>({
       query: () => ({
-        url: "https://graphql.datocms.com/",
-        method: "POST",
+        url: 'https://graphql.datocms.com/',
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           query: `
@@ -90,12 +94,16 @@ const formSlice = apiSlice.injectEndpoints({
               }
             }
           }
-        `,
-        }),
-      }),
-    }),
+        `
+        })
+      })
+    })
   }),
-  overrideExisting: false,
-});
+  overrideExisting: false
+})
 
-export const { useGetInputsQuery, useGetSubscribeTextQuery, useGetSubscribeFormQuery } = formSlice;
+export const {
+  useGetInputsQuery,
+  useGetSubscribeTextQuery,
+  useGetSubscribeFormQuery
+} = formSlice

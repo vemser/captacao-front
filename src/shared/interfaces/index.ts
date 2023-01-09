@@ -117,3 +117,13 @@ export interface IUser {
 export interface ILinguagens {
   nome: string;
 }
+
+export interface IAtualizarInformacoesEntrevista {
+  observacao: string;
+  parecerComportamental: string;
+  notaComportamental: number;
+  parecerTecnico: string;
+  notaTecnica: number;
+  idEntrevista: number;
+  idCandidato: number;
+}

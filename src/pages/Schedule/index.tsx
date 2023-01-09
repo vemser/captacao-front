@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useTheme, Grid, Divider } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useTheme, Grid, Divider, FormControl } from '@mui/material'
 import { Box } from '@mui/system'
 import useMediaQuery from '@mui/material/useMediaQuery'
 // import { useAuth, useInterview } from '../../shared/contexts'
@@ -7,9 +7,12 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { useNavigate } from 'react-router-dom'
 import './index.css'
-import { useGetEntrevistasQuery } from 'shared/features/api/entrevista/entrevistaSlice'
-import { ILinguagens } from 'shared/interfaces'
+import { useGetEntrevistasQuery, useUpdateObservacaoMutation } from 'shared/features/api/entrevista/entrevistaSlice'
+import { IAtualizarInformacoesEntrevista, ILinguagens } from 'shared/interfaces'
 import { DataGrid } from '@mui/x-data-grid'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { useUpdateNotaParecerComportamentalMutation, useUpdateNotaParecerTecnicoMutation } from 'shared/features/api/candidato/candidatoSlice'
 
 export const Schedule = () => {
   // const { getByMonthYear, schedulesFormated } = useInterview()
@@ -20,14 +23,18 @@ export const Schedule = () => {
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
   const [modalInfos, setModalInfos] = useState<any>()
   const [open, setOpen] = React.useState(false);
+  const {data: entrevistasArray} = useGetEntrevistasQuery({pagina: 0, tamanho: 20})
+  const [updateObservacao] = useUpdateObservacaoMutation();
+  const [UpdateNotaParecerTecnico] = useUpdateNotaParecerTecnicoMutation();
+  const [UpdateNotaParecerComportamental] = useUpdateNotaParecerComportamentalMutation();
+
+  const {register, handleSubmit} = useForm<IAtualizarInformacoesEntrevista>()
 
 
   // useEffect(() => {
   //   let date = new Date()
   //   getByMonthYear(date.getMonth() + 1, date.getFullYear())
   // }, [])
-
-  const {data: entrevistasArray} = useGetEntrevistasQuery({pagina: 0, tamanho: 20})
 
   console.log(entrevistasArray?.elementos);
   
@@ -59,6 +66,8 @@ export const Schedule = () => {
         observacoesTecnicas: entrevista.candidatoDTO.observacoes,
         parecerComportamental: entrevista.candidatoDTO.parecerComportamental,
         parecerTecnico: entrevista.candidatoDTO.parecerTecnico,
+        idCandidato: entrevista.candidatoDTO.idCandidato,
+        idEntrevista: entrevista.idEntrevista
 
       },
       color: legendaColor
@@ -78,6 +87,71 @@ export const Schedule = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+
+  const handleFormSubmit = async (data: IAtualizarInformacoesEntrevista) => {
+
+    try{
+
+      {data.observacao && await toast.promise(
+        updateObservacao({
+          observacao: data.observacao,
+          idEntrevista: data.idEntrevista,
+        }).unwrap(),
+        {
+          pending: "Carregando...",
+          success:"Observações da Entrevista atualizada com sucesso",
+          error:{
+            render() {
+              return "Houve um erro ao atualizar as Observações da entrevista"
+            },
+          },
+        },
+      );}
+  
+      {data.notaComportamental && data.parecerComportamental && await toast.promise(
+        UpdateNotaParecerComportamental({
+          notaComportamental: data.notaComportamental,
+          parecerComportamental: data.parecerComportamental,
+          idCandidato: data.idCandidato
+        }).unwrap(),
+        {
+          pending: "Carregando...",
+          success:"Nota e Parecer Comportamental do candidato atualizado com sucesso",
+          error:{
+            render() {
+              return "Houve um erro ao atualizar a nota e o parecer comportamental do candidato"
+            },
+          },
+        }
+      );}
+  
+      {data.notaTecnica && data.notaTecnica && await toast.promise(
+        UpdateNotaParecerTecnico({
+          notaTecnica: data.notaTecnica,
+          parecerTecnico: data.parecerTecnico,
+          idCandidato: data.idCandidato
+        }).unwrap(),
+        {
+          pending: "Carregando...",
+          success:"Nota e Parecer Técnico do candidato atualizado com sucesso",
+          error:{
+            render() {
+              return "Houve um erro ao atualizar a nota e o parecer técnico do candidato"
+            },
+          },
+        }
+      );}
+
+    } catch (error){
+      console.error(error)
+
+    } finally {
+      handleClose()
+      navigate('/agenda')
+
+    } 
+  }
 
   return (
     <>
@@ -300,6 +374,13 @@ export const Schedule = () => {
                     >
                       Parecer Técnico: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.parecerTecnico}</Box> 
                     </Typography>
+
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px'}}
+                    >
+                      Observações da Entrevista: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.observacoes}</Box> 
+                    </Typography>
                   </Box>
                 </Box>
             </Grid>
@@ -314,59 +395,85 @@ export const Schedule = () => {
              Atualizar Informações da Entrevista:
             </Typography>
             
+            <FormControl sx={{display: 'flex', flexDirection: 'column', gap:'30px'}}>       
+              <Box sx={{display: 'flex', width: '70%', margin: '0 auto', justifyContent:'space-between'}}>
+                <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
+                  <Box sx={{ display:'flex', gap:'10%'}}>
+                    <TextField
+                      margin="dense"
+                      id="parecerComportamental"
+                      label="Parecer Comportamental"
+                      {...register('parecerComportamental')}
+                    />  
 
-            <Box sx={{display: 'flex', width: '70%', margin: '0 auto', justifyContent:'space-between'}}>
-              <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
-                <Box sx={{ display:'flex', gap:'10%'}}>
-                  <TextField
-                    margin="dense"
-                    id="name"
-                    label="Parecer Compartamental"
-                  />  
+                    <TextField
+                      margin="dense"
+                      id="notaComportamental"
+                      label="Nota Comportamental"
+                      type={'number'}
+                      {...register('notaComportamental')}
+                    />  
+                  </Box>
+                </Box>  
 
-                  <TextField
-                    margin="dense"
-                    id="name"
-                    label="Nota Compartamental"
-                    type={'number'}
-                  />  
-                </Box>
-              </Box>  
+                <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
+                  <Box sx={{ display:'flex', gap:'10%'}}>
+                    <TextField
+                      margin="dense"
+                      id="parecerTecnico"
+                      label="Parecer Técnico"
+                      {...register('parecerTecnico')}
+                    />  
 
-              <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
-                <Box sx={{ display:'flex', gap:'10%'}}>
-                  <TextField
-                    margin="dense"
-                    id="name"
-                    label="Parecer Técnico"
-                    
-                  />  
+                    <TextField
+                      margin="dense"
+                      id="notaTecnico"
+                      label="Nota Técnica"
+                      type={'number'}
+                      {...register('notaTecnica')}
+                    /> 
+                  </Box>
+                </Box>  
+              </Box>
 
-                  <TextField
-                    margin="dense"
-                    id="name"
-                    label="Nota Técnica"
-                    type={'number'}
-                  /> 
-                </Box>
-              </Box>  
-            </Box>
-
-            <TextField 
+              <TextField 
                 margin="dense"
                 sx={{
                   mt: 1,
                   width: '70%',
                   margin: '0 auto'
                 }}
-                id="name"
+                id="observacao"
                 label="Observações Técnicas"
+                {...register('observacao')}
               />
-          </DialogContent>
 
-          <Button>
-            Atualizar informações
-          </Button>
+              <TextField 
+                sx={{
+                 display: 'none'
+                }}
+                id="idEntrevista"
+                value={modalInfos?.extendedProps.idEntrevista}
+                {...register('idEntrevista')}
+              />
+
+              <TextField 
+                sx={{
+                 display: 'none'
+                }}
+                id="idCandidato"
+                value={modalInfos?.extendedProps.idCandidato}
+                {...register('idCandidato')}
+              />
+              
+
+              <Button
+              onClick={handleSubmit((data) => handleFormSubmit(data))}>
+                Atualizar informações
+              </Button>
+            </FormControl>   
+            
+          </DialogContent>
 
           <DialogActions>
             <Button onClick={handleClose}>Voltar</Button>

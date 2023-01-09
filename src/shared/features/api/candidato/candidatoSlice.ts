@@ -1,5 +1,5 @@
-import { getToken } from "shared/utils/getToken";
-import { apiSlice } from "../";
+import { getToken } from 'shared/utils/getToken'
+import { apiSlice } from '../'
 import {
   CandidatoBody,
   CandidatoByNota,
@@ -7,6 +7,9 @@ import {
   CandidatoResponse,
   Elemento,
   UpdateNota,
+  UpdateNotaParecerComportamental,
+  UpdateNotaParecerTecnico
+
 } from "./types";
 
 interface IFiltros {
@@ -16,51 +19,80 @@ interface IFiltros {
 }
 
 const candidatoSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     postCandidato: builder.mutation<CandidatoResponse, CandidatoBody>({
-      query: (data) => ({
-        url: "candidato",
-        method: "POST",
+      query: data => ({
+        url: 'candidato',
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          // Authorization: `Bearer ${getToken()}`
         },
-        body: data,
-      }),
+        body: data
+      })
     }),
     updateNota: builder.mutation<void, UpdateNota>({
-      query: (data) => ({
+      query: data => ({
         url: `candidato/nota-prova/${data.idCandidato}`,
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
-        body: data.nota,
-      }),
+        body: data.nota
+      })
     }),
     getCandidatosByNota: builder.mutation<CandidatoByNota, CandidatoByNotaBody>({
       query: (data) => ({
         url: "candidato/find-by-nota",
         method: "GET",
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
         params: {
           pagina: data.pagina,
-          tamanho: data.tamanho,
-        },
-      }),
+          tamanho: data.tamanho
+        }
+      })
     }),
     getCandidatosByEmail: builder.mutation<Elemento, string>({
-      query: (data) => ({
-        url: "candidato/findbyemails",
-        method: "GET",
+      query: data => ({
+        url: 'candidato/findbyemails',
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
         params: {
-          email: data,
+          email: data
+        }
+      })
+    }),
+    updateNotaParecerTecnico: builder.mutation<void, UpdateNotaParecerTecnico>({
+      query: data => ({
+        url: `candidato/nota-parecer-tecnico/${data.idCandidato}`,
+        method: 'PUT',
+        body: data,
+        headers: {
+          Authorization: `Bearer ${getToken()}`
         },
-      }),
+        params: {
+          idCandidato: data.idCandidato
+        }
+      })
+    }),
+    updateNotaParecerComportamental: builder.mutation<
+      void,
+      UpdateNotaParecerComportamental
+    >({
+      query: data => ({
+        url: `candidato/nota-comportamental/${data.idCandidato}`,
+        method: 'PUT',
+        body: data,
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        },
+        params: {
+          idCandidato: data.idCandidato
+        }
+      })
     }),
     getCandidatosFiltro: builder.mutation<CandidatoByNota, IFiltros>({
       query: (data) => ({
@@ -75,13 +107,15 @@ const candidatoSlice = apiSlice.injectEndpoints({
       }),
     }),
   }),
-  overrideExisting: false,
-});
+  overrideExisting: false
+})
 
 export const {
   usePostCandidatoMutation,
   useUpdateNotaMutation,
+  useUpdateNotaParecerTecnicoMutation,
+  useUpdateNotaParecerComportamentalMutation,
   useGetCandidatosByNotaMutation,
   useGetCandidatosByEmailMutation,
   useGetCandidatosFiltroMutation
-} = candidatoSlice;
+} = candidatoSlice

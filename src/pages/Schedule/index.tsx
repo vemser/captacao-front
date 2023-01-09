@@ -7,12 +7,13 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { useNavigate } from 'react-router-dom'
 import './index.css'
-import { useGetEntrevistasQuery, useUpdateObservacaoMutation } from 'shared/features/api/entrevista/entrevistaSlice'
+import { useGetEntrevistasMutation, useUpdateObservacaoMutation } from 'shared/features/api/entrevista/entrevistaSlice'
 import { IAtualizarInformacoesEntrevista, ILinguagens } from 'shared/interfaces'
 import { DataGrid } from '@mui/x-data-grid'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useUpdateNotaParecerComportamentalMutation, useUpdateNotaParecerTecnicoMutation } from 'shared/features/api/candidato/candidatoSlice'
+import { EntrervistaResponse } from 'shared/features/api/entrevista/types'
 
 export const Schedule = () => {
   // const { getByMonthYear, schedulesFormated } = useInterview()
@@ -23,23 +24,30 @@ export const Schedule = () => {
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
   const [modalInfos, setModalInfos] = useState<any>()
   const [open, setOpen] = React.useState(false);
-  const {data: entrevistasArray} = useGetEntrevistasQuery({pagina: 0, tamanho: 20})
+  const [getEntrevistas] = useGetEntrevistasMutation()
   const [updateObservacao] = useUpdateObservacaoMutation();
   const [UpdateNotaParecerTecnico] = useUpdateNotaParecerTecnicoMutation();
   const [UpdateNotaParecerComportamental] = useUpdateNotaParecerComportamentalMutation();
-
+  const [ entrevistasList, setEntrevistasList ] = useState<EntrervistaResponse | undefined>(undefined)
+ 
   const {register, handleSubmit} = useForm<IAtualizarInformacoesEntrevista>()
 
 
-  // useEffect(() => {
-  //   let date = new Date()
-  //   getByMonthYear(date.getMonth() + 1, date.getFullYear())
-  // }, [])
+  useEffect(() => {
+    getEntrevistas({
+      pagina: 0,
+      tamanho: 20
+    }).unwrap().then((data) => {
+      setEntrevistasList(data)
+    })
+  }, [])
 
-  console.log(entrevistasArray?.elementos);
+
+
+  console.log(entrevistasList?.elementos);
   
 
-  const entrevistasFilter = entrevistasArray?.elementos.map((entrevista) => {
+  const entrevistasFilter = entrevistasList?.elementos.map((entrevista) => {
 
     let legendaColor = ''
 
@@ -147,8 +155,13 @@ export const Schedule = () => {
       console.error(error)
 
     } finally {
+      getEntrevistas({
+        pagina: 0,
+        tamanho: 20
+      }).unwrap().then((data) => {
+        setEntrevistasList(data)
+      })
       handleClose()
-      navigate('/agenda')
 
     } 
   }

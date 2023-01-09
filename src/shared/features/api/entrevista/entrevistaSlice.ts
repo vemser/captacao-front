@@ -49,7 +49,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getEntrevistas: builder.query<EntrervistaResponse, EntrevistasParams>({
+    getEntrevistas: builder.mutation<EntrervistaResponse, EntrevistasParams>({
       query: (data) => ({
         url: "entrevista",
         method: "GET",
@@ -107,7 +107,7 @@ export const {
   useUpdateObservacaoMutation,
   useUpdateEntrevistaMutation,
   usePostNewEntrevistaMutation,
-  useGetEntrevistasQuery,
+  useGetEntrevistasMutation,
   useGetEntrevistaPorMesQuery,
   useGetEntrevistaByEmailQuery,
   // useGetEntrevistaFiltroMutation,

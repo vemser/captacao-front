@@ -25,19 +25,14 @@ import {
 import { IElementos, IInscricao } from "shared/features/api/inscricao/types";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
+
+
+
 const columns = [
 	{
-		field: "status",
-		headerName: "Status",
-		width: 140,
-		renderCell: (params: any) => {
-			return (
-				<Chip
-					label={params.value === null ? "Não avaliado" : "Avaliado"}
-					sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
-				/>
-			);
-		},
+		field: "id",
+		headerName: "ID",
+		width: 60,
 	},
 	{
 		field: "nome",
@@ -52,19 +47,24 @@ const columns = [
 		flex: 1,
 	},
 	{
-		field: "telefone",
-		headerName: "Telefone",
-		minWidth: 160,
+		field: "trilha",
+		headerName: "Trilhas",
+		minWidth: 90,
+		maxWidth: 200,
+		flex: 1,
 	},
 	{
-		field: "turno",
-		headerName: "Turno",
-		minWidth: 90,
-	},
-	{
-		field: "estado",
-		headerName: "Estado",
-		minWidth: 90,
+		field: "status",
+		headerName: "Status",
+		width: 140,
+		renderCell: (params: any) => {
+			return (
+				<Chip
+					label={params.value === null ? "Não avaliado" : "Avaliado"}
+					sx={{ borderRadius: 1, boxShadow: 1, width: "100%" }}
+				/>
+			);
+		},
 	},
 	{
 		field: "acoes",
@@ -98,6 +98,10 @@ export const Registers: React.FC = () => {
 	const [edicao, setEdicao] = useState("");
 	const [trilha, setTrilha] = useState("");
 
+	console.log(inscricoes);
+	
+	
+
 	useEffect(() => {
 		if (!edicao && !email && !trilha) {
 			getCandidatos({ pagina: page })
@@ -123,6 +127,11 @@ export const Registers: React.FC = () => {
 				id: dados.idInscricao,
 				nome: dados.candidato.nome,
 				email: dados.candidato.email,
+				trilha: dados.candidato.formulario?.trilhas
+				.map((trilha) => {
+				  return trilha.nome;
+				})
+				.join(", "),
 				status: dados.avaliado,
 				telefone: dados.candidato.telefone,
 				turno: dados.candidato.formulario?.turno,

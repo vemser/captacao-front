@@ -1,18 +1,19 @@
 import { apiSlice } from "../api";
 import {
   IPagination,
-  Root,
-  ITrilha,
-  Elemento,
-  IEdicao,
-  IEmail,
   IAvaliacao,
+  IListaAvaliacao,
 } from "./type";
 import { getToken } from "shared/utils/getToken";
 
+interface IFiltros {
+  email?: string;
+  trilha?: string;
+  edicao?: string;
+}
 const avaliacaoSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    listReviews: build.query<Root, IPagination>({
+    listReviews: build.query<IListaAvaliacao, IPagination>({
       query: (data) => ({
         url: "avaliacao",
         method: "GET",
@@ -29,42 +30,6 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         invalidatesTags: ["Avaliacao"],
       }),
     }),
-    searchByTrilha: build.mutation<Elemento[] | [], ITrilha>({
-      query: (data) => ({
-        url: `avaliacao/list-by-trilha?trilha=${data.trilha}`,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-        // params: {
-
-        // }
-      }),
-    }),
-    searchByEdition: build.mutation<Elemento[] | [], IEdicao>({
-      query: (data) => ({
-        url: `avaliacao/list-by-edicao?edicao=${data.edicao}`,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-        // params: {
-
-        // }
-      }),
-    }),
-    searchByEmail: build.mutation<Elemento[] | [], IEmail>({
-      query: (data) => ({
-        url: `avaliacao/buscar-by-email?email=${data.email}`,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-        // params: {
-
-        // }
-      }),
-    }),
     avaliarCandidato: build.mutation<void, IAvaliacao>({
       query: (data) => ({
         url: "avaliacao",
@@ -78,18 +43,19 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         // }
       }),
     }),
-    // getAvalaiacaoFiltro: build.mutation<Elemento[] | [], IEmail>({
-    //   query: (data) => ({
-    //     url: `avaliacao/buscar-by-email?email=${data.email}`,
-    //     method: "GET",
-    //     headers: {
-    //       Authorization: `Bearer ${getToken()}`,
-    //     },
-    //     // params: {
-
-    //     // }
-    //   }),
-    // }),
+    getAvaliacaoFiltro: build.mutation<IListaAvaliacao, IFiltros>({
+      query: (data) => ({
+     
+        url: `avaliacao/filtro-avaliacao?pagina=0&tamanho=20`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${getToken()}`},
+        params: {
+          email: data.email,
+          edicao: data.edicao,
+          trilha: data.trilha,
+        },
+      }),
+    }),
   }),
 
   overrideExisting: false,
@@ -97,9 +63,6 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
 
 export const {
   useListReviewsQuery,
-  useSearchByTrilhaMutation,
-  useSearchByEditionMutation,
-  useSearchByEmailMutation,
   useAvaliarCandidatoMutation,
-  // useGetAvalaiacaoFiltroMutation,
+  useGetAvaliacaoFiltroMutation,
 } = avaliacaoSlice;

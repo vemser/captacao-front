@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   TextField,
@@ -52,20 +52,19 @@ const names = [
   'Ruby',
   'Python',
   'Swift',
-  'C'
+  'C',
+  'Outras'
 ]
 
 export const StepTwo: React.FC = () => {
   const dispatch = useDispatch()
-  const [deficiencia, setDeficiencia] = useState('F')
   const { data } = useGetSubscribeFormQuery()
   const { data: getTrilha, isLoading: isLoadingTrilha } = useGetTrilhasQuery()
   const { data: formData } = useSelector(useSteps)
   const formulario = data?.data.formulario
-
-  const [languages, setLanguage] = React.useState<string[]>(
-    formData?.linguagens || []
-  )
+  const [deficiencia, setDeficiencia] = useState('F')
+  const [languages, setLanguage] = React.useState<string[]>(formData?.linguagens || [])
+  const [hasLang, setHasLang] = useState<boolean>(false)
 
   const handleChange = (event: SelectChangeEvent<typeof languages>) => {
     const {
@@ -73,6 +72,15 @@ export const StepTwo: React.FC = () => {
     } = event
     setLanguage(typeof value === 'string' ? value.split(',') : value)
   }
+
+  useEffect(() => {
+    languages.length == 0 ? setHasLang(true) : setHasLang(false)
+  }, [languages])
+
+  useEffect(() => {
+    setHasLang(false)
+    window.scrollTo(0, 0)
+  }, [])
 
   const ITEM_HEIGHT = 48
   const ITEM_PADDING_TOP = 8
@@ -97,27 +105,37 @@ export const StepTwo: React.FC = () => {
     resolver: yupResolver(stepTwoSchema)
   })
 
+  const verificar = () => {
+    languages.length == 0 ? setHasLang(true) : setHasLang(false)
+  }
+
   const onSubmit = (data: SubscribeData) => {
-    data.resposta === '' && (data.resposta = 'Nenhuma')
-    data.linkedin.length === 0 && (data.linkedin = 'Nenhum')
-    data.github.length === 0 && (data.github = 'Nenhum')
 
-    const formValues = Object.fromEntries(
-      Object.entries(data).map(([key, value]) => [
-        key,
-        value === 'T' ? true : value === 'F' ? false : value
-      ])
-    )
+    if (languages.length == 0) {
+      setHasLang(true)
+      const selecao: HTMLElement | null = document.getElementById("s2-select-linguagens-checkbox")
+      selecao?.scrollIntoView()
+    } else {
 
-    dispatch(nextStep())
-    dispatch(
-      changeData({
-        ...formValues,
-        linguagens: languages
-      })
-    )
+      data.resposta === '' && (data.resposta = 'Nenhuma')
+      data.linkedin.length === 0 && (data.linkedin = 'Nenhum')
+      data.github.length === 0 && (data.github = 'Nenhum')
 
-    // console.log(formValues);
+      const formValues = Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [
+          key,
+          value === 'T' ? true : value === 'F' ? false : value
+        ])
+      )
+
+      dispatch(nextStep())
+      dispatch(
+        changeData({
+          ...formValues,
+          linguagens: languages
+        })
+      )
+    }
   }
 
   const FormName: React.FC<IFormQuery> = ({ nome }) => {
@@ -341,7 +359,10 @@ export const StepTwo: React.FC = () => {
           </Grid>
 
           <Grid item xs={12} lg={6}>
-            <FormControl fullWidth>
+            <FormControl
+              fullWidth
+              error={hasLang}
+            >
               <InputLabel id="s2-select-linguagens">
                 Linguagens de programação
               </InputLabel>
@@ -359,12 +380,13 @@ export const StepTwo: React.FC = () => {
                   <MenuItem key={name} value={name}>
                     <Checkbox
                       checked={languages.indexOf(name) > -1}
-                      // defaultChecked={formData?.linguagens.includes(name)}
+                    // defaultChecked={formData?.linguagens.includes(name)}
                     />
                     <ListItemText id={`s2-linguagens-${name}`} primary={name} />
                   </MenuItem>
                 ))}
               </Select>
+              <FormHelperText >{hasLang ? 'Pelo menos uma linguagem deve ser selecionada' : ''}</FormHelperText>
             </FormControl>
           </Grid>
 
@@ -824,7 +846,8 @@ export const StepTwo: React.FC = () => {
               sx={{
                 width: '8rem'
               }}
-              // disabled={!curriculo?.[0] || !configuracoes?.[0]}
+              onClick={() => verificar()}
+            // disabled={!curriculo?.[0] || !configuracoes?.[0]}
             >
               Enviar
             </Button>

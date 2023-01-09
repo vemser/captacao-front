@@ -17,7 +17,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         url: `entrevista/atualizar-observacao-entrevista/${data.idEntrevista}`,
         method: "PUT",
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
         params: {
           observacao: data.observacao,

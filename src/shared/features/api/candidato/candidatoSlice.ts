@@ -6,7 +6,7 @@ import {
   CandidatoByNotaBody,
   CandidatoResponse,
   Elemento,
-  UpdateNota,
+  UpdateNota, UpdateNotaParecerComportamental, UpdateNotaParecerTecnico,
 } from "./types";
 
 const candidatoSlice = apiSlice.injectEndpoints({
@@ -56,13 +56,39 @@ const candidatoSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    updateNotaParecerTecnico: builder.mutation<void, UpdateNotaParecerTecnico>({
+      query: (data) => ({
+        url: `candidato/nota-parecer-tecnico/${data.idCandidato}`,
+        method: 'PUT',
+        body: data,
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+        params: {
+          idCandidato: data.idCandidato
+        }
+      }),
+    }),
+    updateNotaParecerComportamental: builder.mutation<void, UpdateNotaParecerComportamental>({
+      query: (data) => ({
+        url: `candidato/nota-comportamental/${data.idCandidato}`,
+        method: 'PUT',
+        body: data,
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+        params: {
+          idCandidato: data.idCandidato
+        }
+      }),
+    }),,
   }),
   overrideExisting: false,
 });
 
 export const {
   usePostCandidatoMutation,
-  useUpdateNotaMutation,
+  useUpdateNotaMutation, useUpdateNotaParecerTecnicoMutation, useUpdateNotaParecerComportamentalMutation ,
   useGetCandidatosByNotaQuery,
   useGetCandidatosByEmailMutation,
 } = candidatoSlice;

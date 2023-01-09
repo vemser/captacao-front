@@ -160,3 +160,15 @@ export interface Trilha {
   nome: string;
   idTrilha: number;
 }
+
+export interface UpdateNotaParecerTecnico {
+  notaTecnica: number;
+  parecerTecnico: string;
+  idCandidato: number;
+}
+
+export interface UpdateNotaParecerComportamental {
+  notaComportamental: number;
+  parecerComportamental: string;
+  idCandidato: number;
+}

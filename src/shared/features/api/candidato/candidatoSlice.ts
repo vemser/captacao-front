@@ -81,14 +81,16 @@ const candidatoSlice = apiSlice.injectEndpoints({
           idCandidato: data.idCandidato
         }
       }),
-    }),,
+    }),
   }),
   overrideExisting: false,
 });
 
 export const {
   usePostCandidatoMutation,
-  useUpdateNotaMutation, useUpdateNotaParecerTecnicoMutation, useUpdateNotaParecerComportamentalMutation ,
+  useUpdateNotaMutation, 
+  useUpdateNotaParecerTecnicoMutation, 
+  useUpdateNotaParecerComportamentalMutation,
   useGetCandidatosByNotaQuery,
   useGetCandidatosByEmailMutation,
 } = candidatoSlice;

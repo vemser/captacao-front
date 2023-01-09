@@ -22,15 +22,6 @@ export const Subscription = () => {
   const { data: subscribeText, isLoading } = useGetSubscribeTextQuery();
   const subscribeTextData = subscribeText?.data.formulario;
 
-  // to remove after
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    console.log(subscribeText);
-  }, [subscribeText]);
-
   return (
     <Box
       component={motion.div}

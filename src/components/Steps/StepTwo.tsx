@@ -110,7 +110,6 @@ export const StepTwo: React.FC = () => {
   }
 
   const onSubmit = (data: SubscribeData) => {
-    console.log(data.curriculo)
 
     if (languages.length == 0) {
       setHasLang(true)

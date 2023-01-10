@@ -1,7 +1,4 @@
-import {
-  ArrowDropDownCircleOutlined,
-  DisplaySettings,
-} from "@mui/icons-material";
+import { DisplaySettings } from "@mui/icons-material";
 import {
   Button,
   Dialog,
@@ -21,22 +18,47 @@ import {
   Select,
 } from "@mui/material";
 import { GridExpandMoreIcon } from "@mui/x-data-grid";
-import { useGetEdicaoAtualMutation } from "shared/features/api/edicao/edicaoSlice";
-import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
+import {
+  useGetEdicaoAtualMutation,
+  usePostNewEdicaoMutation,
+} from "shared/features/api/edicao/edicaoSlice";
+import {
+  useDeleteTrilhaMutation,
+  useGetTrilhasMMutation,
+  useGetTrilhasQuery,
+  usePostNewTrilhaMutation,
+} from "shared/features/api/trilha/trilhaSlice";
 import React from "react";
+import { toast } from "react-toastify";
+import { Trilhas } from "shared/features/api/trilha/types";
 
 export const Configurations = () => {
   const [edicaoAtual, setEdicaoAtual] = React.useState<string>("");
+  const [edicaoValue, setEdicaoValue] = React.useState<string>("");
+  const [trilhaId, setTrilhaId] = React.useState<number>(0);
   const [trilhaValue, setTrilhaValue] = React.useState<string>("");
   const [newTrilhaValue, setNewTrilhaValue] = React.useState<string>("");
+  const [data, setData] = React.useState<Trilhas[]>();
   const [getEdicaoAtual] = useGetEdicaoAtualMutation();
-  const { data } = useGetTrilhasQuery();
+  const [postNewEdicao] = usePostNewEdicaoMutation();
+  const [postNewTrilha] = usePostNewTrilhaMutation();
+  const [deleteTrilha] = useDeleteTrilhaMutation();
+  const [getTrilhasM] = useGetTrilhasMMutation();
+  // const { data } = useGetTrilhasQuery();
 
   React.useEffect(() => {
     getEdicaoAtual()
       .unwrap()
       .then((edicao) => {
         setEdicaoAtual(edicao);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    getTrilhasM()
+      .unwrap()
+      .then((trilhas) => {
+        setData(trilhas);
       });
   }, []);
 
@@ -214,29 +236,63 @@ export const Configurations = () => {
                   Edição
                 </Typography>
                 <Typography sx={{ color: "text.secondary" }}>
-                  Adicione e altere a edição do VemSer
+                  Altere a edição atual do VemSer
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "120px 1fr",
-                      gap: 2,
-                      width: "100%",
+                  <Stack
+                    direction={{
+                      xs: "column",
+                      sm: "row",
                     }}
+                    spacing={2}
+                    sx={{ width: "100%" }}
                   >
-                    <Button variant="contained" size="small">
-                      adicionar
-                    </Button>
                     <TextField
                       label="Nome da edição"
                       variant="outlined"
                       size="small"
+                      value={edicaoValue}
+                      onChange={(e) => setEdicaoValue(e.target.value)}
                       fullWidth
                     />
-                  </Box>
+                    {edicaoValue && (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() => {
+                          postNewEdicao({
+                            nome: edicaoValue,
+                          })
+                            .unwrap()
+                            .then(() => {
+                              toast.success("Edição alterada com sucesso");
+                            })
+                            .catch(() => {
+                              toast.error("Erro ao alterar a edição");
+                            })
+                            .finally(() => {
+                              getEdicaoAtual()
+                                .unwrap()
+                                .then((edicao) => {
+                                  setEdicaoAtual(edicao);
+                                });
+                            });
+                          handleClose();
+                        }}
+                      >
+                        alterar
+                      </Button>
+                    )}
+                  </Stack>
+                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                    <Box component="strong" sx={{ color: "red" }}>
+                      * Obs:
+                    </Box>{" "}
+                    alterar a edição atual modifica a edição no ato da inscrição
+                    do candidato
+                  </Typography>
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     Edição atual: <strong>{edicaoAtual || "Carregando"}</strong>
                   </Typography>
@@ -278,11 +334,18 @@ export const Configurations = () => {
                           id="demo-simple-select"
                           label="Trilhas"
                           value={trilhaValue}
-                          onChange={(e) => setTrilhaValue(e.target.value)}
+                          onChange={(e) => {
+                            setTrilhaValue(e.target.value);
+                          }}
                           fullWidth
                         >
                           {data?.map((trilha) => (
-                            <MenuItem value={trilha.nome}>
+                            <MenuItem
+                              value={trilha.nome}
+                              onClick={() => {
+                                setTrilhaId(trilha.idTrilha);
+                              }}
+                            >
                               {trilha.nome}
                             </MenuItem>
                           ))}
@@ -293,6 +356,18 @@ export const Configurations = () => {
                           variant="contained"
                           color="error"
                           sx={{ minWidth: "120px" }}
+                          onClick={() => {
+                            deleteTrilha(trilhaId)
+                              .unwrap()
+                              .then(() => {
+                                toast.success("Trilha removida com sucesso");
+                              })
+                              .catch((err) => {
+                                console.log(err);
+                                toast.error("Erro ao remover a trilha");
+                              });
+                            handleClose();
+                          }}
                         >
                           Remover
                         </Button>
@@ -308,7 +383,23 @@ export const Configurations = () => {
                       fullWidth
                     />
                     {newTrilhaValue !== "" && (
-                      <Button variant="contained" sx={{ minWidth: "120px" }}>
+                      <Button
+                        variant="contained"
+                        sx={{ minWidth: "120px" }}
+                        onClick={() => {
+                          postNewTrilha({
+                            nome: newTrilhaValue,
+                          })
+                            .unwrap()
+                            .then(() => {
+                              toast.success("Trilha adicionada com sucesso");
+                            })
+                            .catch(() => {
+                              toast.error("Erro ao adicionar a trilha");
+                            });
+                          handleClose();
+                        }}
+                      >
                         Adicionar
                       </Button>
                     )}

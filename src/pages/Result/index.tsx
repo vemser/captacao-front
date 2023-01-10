@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
+import { useGetCandidatosFiltroMutation, useGetCandidatosResultadoMutation } from "shared/features/api/candidato/candidatoSlice";
+import { CandidatoByNota } from "shared/features/api/candidato/types";
 
 const columns = [
   {
@@ -31,6 +33,11 @@ const columns = [
     headerName: "Email",
     minWidth: 230,
     flex: 1,
+  },
+  {
+    field: "trilha",
+    headerName: "Trilha",
+    minWidth: 230,
   },
   {
     field: "nota",
@@ -51,6 +58,10 @@ const columns = [
 
 export const Result: React.FC = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(0);
+  const [getCandidatosResultado] = useGetCandidatosResultadoMutation();
+  const [getCandidatosFiltro] = useGetCandidatosFiltroMutation();
+  const [listaResultado, setListaResultado] = useState<CandidatoByNota | undefined>(undefined);
 
   const { data: getTrilha } = useGetTrilhasQuery();
 	const { data: getEdicoes } = useGetListaEdicoesQuery();
@@ -60,17 +71,17 @@ export const Result: React.FC = () => {
 	const [edicao, setEdicao] = useState("");
 	const [trilha, setTrilha] = useState("");
 
-  // useEffect(() => {
-	// 	if (!edicao && !email && !trilha) {
-	// 		getCandidatosByNota({ pagina: page, tamanho: 20 })
-	// 			.unwrap()
-	// 			.then((data) => setListaEntrevistas(data))		
-	// 	} else {
-	// 		getCandidatosFiltro({ email, edicao, trilha })
-	// 			.unwrap()
-	// 			.then((data) => setListaEntrevistas(data))	
-	// 	}
-	// }, [email, edicao, trilha, page]);
+  useEffect(() => {
+		if (!edicao && !email && !trilha) {
+			getCandidatosResultado({ pagina: page, tamanho: 20 })
+				.unwrap()
+				.then((data) => setListaResultado(data))		
+		} else {
+			getCandidatosFiltro({ email, edicao, trilha })
+				.unwrap()
+				.then((data) => setListaResultado(data))	
+		}
+	}, [email, edicao, trilha, page]);
 
 	const resetFiltro = () => {
 		setEmail("");
@@ -79,26 +90,24 @@ export const Result: React.FC = () => {
 		setTrilha("");
 	};
 
-  const rows = [
-    {
-      id: 1,
-      nome: "Daniel Jacon",
-      email: "danieljacon@dbccompany.com.br",
-      nota: 10,
-      telefone: "(19)98765-7829",
-      turno: "Manhã",
-      estado: "SP",
-    },
-    {
-      id: 2,
-      nome: "Daniel Jacon",
-      email: "danieljacon@dbccompany.com.br",
-      nota: 6,
-      telefone: "(19)98765-7829",
-      turno: "Manhã",
-      estado: "SP",
-    },
-  ];
+  const rows = () => {
+		return listaResultado?.elementos.map((dados) => {
+			return {
+				id: dados.idCandidato,
+				nome: dados.nome,
+				email: dados.email,
+				trilha: dados.formulario?.trilhas
+				.map((trilha) => {
+				  return trilha.nome;
+				})
+				.join(", "),
+				nota: dados.media,
+				telefone: dados.telefone,
+				turno: dados.formulario?.turno,
+				estado: dados.estado,
+			};
+		});
+	};
 
   return (
     <Grid container spacing={2}>
@@ -197,7 +206,7 @@ export const Result: React.FC = () => {
       </Grid>
       <Grid item xs={12} sx={{ height: "calc(100vh - 211px)", width: "100%" }}>
         <DataGrid
-          rows={rows}
+          rows={rows() || []}
           columns={columns}
           sx={{
             boxShadow: 2,
@@ -210,12 +219,12 @@ export const Result: React.FC = () => {
       </Grid>
       <Grid item xs={12} display="flex" justifyContent="center">
         <Pagination
-          // count={lista?.quantidadePaginas}
-          // color="primary"
-          // size="small"
-          // onChange={(_, page) => {
-          //   setPage(page - 1);
-          // }}
+          count={listaResultado?.quantidadePaginas}
+          color="primary"
+          size="small"
+          onChange={(_, page) => {
+            setPage(page - 1);
+          }}
         />
       </Grid>
     </Grid>

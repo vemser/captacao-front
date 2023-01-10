@@ -48,7 +48,7 @@ export const Login: React.FC = () => {
         }),
       {
         pending: 'Carregando...',
-        success: 'Bem Vindo!',
+        success: 'Bem-vindo!',
         error: {
           render({ data }: any) {
             return data.status === 400

@@ -94,6 +94,13 @@ const candidatoSlice = apiSlice.injectEndpoints({
         }
       }),
     }),
+    getCandidatosResultado: builder.mutation<CandidatoByNota, CandidatoByNotaBody>({
+      query: (data) => ({
+        url: `candidato/resultado?pagina=0&tamanho=20`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${getToken()}`},
+      }),
+    }),
     getCandidatosFiltro: builder.mutation<CandidatoByNota, IFiltros>({
       query: (data) => ({
         url: `candidato/filtro-candidato?pagina=0&tamanho=20`,
@@ -117,5 +124,6 @@ export const {
   useUpdateNotaParecerComportamentalMutation,
   useGetCandidatosByNotaMutation,
   useGetCandidatosByEmailMutation,
-  useGetCandidatosFiltroMutation
+  useGetCandidatosFiltroMutation,
+  useGetCandidatosResultadoMutation,
 } = candidatoSlice

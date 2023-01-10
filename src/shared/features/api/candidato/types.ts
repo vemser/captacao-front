@@ -92,11 +92,11 @@ export interface CandidatoByNotaBody {
 }
 
 export interface CandidatoByNota {
-  totalElementos: number;
-  quantidadePaginas: number;
-  pagina: number;
-  tamanho: number;
-  elementos: Elemento[];
+  totalElementos: number
+  quantidadePaginas: number
+  pagina: number
+  tamanho: number
+  elementos: Elemento[]
 }
 
 export interface Elemento {

@@ -23,6 +23,7 @@ export interface ILinguagen {
 
 export interface IGetInscritos{
   pagina: number,
+  
 }
 
 export interface ICandidato {

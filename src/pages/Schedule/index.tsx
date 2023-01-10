@@ -307,55 +307,55 @@ export const Schedule = () => {
           <DialogContent sx={{display:'flex', flexDirection:'column', gap: '30px', alignItems: 'space-between'}}>
 
           
-              <Grid item sx={{ height: "calc(100vh - 90px)", display: 'flex', maxHeight: '50%', width: '70%', margin: '0 auto', justifyContent:'space-between'}}>
-                <Box sx={{display: 'flex', gap: '30px', flexDirection: 'column'}}>
+              <Grid item sx={{ height: "calc(100vh - 90px)", display: 'flex', width: '70%', margin: '0 auto', justifyContent:'space-between'}}>
+                <Box sx={{display: 'flex', gap: '30px', flexDirection: 'column', width: '50%'}}>
                   <Typography
                     component="h5"
                     variant="h5"
-                    sx={{ fontWeight: 600, margin: '10px 0', fontSize:'24px'}}
+                    sx={{ fontWeight: 600, margin: '10px 0', fontSize:'24px', maxWidth: '100%'}}
                   >
                     Dados Pessoais do Candidato:
                   </Typography>
 
-                  <Box sx={{display: 'flex', flexDirection:'column', gap:'30px'}}>
+                  <Box sx={{display: 'flex', flexDirection:'column', gap:'30px', maxWidth: '100%'}}>
                     <Typography
                       component="p"
                       sx={{fontSize:'20px'}}
                     >
-                      Data de nascimento:  <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.nascimento}</Box> 
+                      Data de nascimento:  <Box sx={{fontWeight: 600, maxWidth: '100%'}} component={'span'}>{modalInfos?.extendedProps.nascimento}</Box> 
                     </Typography>
 
                     <Typography
                       component="p"
                       sx={{fontSize:'20px',}}
                     >
-                      Cidade: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.cidade}/{modalInfos?.extendedProps.estado}</Box>
+                      Cidade: <Box sx={{fontWeight: 600, maxWidth: '100%'}} component={'span'}>{modalInfos?.extendedProps.cidade}/{modalInfos?.extendedProps.estado}</Box>
                     </Typography>
 
                     <Typography
                     component="p"
                     sx={{fontSize:'20px'}}
                     >
-                      telefone: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.telefone}</Box>
+                      telefone: <Box sx={{fontWeight: 600, maxWidth: '100%'}} component={'span'}>{modalInfos?.extendedProps.telefone}</Box>
                     </Typography>
                   </Box>
                 </Box>
 
-                <Box>
+                <Box sx={{display: 'flex', gap: '30px', flexDirection: 'column', width: '50%'}}>
                     <Typography
                       component="h5"
                       variant='h5'
-                      sx={{fontWeight: 600, margin: '10px 0', fontSize:'24px'}}
+                      sx={{fontWeight: 600, margin: '10px 0', fontSize:'24px', maxWidth: '100%'}}
                     >
                       Dados Técnicos do Candidato:
                     </Typography>
 
-                    <Box sx={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '100%'}}>
                       <Typography
                       component="p"
                       sx={{fontSize:'20px'}}
                     >
-                      Linguagens: <Box sx={{fontWeight: 600}} component={'span'}> {modalInfos?.extendedProps.linguagens.map((linguagem:ILinguagens) => {
+                      Linguagens: <Box sx={{fontWeight: 600, wordBreak: 'break-word'}} component={'span'}> {modalInfos?.extendedProps.linguagens.map((linguagem:ILinguagens) => {
                         return linguagem.nome + ' '
                       })}</Box>
                     </Typography>
@@ -364,35 +364,35 @@ export const Schedule = () => {
                       component="p"
                       sx={{fontSize:'20px'}}
                     >
-                      Nota da Prova: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.notaProva}</Box> 
+                      Nota da Prova: <Box sx={{fontWeight: 600, wordBreak: 'break-word'}} component={'span'}>{modalInfos?.extendedProps.notaProva}</Box> 
+                    </Typography>
+
+                    <Typography
+                      component="p"
+                      sx={{fontSize:'20px', maxWidth: '50%'}}
+                    >
+                      Observações Técnicas: <Box sx={{fontWeight: 600, wordBreak: 'break-word'}} component={'span'}>{modalInfos?.extendedProps.observacoesTecnicas}</Box> 
                     </Typography>
 
                     <Typography
                       component="p"
                       sx={{fontSize:'20px'}}
                     >
-                      Observações Técnicas: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.observacoesTecnicas}</Box> 
+                      Parecer Comportamental: <Box sx={{fontWeight: 600, wordBreak: 'break-word'}} component={'span'}>{modalInfos?.extendedProps.parecerComportamental}</Box> 
                     </Typography>
 
                     <Typography
                       component="p"
                       sx={{fontSize:'20px'}}
                     >
-                      Parecer Comportamental: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.parecerComportamental}</Box> 
+                      Parecer Técnico: <Box sx={{fontWeight: 600, wordBreak: 'break-word'}} component={'span'}>{modalInfos?.extendedProps.parecerTecnico}</Box> 
                     </Typography>
 
                     <Typography
                       component="p"
                       sx={{fontSize:'20px'}}
                     >
-                      Parecer Técnico: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.parecerTecnico}</Box> 
-                    </Typography>
-
-                    <Typography
-                      component="p"
-                      sx={{fontSize:'20px'}}
-                    >
-                      Observações da Entrevista: <Box sx={{fontWeight: 600}} component={'span'}>{modalInfos?.extendedProps.observacoes}</Box> 
+                      Observações da Entrevista: <Box sx={{fontWeight: 600, wordBreak: 'break-word'}} component={'span'}>{modalInfos?.extendedProps.observacoes}</Box> 
                     </Typography>
                   </Box>
                 </Box>
@@ -409,13 +409,13 @@ export const Schedule = () => {
             </Typography>
             
             <FormControl sx={{display: 'flex', flexDirection: 'column', gap:'30px'}}>       
-              <Box sx={{display: 'flex', width: '70%', margin: '0 auto', justifyContent:'space-between'}}>
-                <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
-                  <Box sx={{ display:'flex', gap:'10%'}}>
+              <Box sx={{display: 'flex', width: '70%', margin: '0 auto', justifyContent: 'space-between', gap: '30px'}}>
+                <Box sx={{ display:'flex', gap:'20px', width: '100%'}}>
                     <TextField
                       margin="dense"
                       id="parecerComportamental"
                       label="Parecer Comportamental"
+                      sx={{width: '80%'}}
                       {...register('parecerComportamental')}
                     />  
 
@@ -424,17 +424,17 @@ export const Schedule = () => {
                       id="notaComportamental"
                       label="Nota Comportamental"
                       type={'number'}
+                      sx={{width: '20%'}}
                       {...register('notaComportamental')}
                     />  
-                  </Box>
-                </Box>  
-
-                <Box sx={{ display:'flex', flexDirection: 'column', gap:'20px'}}>
-                  <Box sx={{ display:'flex', gap:'10%'}}>
+                </Box>
+               
+                <Box sx={{ display:'flex', gap:'20px', width: '100%'}}>
                     <TextField
                       margin="dense"
                       id="parecerTecnico"
                       label="Parecer Técnico"
+                      sx={{width: '80%'}}
                       {...register('parecerTecnico')}
                     />  
 
@@ -443,10 +443,10 @@ export const Schedule = () => {
                       id="notaTecnico"
                       label="Nota Técnica"
                       type={'number'}
+                      sx={{width: '20%'}}
                       {...register('notaTecnica')}
                     /> 
-                  </Box>
-                </Box>  
+                </Box>
               </Box>
 
               <TextField 

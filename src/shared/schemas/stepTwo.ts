@@ -63,9 +63,13 @@ export const stepTwoSchema = Yup.object().shape({
     })
     .test("fileType", "O tipo de arquivo não é suportado", (value) => {
       return (
-        value.length &&
-        // ["image/jpeg", "image/png", "image/jpg"].includes(value[0].type)
-        ["application/pdf"].includes(value[0].type)
+         value.length && 
+          (
+            ["application/pdf"].includes(value[0].type) ||
+            value[0].name.split('.').includes('docx') ||
+            value[0].name.split('.').includes('doc') ||
+            value[0].name.split('.').includes('odt')
+          )
       );
     }),
   configuracoes: Yup.mixed()

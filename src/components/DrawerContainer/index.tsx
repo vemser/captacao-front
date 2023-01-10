@@ -52,10 +52,9 @@ interface Props {
 export const DrawerContainer = (props: Props) => {
   const { data } = useGetLoggedUserQuery();
 
-  const [changeImage] = useChangeImageMutation();
-  const [selectedImage, setSelectedImage] = React.useState<any>(null);
-
-  const imagemBase = data?.imagem;
+  const [changeImage] = useChangeImageMutation()
+  const [selectedImage, setSelectedImage] = React.useState<any>(null)
+  const [imagemBase, setImagemBase] = React.useState<any>(data?.imagem)
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -83,7 +82,10 @@ export const DrawerContainer = (props: Props) => {
       await toast.promise(
         changeImage(formData)
           .unwrap()
-          .then(() => setSelectedImage(null)),
+          .then(() => {
+            setImagemBase(selectedImage)
+            setSelectedImage(null)
+          }),
         {
           pending: "Carregando...",
           success: "Foto modificada com sucesso!",
@@ -185,7 +187,7 @@ export const DrawerContainer = (props: Props) => {
                 borderColor: "primary.main",
               }}
               alt="Avatar"
-              src={`data:image/png;base64, ${data?.imagem}`}
+              src={imagemBase != undefined ? URL.createObjectURL(imagemBase) : `data:image/png;base64, ${data?.imagem}`}
             />
           )}
         </Badge>
@@ -360,5 +362,5 @@ export const DrawerContainer = (props: Props) => {
         {props.children}
       </Box>
     </Box>
-  );
-};
+  )
+}

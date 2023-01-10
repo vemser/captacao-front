@@ -30,7 +30,6 @@ export const stepTwoSchema = Yup.object().shape({
     return true;
   }),
 
-  // trilhas: Yup.array().required("A escolha de uma trilha é obrigatória"),
   trilhas: Yup.array().required("A escolha de uma trilha é obrigatória").min(1, "A escolha de uma trilha é obrigatória").nullable(),
 
   algoimportante: Yup.string()

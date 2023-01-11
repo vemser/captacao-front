@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useAuthLoginMutation } from 'shared/features/api/usuario/authSlice'
 import { useForm } from 'react-hook-form'
 import { IUser } from 'shared/interfaces'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import {
   FormControl,
@@ -44,11 +44,31 @@ export const Login: React.FC = () => {
         .unwrap()
         .then(response => {
           localStorage.setItem('token', response)
-          navigate('/candidatos')
+        }).then(() => {
+
+          if (localStorage.getItem('token')) {
+
+            let userToken = localStorage.getItem('token')
+    
+            if (userToken) {
+                let decodedJWT = JSON.parse(atob(userToken.split('.')[1]))
+                let userRoles = decodedJWT.cargos;
+    
+    
+                if (userRoles?.includes('ROLE_ADMIN') || userRoles?.includes('ROLE_GESTAO_DE_PESSOAS') || userRoles?.includes('ROLE_INSTRUTOR')) {
+                  return navigate('/candidatos')
+                } else {
+                  toast.error('Usuário sem permissão de acesso')
+                }
+            } else {
+                return navigate('/login') 
+            }
+          } else {
+            return navigate('/login') 
+          }
         }),
       {
         pending: 'Carregando...',
-        success: 'Bem-vindo!',
         error: {
           render({ data }: any) {
             return data.status === 400

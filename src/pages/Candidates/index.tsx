@@ -13,6 +13,7 @@ import {
 	Pagination,
 	Box,
 	CircularProgress,
+	LinearProgress,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -25,8 +26,6 @@ import {
 import { IElementos, IInscricao } from "shared/features/api/inscricao/types";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
-
-
 
 const columns = [
 	{
@@ -83,8 +82,9 @@ const columns = [
 export const Registers: React.FC = () => {
 	const navigate = useNavigate();
 	const [page, setPage] = useState(0);
+	const [isLoading, setisLoading] = useState(false);
 	const [getCandidatos] = useGetCandidatosMutation();
-
+	
 	const [getInscricaoFiltro] = useGetInscricaoFiltroMutation();
 
 	const { data: getTrilha } = useGetTrilhasQuery();
@@ -99,18 +99,20 @@ export const Registers: React.FC = () => {
 	const [trilha, setTrilha] = useState("");
 
 	console.log(inscricoes);
-	
-	
 
 	useEffect(() => {
+		setisLoading(true);
 		if (!edicao && !email && !trilha) {
 			getCandidatos({ pagina: page })
 				.unwrap()
-				.then((data) => setInscricoes(data));
+				.then((data) => setInscricoes(data))
+				.finally(() => setisLoading(false));
 		} else {
+			setisLoading(true);
 			getInscricaoFiltro({ email, edicao, trilha })
 				.unwrap()
-				.then((data) => setInscricoes(data));
+				.then((data) => setInscricoes(data))
+				.finally(() => setisLoading(false));
 		}
 	}, [email, edicao, trilha, page]);
 
@@ -128,10 +130,10 @@ export const Registers: React.FC = () => {
 				nome: dados.candidato.nome,
 				email: dados.candidato.email,
 				trilha: dados.candidato.formulario?.trilhas
-				.map((trilha) => {
-				  return trilha.nome;
-				})
-				.join(", "),
+					.map((trilha) => {
+						return trilha.nome;
+					})
+					.join(", "),
 				status: dados.avaliado,
 				telefone: dados.candidato.telefone,
 				turno: dados.candidato.formulario?.turno,
@@ -243,19 +245,23 @@ export const Registers: React.FC = () => {
 				xs={12}
 				sx={{ height: "calc(100vh - 211px)", width: "100%" }}
 			>
-				<DataGrid
-					rows={rows() || []}
-					columns={columns}
-					pageSize={20}
-					rowsPerPageOptions={[5]}
-					onRowClick={({ row }) => {
-						navigate("/candidatos/curriculo", { state: row });
-					}}
-					sx={{
-						boxShadow: 2,
-					}}
-					hideFooter
-				/>
+				{isLoading ? (
+					 <LinearProgress />
+				) : (
+					<DataGrid
+						rows={rows() || []}
+						columns={columns}
+						pageSize={20}
+						rowsPerPageOptions={[5]}
+						onRowClick={({ row }) => {
+							navigate("/candidatos/curriculo", { state: row });
+						}}
+						sx={{
+							boxShadow: 2,
+						}}
+						hideFooter
+					/>
+				)}
 			</Grid>
 			<Grid item xs={12} display="flex" justifyContent="center">
 				<Pagination

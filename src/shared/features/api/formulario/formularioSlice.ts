@@ -1,4 +1,9 @@
-import { FormularioResponse, IFormularioBody, UploadFile } from './types'
+import {
+  FormularioResponse,
+  IFormularioBody,
+  IFormUpdate,
+  UploadFile
+} from './types'
 import { apiSlice } from '../'
 import { getToken } from 'shared/utils/getToken'
 
@@ -43,8 +48,19 @@ const formularioSlice = apiSlice.injectEndpoints({
         },
         responseHandler: response => response.text()
       })
+    }),
+    updateForm: builder.mutation<FormularioResponse, IFormUpdate>({
+      query: data => ({
+        url: `formulario/atualizar-formulario/${data.idFormulario}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        },
+        body: data.formulario
+      })
     })
   }),
+
   overrideExisting: false
 })
 
@@ -52,5 +68,6 @@ export const {
   usePostNewFormularioMutation,
   useUploadCurriculoMutation,
   useUploadFileMutation,
-  useGetCurriculoMutation
+  useGetCurriculoMutation,
+  useUpdateFormMutation
 } = formularioSlice

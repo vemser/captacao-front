@@ -1,7 +1,7 @@
 // import {  } from "./types";
-import { getToken } from "shared/utils/getToken";
-import { apiSlice } from "../";
-import { CandidatoByNota } from "../candidato/types";
+import { getToken } from 'shared/utils/getToken'
+import { apiSlice } from '../'
+import { CandidatoByNota } from '../candidato/types'
 import {
   EntrevistaObsParams,
   EntrevistaUpdateParams,
@@ -10,88 +10,91 @@ import {
   EntrevistasParams,
   EntrevistasMesParams,
   EntrevistaPorTrilhaParams,
-  Elemento,
-} from "./types";
+  Elemento
+} from './types'
 
 interface IFiltros {
-  email?: string;
-  trilha?: string;
-  edicao?: string;
+  email?: string
+  trilha?: string
+  edicao?: string
 }
 
 const entervistaSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     updateObservacao: builder.mutation<void, EntrevistaObsParams>({
-      query: (data) => ({
+      query: data => ({
         url: `entrevista/atualizar-observacao-entrevista/${data.idEntrevista}`,
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
         params: {
-          observacao: data.observacao,
-        },
-      }),
+          observacao: data.observacao
+        }
+      })
     }),
     updateEntrevista: builder.mutation<void, EntrevistaUpdateParams>({
-      query: (data) => ({
+      query: data => ({
         url: `entrevista/atualizar-entrevista/${data.idEntrevista}`,
-        method: "PUT",
+        method: 'PUT',
         headers: {
           // Authorization: `Bearer ${token}`,
         },
         params: {
-          observacao: data.legenda,
+          observacao: data.legenda
         },
         body: {
-          dataEntrevista: data.body,
-        },
-      }),
+          dataEntrevista: data.body
+        }
+      })
     }),
     postNewEntrevista: builder.mutation<void, NovaEntrevistaBody>({
-      query: (data) => ({
-        url: `entrevista/marcar-entrevista`,
-        method: "POST",
+      query: data => ({
+        url: `entrevista/marcar-entrevista?token=${getToken()}`,
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
-        body: data,
-      }),
+        body: data
+      })
     }),
     getEntrevistas: builder.mutation<EntrervistaResponse, EntrevistasParams>({
-      query: (data) => ({
-        url: "entrevista",
-        method: "GET",
+      query: data => ({
+        url: 'entrevista',
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
         params: {
           pagina: data.pagina, // data.pagina,
-          tamanho: data.tamanho, // data.tamanho, 
-        },
-      }),
+          tamanho: data.tamanho // data.tamanho,
+        }
+      })
     }),
 
-    getEntrevistasPorTrilha: builder.mutation<Elemento[], EntrevistaPorTrilhaParams>({
-      query: (data) => ({
-        url: "entrevista/por-trilha",
-        method: "GET",
+    getEntrevistasPorTrilha: builder.mutation<
+      Elemento[],
+      EntrevistaPorTrilhaParams
+    >({
+      query: data => ({
+        url: 'entrevista/por-trilha',
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken()}`
         },
         params: {
           trilha: data.trilha
-        },
-      }),
+        }
+      })
     }),
-    
+
     getEntrevistaPorMes: builder.query<
       EntrervistaResponse,
       EntrevistasMesParams
     >({
-      query: (data) => ({
-        url: "entrevista/listar-por-mes",
-        method: "GET",
+      query: data => ({
+        url: 'entrevista/listar-por-mes',
+        method: 'GET',
         headers: {
           // Authorization: `Bearer ${token}`,
         },
@@ -99,19 +102,19 @@ const entervistaSlice = apiSlice.injectEndpoints({
           pagina: 0, // data.pagina,
           tamanho: 10, // data.tamanho,
           mes: data.mes,
-          ano: data.ano,
-        },
-      }),
+          ano: data.ano
+        }
+      })
     }),
     getEntrevistaByEmail: builder.query<EntrervistaResponse, string>({
-      query: (data) => ({
+      query: data => ({
         url: `/entrevista/buscar-entrevista-email-candidato/${data}`,
-        method: "GET",
+        method: 'GET',
         headers: {
           // Authorization: `Bearer ${token}`,
-        },
-      }),
-    }),
+        }
+      })
+    })
     // getExportCsvEntrevista: builder.mutation<void, NovaEntrevistaBody>({
     //   query: (data) => ({
     //     url: `entrevista/export-csv`,
@@ -123,8 +126,8 @@ const entervistaSlice = apiSlice.injectEndpoints({
     //   }),
     // }),
   }),
-  overrideExisting: false,
-});
+  overrideExisting: false
+})
 
 export const {
   useUpdateObservacaoMutation,
@@ -133,5 +136,5 @@ export const {
   useGetEntrevistasMutation,
   useGetEntrevistaPorMesQuery,
   useGetEntrevistasPorTrilhaMutation,
-  useGetEntrevistaByEmailQuery,
-} = entervistaSlice;
+  useGetEntrevistaByEmailQuery
+} = entervistaSlice

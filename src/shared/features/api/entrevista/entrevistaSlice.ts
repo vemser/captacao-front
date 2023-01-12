@@ -112,18 +112,16 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    getEntrevistaFiltro: builder.mutation<CandidatoByNota, IFiltros>({
-      query: (data) => ({
-        url: `candidato/filtro-candidato?pagina=0&tamanho=20`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${getToken()}`},
-        params: {
-          email: data.email,
-          edicao: data.edicao,
-          trilha: data.trilha,
-        },
-      }),
-    }),
+    // getExportCsvEntrevista: builder.mutation<void, NovaEntrevistaBody>({
+    //   query: (data) => ({
+    //     url: `entrevista/export-csv`,
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: `Bearer ${getToken()}`,
+    //     },
+    //     body: data,
+    //   }),
+    // }),
   }),
   overrideExisting: false,
 });
@@ -136,5 +134,4 @@ export const {
   useGetEntrevistaPorMesQuery,
   useGetEntrevistasPorTrilhaMutation,
   useGetEntrevistaByEmailQuery,
-  useGetEntrevistaFiltroMutation,
 } = entervistaSlice;

@@ -11,10 +11,9 @@ import {
 	Chip,
 	Button,
 	Pagination,
-	Skeleton,
 	Box,
-	CircularProgress,
 	Typography,
+	LinearProgress,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
@@ -24,7 +23,7 @@ import {
 	useGetAvaliacaoFiltroMutation,
 	useListReviewsMutation,
 } from "shared/features/avaliacao/avaliacaoSlice";
-import { Elemento, IListaAvaliacao } from "shared/features/avaliacao/type";
+import { IListaAvaliacao } from "shared/features/avaliacao/type";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
@@ -121,7 +120,7 @@ export const Prova: React.FC = () => {
 	const navigate = useNavigate();
 	const [page, setPage] = useState(0);
 	const [listReviews] = useListReviewsMutation();
-	// const [isLoading, setisLoading] = useState(false)
+	const [isLoading, setisLoading] = useState(false);
 
 	const [getAvaliacaoFiltro] = useGetAvaliacaoFiltroMutation();
 
@@ -137,15 +136,23 @@ export const Prova: React.FC = () => {
 
 	useEffect(() => {
 		if (!edicao && !email && !trilha) {
+			setisLoading(true);
 			listReviews({ pagina: page })
 				.unwrap()
-				.then((data) => setLista(data));
+				.then((data) => {
+					setLista(data);
+				})
+				.finally(() => setisLoading(false));
 		} else {
+			setisLoading(true);
 			getAvaliacaoFiltro({ email, edicao, trilha })
 				.unwrap()
-				.then((data) => setLista(data));
+				.then((data) => {
+					setLista(data);
+				}).finally(() => setisLoading(false));
 		}
-	}, [email, edicao, trilha, page]);
+	}, [email, edicao, trilha]);
+
 
 	const resetFiltro = () => {
 		setEmail("");
@@ -282,9 +289,9 @@ export const Prova: React.FC = () => {
 				xs={12}
 				sx={{ height: "calc(100vh - 211px)", width: "100%" }}
 			>
-				{/* {isLoading ? (
-					<CircularProgress />
-				) : ( */}
+				{isLoading ? (
+					 <LinearProgress />
+				) : (
 				<DataGrid
 					rows={rows() || []}
 					columns={columns}
@@ -298,7 +305,7 @@ export const Prova: React.FC = () => {
 					}}
 					hideFooter
 				/>
-				{/* )} */}
+				)} 
 			</Grid>
 			<Grid item xs={12} display="flex" justifyContent="center">
 				<Pagination

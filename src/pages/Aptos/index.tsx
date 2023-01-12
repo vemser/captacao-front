@@ -295,7 +295,7 @@ export const Prova: React.FC = () => {
 				<DataGrid
 					rows={rows() || []}
 					columns={columns}
-					pageSize={20}
+					pageSize={10}
 					rowsPerPageOptions={[5]}
 					onRowClick={({ row }) => {
 						navigate("/prova/curriculo", { state: row });

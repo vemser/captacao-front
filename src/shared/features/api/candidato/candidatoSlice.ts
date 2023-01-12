@@ -120,6 +120,18 @@ const candidatoSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getExportCsvCandidatos: builder.mutation<any, void>({
+      query: (data) => ({
+        url: `entrevista/export-xlsx`,
+        method: "GET",
+        responseType: "blob",
+        responseHandler:(response) => response.blob().then(blob => URL.createObjectURL(blob)),
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: data,
+      }),
+    }),
   }),
   overrideExisting: false
 })
@@ -133,4 +145,5 @@ export const {
   useGetCandidatosByEmailMutation,
   useGetCandidatosEntrevistaMutation,
   useGetCandidatosResultadoMutation,
+  useGetExportCsvCandidatosMutation
 } = candidatoSlice

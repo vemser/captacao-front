@@ -1,5 +1,7 @@
 // import {  } from "./types";
+import { Blob } from "buffer";
 import { getToken } from "shared/utils/getToken";
+import { blob } from "stream/consumers";
 import { apiSlice } from "../";
 import { CandidatoByNota } from "../candidato/types";
 import {
@@ -112,16 +114,18 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    // getExportCsvEntrevista: builder.mutation<void, NovaEntrevistaBody>({
-    //   query: (data) => ({
-    //     url: `entrevista/export-csv`,
-    //     method: "GET",
-    //     headers: {
-    //       Authorization: `Bearer ${getToken()}`,
-    //     },
-    //     body: data,
-    //   }),
-    // }),
+    getExportCsvEntrevista: builder.mutation<any, void>({
+      query: (data) => ({
+        url: `entrevista/export-xlsx`,
+        method: "GET",
+        responseType: "blob",
+        responseHandler:(response) => response.blob().then(blob => URL.createObjectURL(blob)),
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: data,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -134,4 +138,5 @@ export const {
   useGetEntrevistaPorMesQuery,
   useGetEntrevistasPorTrilhaMutation,
   useGetEntrevistaByEmailQuery,
+  useGetExportCsvEntrevistaMutation
 } = entervistaSlice;

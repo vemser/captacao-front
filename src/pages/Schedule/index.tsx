@@ -7,7 +7,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { useNavigate } from 'react-router-dom'
 import './index.css'
-import { useGetEntrevistasMutation, useUpdateObservacaoMutation } from 'shared/features/api/entrevista/entrevistaSlice'
+import { useGetEntrevistasMutation, useGetEntrevistasPorTrilhaMutation, useUpdateObservacaoMutation } from 'shared/features/api/entrevista/entrevistaSlice'
 import { IAtualizarInformacoesEntrevista, ILinguagens } from 'shared/interfaces'
 import { DataGrid } from '@mui/x-data-grid'
 import { useForm } from 'react-hook-form'
@@ -16,6 +16,7 @@ import { useUpdateNotaParecerComportamentalMutation, useUpdateNotaParecerTecnico
 import { EntrervistaResponse } from 'shared/features/api/entrevista/types'
 import { Trilhas } from 'shared/features/api/trilha/types'
 import { useDeleteTrilhaMutation, useGetTrilhasMMutation } from 'shared/features/api/trilha/trilhaSlice'
+import { Elemento } from 'shared/features/api/entrevista/types'
 
 export const Schedule = () => {
   // const { getByMonthYear, schedulesFormated } = useInterview()
@@ -27,16 +28,27 @@ export const Schedule = () => {
   const [modalInfos, setModalInfos] = useState<any>()
   const [open, setOpen] = React.useState(false);
   const [getEntrevistas] = useGetEntrevistasMutation()
+  const [getEntrevistasPorTrilha] = useGetEntrevistasPorTrilhaMutation()
   const [updateObservacao] = useUpdateObservacaoMutation();
   const [UpdateNotaParecerTecnico] = useUpdateNotaParecerTecnicoMutation();
   const [UpdateNotaParecerComportamental] = useUpdateNotaParecerComportamentalMutation();
-  const [ entrevistasList, setEntrevistasList ] = useState<EntrervistaResponse | undefined>(undefined)
+  const [ entrevistasList, setEntrevistasList ] = useState<Elemento[] | undefined>(undefined)
 
   const [trilhaId, setTrilhaId] = React.useState<number>(0);
   const [trilhaValue, setTrilhaValue] = React.useState<string>("");
   const [data, setData] = React.useState<Trilhas[]>();
   const [getTrilhasM] = useGetTrilhasMMutation();
   const [deleteTrilha] = useDeleteTrilhaMutation();
+
+  interface IAgenda {
+    title: string
+  }
+
+
+  const AgendaTitle = ({title}: IAgenda) => {
+    title = title.toLowerCase()
+    return <h1>Agenda: {title && title[0].toUpperCase() + title.substring(1)}</h1>
+  }
 
 
   React.useEffect(() => {
@@ -52,20 +64,24 @@ export const Schedule = () => {
 
 
   useEffect(() => {
-    getEntrevistas({
+
+    trilhaValue !== '' ? getEntrevistasPorTrilha({
+      trilha: trilhaValue
+    }).unwrap().then((data) => {
+      setEntrevistasList(data)
+    }) 
+    : getEntrevistas({
       pagina: 0,
       tamanho: 20
     }).unwrap().then((data) => {
-      setEntrevistasList(data)
+      console.log(data)
+      setEntrevistasList(data.elementos)
     })
-  }, [])
+  }, [trilhaValue])
 
 
-
-  console.log(entrevistasList?.elementos);
   
-
-  const entrevistasFilter = entrevistasList?.elementos.map((entrevista) => {
+  var entrevistasFilter = entrevistasList?.map((entrevista) => {
 
     let legendaColor = ''
 
@@ -100,6 +116,10 @@ export const Schedule = () => {
 
     }
   })
+
+  console.log(entrevistasList);
+  
+
 
   const handleModal = (info: any) => {
     setOpen(!open)
@@ -177,14 +197,12 @@ export const Schedule = () => {
         pagina: 0,
         tamanho: 20
       }).unwrap().then((data) => {
-        setEntrevistasList(data)
+        setEntrevistasList(data.elementos)
       })
       handleClose()
 
     } 
   }
-
-
 
   return (
     <>
@@ -195,7 +213,46 @@ export const Schedule = () => {
         flexDirection="column"
         alignItems="center"
         margin="0 auto"
+        gap="40px"
       >
+        <Box sx={{display: 'flex', width:'80%', flexDirection: 'row-reverse'}}>
+          <Box sx={{display: 'flex'}}>
+            <FormControl sx={{display: 'flex', flexDirection:'row-reverse'}}>
+              <InputLabel id="demo-simple-select-label" sx={{width: '400px'}}>
+                Selecione agenda por trilha
+              </InputLabel>
+              <Select sx={{width: '400px'}}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Selecione agenda por trilha"
+                value={trilhaValue}
+                onChange={(e) => {
+                  console.log(trilhaValue);
+                  setTrilhaValue(e.target.value);
+                }}
+                fullWidth
+                >
+                {data?.map((trilha) => (
+                  <MenuItem
+                    key={trilha.nome}
+                    value={trilha.nome}
+                    onClick={() => { 
+                      setTrilhaId(trilha.idTrilha);
+                    }}
+                  >
+                    {trilha.nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
+        
+        <Box sx={{width: '80%', display: 'flex', justifyContent:'center', marginLeft:'100px'}}>
+          <AgendaTitle title={trilhaValue}/>   
+        </Box>
+
+
         {/* calendário */}
         <Box width="100%" id="container-calendar-schedules">
           <Box width="100%" sx={{ paddingBottom: '5%' }}>
@@ -233,35 +290,6 @@ export const Schedule = () => {
           </Box>
         </Box>
 
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                      <FormControl>
-                        <InputLabel id="demo-simple-select-label">
-                          Trilhas
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          label="Trilhas"
-                          value={trilhaValue}
-                          onChange={(e) => {
-                            setTrilhaValue(e.target.value);
-                          }}
-                          fullWidth
-                        >
-                          {data?.map((trilha) => (
-                            <MenuItem
-                              value={trilha.nome}
-                              onClick={() => { 
-                                setTrilhaId(trilha.idTrilha);
-                                console.log(trilhaValue)
-                              }}
-                            >
-                              {trilha.nome}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </Stack>
         <Box width="100%" display="flex" justifyContent="space-evenly" mb="5%">
           <Box width="45%" display="flex" flexDirection="column">
             <Typography id="subtitle-legenda-schedules">Legenda</Typography>

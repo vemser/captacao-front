@@ -341,6 +341,7 @@ export const Configurations = () => {
                         >
                           {data?.map((trilha) => (
                             <MenuItem
+                              key={trilha.nome}
                               value={trilha.nome}
                               onClick={() => {
                                 setTrilhaId(trilha.idTrilha);

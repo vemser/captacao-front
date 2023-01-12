@@ -32,6 +32,30 @@ import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice"
 
 const columns = [
 	{
+		field: "id",
+		headerName: "ID",
+		width: 60,
+	},
+	{
+		field: "nome",
+		headerName: "Nome",
+		minWidth: 180,
+		flex: 1,
+	},
+	{
+		field: "email",
+		headerName: "Email",
+		minWidth: 230,
+		flex: 1,
+	},
+	{
+		field: "trilha",
+		headerName: "Trilhas",
+		minWidth: 90,
+		maxWidth: 200,
+		flex: 1,
+	},
+	{
 		field: "status",
 		headerName: "Status",
 		width: 140,
@@ -84,33 +108,6 @@ const columns = [
 		},
 	},
 	{
-		field: "nome",
-		headerName: "Nome",
-		minWidth: 180,
-		flex: 1,
-	},
-	{
-		field: "email",
-		headerName: "Email",
-		minWidth: 230,
-		flex: 1,
-	},
-	{
-		field: "telefone",
-		headerName: "Telefone",
-		minWidth: 160,
-	},
-	{
-		field: "turno",
-		headerName: "Turno",
-		minWidth: 90,
-	},
-	{
-		field: "estado",
-		headerName: "Estado",
-		minWidth: 90,
-	},
-	{
 		field: "nota",
 		headerName: "Adicionar nota",
 		width: 140,
@@ -157,6 +154,9 @@ export const Prova: React.FC = () => {
 		setTrilha("");
 	};
 
+	console.log(lista);
+	
+
 	const rows = () => {
 		return lista?.elementos.map((d) => {
 			return {
@@ -164,6 +164,11 @@ export const Prova: React.FC = () => {
 				idCandidato: d.inscricao.candidato.idCandidato,
 				nome: d.inscricao.candidato.nome,
 				email: d.inscricao.candidato.email,
+				trilha: d.inscricao.candidato.formulario?.trilhas
+				.map((trilha) => {
+					return trilha.nome;
+				})
+				.join(", "),
 				status: d.inscricao.avaliacao,
 				telefone: d.inscricao.candidato.telefone,
 				turno: d.inscricao.candidato.formulario?.turno,

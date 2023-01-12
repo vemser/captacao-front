@@ -9,6 +9,8 @@ import {
   EntrervistaResponse,
   EntrevistasParams,
   EntrevistasMesParams,
+  EntrevistaPorTrilhaParams,
+  Elemento,
 } from "./types";
 
 interface IFiltros {
@@ -65,7 +67,20 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
         params: {
           pagina: data.pagina, // data.pagina,
-          tamanho: data.tamanho, // data.tamanho,
+          tamanho: data.tamanho, // data.tamanho, 
+        },
+      }),
+    }),
+
+    getEntrevistasPorTrilha: builder.mutation<Elemento[], EntrevistaPorTrilhaParams>({
+      query: (data) => ({
+        url: "entrevista/por-trilha",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+        params: {
+          trilha: data.trilha
         },
       }),
     }),
@@ -119,6 +134,7 @@ export const {
   usePostNewEntrevistaMutation,
   useGetEntrevistasMutation,
   useGetEntrevistaPorMesQuery,
+  useGetEntrevistasPorTrilhaMutation,
   useGetEntrevistaByEmailQuery,
   useGetEntrevistaFiltroMutation,
 } = entervistaSlice;

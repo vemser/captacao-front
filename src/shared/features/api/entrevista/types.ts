@@ -139,3 +139,7 @@ export interface EntrevistasMesParams {
   mes: number;
   ano: number;
 }
+
+export interface EntrevistaPorTrilhaParams {
+  trilha: string
+}

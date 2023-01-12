@@ -31,6 +31,8 @@ export interface NovaEntrevistaBody {
   avaliado: string;
 }
 
+
+
 ////////
 
 export interface EntrervistaResponse {

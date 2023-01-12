@@ -19,10 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
-import {
-	useGetCandidatosFiltroMutation,
-	useGetCandidatosResultadoMutation,
-} from "shared/features/api/candidato/candidatoSlice";
+import { useGetCandidatosResultadoMutation } from "shared/features/api/candidato/candidatoSlice";
 import { CandidatoByNota } from "shared/features/api/candidato/types";
 
 const columns = [
@@ -65,7 +62,6 @@ export const Result: React.FC = () => {
 	const [page, setPage] = useState(0);
 	const [isLoading, setisLoading] = useState(false);
 	const [getCandidatosResultado] = useGetCandidatosResultadoMutation();
-	const [getCandidatosFiltro] = useGetCandidatosFiltroMutation();
 	const [listaResultado, setListaResultado] = useState<
 		CandidatoByNota | undefined
 	>(undefined);
@@ -80,17 +76,23 @@ export const Result: React.FC = () => {
 
 	useEffect(() => {
 		if (!edicao && !email && !trilha) {
-      setisLoading(true);
+			setisLoading(true);
 			getCandidatosResultado({ pagina: page, tamanho: 20 })
 				.unwrap()
 				.then((data) => setListaResultado(data))
 				.finally(() => setisLoading(false));
 		} else {
-      setisLoading(true);
-			getCandidatosFiltro({ email, edicao, trilha })
+			setisLoading(true);
+			getCandidatosResultado({
+				pagina: page,
+				tamanho: 20,
+				email,
+				edicao,
+				trilha,
+			})
 				.unwrap()
 				.then((data) => setListaResultado(data))
-        .finally(() => setisLoading(false));
+				.finally(() => setisLoading(false));
 		}
 	}, [email, edicao, trilha, page]);
 

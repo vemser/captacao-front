@@ -19,8 +19,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-	useGetCandidatosByNotaMutation,
-	useGetCandidatosFiltroMutation,
+	useGetCandidatosEntrevistaMutation,
 } from "shared/features/api/candidato/candidatoSlice";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
@@ -30,8 +29,8 @@ export const Interview: React.FC = () => {
 	const [page, setPage] = useState<number>(0);
 	const [isLoading, setisLoading] = useState(false);
 	const navigate = useNavigate();
-	const [getCandidatosByNota] = useGetCandidatosByNotaMutation();
-	const [getCandidatosFiltro] = useGetCandidatosFiltroMutation();
+	
+	const [getCandidatosEntrevista] = useGetCandidatosEntrevistaMutation();
 
 	const [listaEntrevistas, setListaEntrevistas] = useState<
 		CandidatoByNota | undefined
@@ -48,13 +47,13 @@ export const Interview: React.FC = () => {
 	useEffect(() => {
 		setisLoading(true);
 		if (!edicao && !email && !trilha) {
-			getCandidatosByNota({ pagina: page, tamanho: 20 })
+			getCandidatosEntrevista({ pagina: page, tamanho: 20})
 				.unwrap()
 				.then((data) => setListaEntrevistas(data))
 				.finally(() => setisLoading(false));
 		} else {
 			setisLoading(true);
-			getCandidatosFiltro({ email, edicao, trilha })
+			getCandidatosEntrevista({pagina: page, tamanho: 20, email, edicao, trilha })
 				.unwrap()
 				.then((data) => setListaEntrevistas(data))
 				.finally(() => setisLoading(false));

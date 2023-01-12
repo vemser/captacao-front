@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useTheme, Grid, Divider, FormControl } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useTheme, Grid, Divider, FormControl, InputLabel, Stack, Select, MenuItem } from '@mui/material'
 import { Box } from '@mui/system'
 import useMediaQuery from '@mui/material/useMediaQuery'
 // import { useAuth, useInterview } from '../../shared/contexts'
@@ -14,6 +14,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useUpdateNotaParecerComportamentalMutation, useUpdateNotaParecerTecnicoMutation } from 'shared/features/api/candidato/candidatoSlice'
 import { EntrervistaResponse } from 'shared/features/api/entrevista/types'
+import { Trilhas } from 'shared/features/api/trilha/types'
+import { useDeleteTrilhaMutation, useGetTrilhasMMutation } from 'shared/features/api/trilha/trilhaSlice'
 
 export const Schedule = () => {
   // const { getByMonthYear, schedulesFormated } = useInterview()
@@ -29,6 +31,22 @@ export const Schedule = () => {
   const [UpdateNotaParecerTecnico] = useUpdateNotaParecerTecnicoMutation();
   const [UpdateNotaParecerComportamental] = useUpdateNotaParecerComportamentalMutation();
   const [ entrevistasList, setEntrevistasList ] = useState<EntrervistaResponse | undefined>(undefined)
+
+  const [trilhaId, setTrilhaId] = React.useState<number>(0);
+  const [trilhaValue, setTrilhaValue] = React.useState<string>("");
+  const [data, setData] = React.useState<Trilhas[]>();
+  const [getTrilhasM] = useGetTrilhasMMutation();
+  const [deleteTrilha] = useDeleteTrilhaMutation();
+
+
+  React.useEffect(() => {
+    getTrilhasM()
+      .unwrap()
+      .then((trilhas) => {
+        setData(trilhas);
+      });
+  }, []);
+
  
   const {register, handleSubmit} = useForm<IAtualizarInformacoesEntrevista>()
 
@@ -166,6 +184,8 @@ export const Schedule = () => {
     } 
   }
 
+
+
   return (
     <>
       <Box
@@ -213,6 +233,35 @@ export const Schedule = () => {
           </Box>
         </Box>
 
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                      <FormControl>
+                        <InputLabel id="demo-simple-select-label">
+                          Trilhas
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          label="Trilhas"
+                          value={trilhaValue}
+                          onChange={(e) => {
+                            setTrilhaValue(e.target.value);
+                          }}
+                          fullWidth
+                        >
+                          {data?.map((trilha) => (
+                            <MenuItem
+                              value={trilha.nome}
+                              onClick={() => { 
+                                setTrilhaId(trilha.idTrilha);
+                                console.log(trilhaValue)
+                              }}
+                            >
+                              {trilha.nome}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Stack>
         <Box width="100%" display="flex" justifyContent="space-evenly" mb="5%">
           <Box width="45%" display="flex" flexDirection="column">
             <Typography id="subtitle-legenda-schedules">Legenda</Typography>

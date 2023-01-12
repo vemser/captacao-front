@@ -1,27 +1,27 @@
-import { Button, Grid, Menu, MenuItem } from "@mui/material";
-import { CurriculoContainer } from "../../components/CurriculoContainer";
-import React from "react";
-import { useAvaliarCandidatoMutation } from "shared/features/avaliacao/avaliacaoSlice";
-import { useGetLoggedUserQuery } from "shared/features/api/usuario/authSlice";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Button, Grid, Menu, MenuItem } from '@mui/material'
+import { CurriculoContainer } from '../../components/CurriculoContainer'
+import React from 'react'
+import { useAvaliarCandidatoMutation } from 'shared/features/avaliacao/avaliacaoSlice'
+import { useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 export const CandidatesCurriculum = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [avaliarCandidato] = useAvaliarCandidatoMutation();
-  const { state } = useLocation();
-  console.log(state);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [avaliarCandidato] = useAvaliarCandidatoMutation()
+  const { state } = useLocation()
+  console.log(state)
 
-  const { data } = useGetLoggedUserQuery();
-  const navigate = useNavigate();
+  const { data } = useGetLoggedUserQuery()
+  const navigate = useNavigate()
 
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   return (
     <Grid container spacing={2}>
@@ -29,15 +29,15 @@ export const CandidatesCurriculum = () => {
         xs={12}
         item
         sx={{
-          mb: 2,
+          mb: 2
         }}
       >
         <Button
           id="candidatos-avaliar"
           variant="contained"
-          aria-controls={open ? "basic-menu" : undefined}
+          aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
+          aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
           Avaliar
@@ -48,7 +48,7 @@ export const CandidatesCurriculum = () => {
           open={open}
           onClose={handleClose}
           MenuListProps={{
-            "aria-labelledby": "basic-button",
+            'aria-labelledby': 'basic-button'
           }}
         >
           <MenuItem
@@ -56,25 +56,24 @@ export const CandidatesCurriculum = () => {
               await toast.promise(
                 avaliarCandidato({
                   aprovadoBoolean: true,
-                  // emailGestor: `${data?.login}@dbccompany.com.br`,
-                  emailGestor: "admin@dbccompany.com.br",
-                  idInscricao: state.id,
+
+                  idInscricao: state.id
                 })
                   .unwrap()
                   .then(() => {
-                    navigate("/candidatos");
+                    navigate('/candidatos')
                   }),
                 {
-                  pending: "Carregando...",
-                  success: "Candidato avaliado com sucesso!",
+                  pending: 'Carregando...',
+                  success: 'Candidato avaliado com sucesso!',
                   error: {
                     render() {
-                      return "Houve um erro ao avaliar esse candidato.";
-                    },
-                  },
+                      return 'Houve um erro ao avaliar esse candidato.'
+                    }
+                  }
                 }
-              );
-              handleClose();
+              )
+              handleClose()
             }}
           >
             Apto
@@ -84,25 +83,24 @@ export const CandidatesCurriculum = () => {
               await toast.promise(
                 avaliarCandidato({
                   aprovadoBoolean: false,
-                  // emailGestor: `${data?.login}@dbccompany.com.br`,
-                  emailGestor: "admin@dbccompany.com.br",
-                  idInscricao: state.id,
+
+                  idInscricao: state.id
                 })
                   .unwrap()
                   .then(() => {
-                    navigate("/candidatos");
+                    navigate('/candidatos')
                   }),
                 {
-                  pending: "Carregando...",
-                  success: "Candidato reprovado com sucesso!",
+                  pending: 'Carregando...',
+                  success: 'Candidato reprovado com sucesso!',
                   error: {
                     render() {
-                      return "Houve um erro ao avaliar esse candidato.";
-                    },
-                  },
+                      return 'Houve um erro ao avaliar esse candidato.'
+                    }
+                  }
                 }
-              );
-              handleClose();
+              )
+              handleClose()
             }}
           >
             Não apto
@@ -111,5 +109,5 @@ export const CandidatesCurriculum = () => {
       </Grid>
       <CurriculoContainer />
     </Grid>
-  );
-};
+  )
+}

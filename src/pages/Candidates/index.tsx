@@ -23,7 +23,7 @@ import {
   useGetCandidatosMutation,
   useGetInscricaoFiltroMutation,
 } from "../../shared/features/api/inscricao/inscricaoSlice";
-import { IElementos, IInscricao } from "shared/features/api/inscricao/types";
+import { IInscricao } from "shared/features/api/inscricao/types";
 import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 import { useGetListaEdicoesQuery } from "shared/features/api/edicao/edicaoSlice";
 
@@ -84,7 +84,7 @@ export const Registers: React.FC = () => {
 	const [page, setPage] = useState(0);
 	const [isLoading, setisLoading] = useState(false);
 	const [getCandidatos] = useGetCandidatosMutation();
-	
+
 	const [getInscricaoFiltro] = useGetInscricaoFiltroMutation();
 
   const { data: getTrilha } = useGetTrilhasQuery();
@@ -154,10 +154,7 @@ export const Registers: React.FC = () => {
 						<OutlinedInput
 							endAdornment={
 								<InputAdornment position="end">
-									<IconButton
-										onClick={() => setEmail(emailInput)}
-										edge="end"
-									>
+									<IconButton onClick={() => setEmail(emailInput)} edge="end">
 										<Search color="primary" />
 									</IconButton>
 								</InputAdornment>
@@ -220,11 +217,7 @@ export const Registers: React.FC = () => {
 							;
 						</Select>
 					</FormControl>
-					<Box
-						display="flex"
-						alignItems="center"
-						justifyContent="center"
-					>
+					<Box display="flex" alignItems="center" justifyContent="center">
 						<Button
 							fullWidth
 							sx={{
@@ -238,13 +231,9 @@ export const Registers: React.FC = () => {
 					</Box>
 				</Stack>
 			</Grid>
-			<Grid
-				item
-				xs={12}
-				sx={{ height: "calc(100vh - 211px)", width: "100%" }}
-			>
+			<Grid item xs={12} sx={{ height: "calc(100vh - 211px)", width: "100%" }}>
 				{isLoading ? (
-					 <LinearProgress />
+					<LinearProgress />
 				) : (
 					<DataGrid
 						rows={rows() || []}

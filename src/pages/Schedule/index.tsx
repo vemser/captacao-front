@@ -250,19 +250,6 @@ export const Schedule = () => {
 						/>
 					</Box>
 				</Box>
-				<Box width="80%" display="flex" justifyContent="flex-end">
-					<Button
-          
-						sx={{
-              background: "#1e62fe ",
-							height: "2.5rem",
-						}}
-						variant="contained"
-						// onClick={resetFiltro}
-					>
-						Exportar CSV
-					</Button>
-				</Box>
 				<Box>
 					<Typography id="subtitle-legenda-schedules">
 						Legenda

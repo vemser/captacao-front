@@ -42,7 +42,7 @@ export const Configurations = () => {
   const [getEdicaoAtual] = useGetEdicaoAtualMutation();
   const [postNewEdicao] = usePostNewEdicaoMutation();
   const [postNewTrilha] = usePostNewTrilhaMutation();
-  const [deleteTrilha] = useDeleteTrilhaMutation();
+  const [deleteTrilha, { error }] = useDeleteTrilhaMutation();
   const [getTrilhasM] = useGetTrilhasMMutation();
   // const { data } = useGetTrilhasQuery();
 
@@ -364,9 +364,9 @@ export const Configurations = () => {
                                 toast.success("Trilha removida com sucesso");
                               })
                               .catch((err) => {
-                                console.log(err);
+                                err.data.message? toast.error(`${err.data.message}`) : 
                                 toast.error("Erro ao remover a trilha");
-                              });
+                              });                              
                             handleClose();
                           }}
                         >

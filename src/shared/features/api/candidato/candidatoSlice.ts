@@ -16,6 +16,8 @@ interface IFiltros {
   email?: string;
   trilha?: string;
   edicao?: string;
+  pagina: number;
+  tamanho: number
 }
 
 const candidatoSlice = apiSlice.injectEndpoints({
@@ -94,16 +96,21 @@ const candidatoSlice = apiSlice.injectEndpoints({
         }
       }),
     }),
-    getCandidatosResultado: builder.mutation<CandidatoByNota, CandidatoByNotaBody>({
+    getCandidatosEntrevista: builder.mutation<CandidatoByNota, IFiltros>({
       query: (data) => ({
-        url: `candidato/resultado?pagina=0&tamanho=20`,
+        url: `candidato/filtro-candidato-entrevista?pagina=0&tamanho=20`,
         method: "GET",
         headers: { Authorization: `Bearer ${getToken()}`},
+        params: {
+          email: data.email,
+          edicao: data.edicao,
+          trilha: data.trilha,
+        },
       }),
     }),
-    getCandidatosFiltro: builder.mutation<CandidatoByNota, IFiltros>({
+    getCandidatosResultado: builder.mutation<CandidatoByNota, IFiltros>({
       query: (data) => ({
-        url: `candidato/filtro-candidato?pagina=0&tamanho=20`,
+        url: `/candidato/filtro-candidato-resultado?pagina=0&tamanho=20`,
         method: "GET",
         headers: { Authorization: `Bearer ${getToken()}`},
         params: {
@@ -124,6 +131,6 @@ export const {
   useUpdateNotaParecerComportamentalMutation,
   useGetCandidatosByNotaMutation,
   useGetCandidatosByEmailMutation,
-  useGetCandidatosFiltroMutation,
+  useGetCandidatosEntrevistaMutation,
   useGetCandidatosResultadoMutation,
 } = candidatoSlice

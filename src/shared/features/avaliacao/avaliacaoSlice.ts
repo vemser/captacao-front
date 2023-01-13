@@ -13,17 +13,15 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
       query: data => ({
         url: 'avaliacao',
         method: 'GET',
-        providesTags: ['Avaliacao'],
         headers: {
           Authorization: `Bearer ${getToken()}`
         },
         params: {
           pagina: data.pagina,
           sort: 'idAvaliacao',
-          tamanho: 10,
+          tamanho: 20,
           order: 0
-        },
-        invalidatesTags: ['Avaliacao']
+        }
       })
     }),
     avaliarCandidato: build.mutation<void, IAvaliacao>({

@@ -9,14 +9,13 @@ import {
   UpdateNota,
   UpdateNotaParecerComportamental,
   UpdateNotaParecerTecnico
-
-} from "./types";
+} from './types'
 
 interface IFiltros {
-  email?: string;
-  trilha?: string;
-  edicao?: string;
-  pagina: number;
+  email?: string
+  trilha?: string
+  edicao?: string
+  pagina: number
   tamanho: number
 }
 
@@ -42,19 +41,21 @@ const candidatoSlice = apiSlice.injectEndpoints({
         body: data.nota
       })
     }),
-    getCandidatosByNota: builder.mutation<CandidatoByNota, CandidatoByNotaBody>({
-      query: (data) => ({
-        url: "candidato/find-by-nota",
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${getToken()}`
-        },
-        params: {
-          pagina: data.pagina,
-          tamanho: data.tamanho
-        }
-      })
-    }),
+    getCandidatosByNota: builder.mutation<CandidatoByNota, CandidatoByNotaBody>(
+      {
+        query: data => ({
+          url: 'candidato/find-by-nota',
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${getToken()}`
+          },
+          params: {
+            pagina: data.pagina,
+            tamanho: data.tamanho
+          }
+        })
+      }
+    ),
     getCandidatosByEmail: builder.mutation<Elemento, string>({
       query: data => ({
         url: 'candidato/findbyemails',
@@ -94,32 +95,32 @@ const candidatoSlice = apiSlice.injectEndpoints({
         params: {
           idCandidato: data.idCandidato
         }
-      }),
+      })
     }),
     getCandidatosEntrevista: builder.mutation<CandidatoByNota, IFiltros>({
-      query: (data) => ({
-        url: `candidato/filtro-candidato-entrevista?pagina=0&tamanho=20`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${getToken()}`},
+      query: data => ({
+        url: `candidato/filtro-candidato-entrevista?pagina=${data.pagina}&tamanho=${data.tamanho}`,
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getToken()}` },
         params: {
           email: data.email,
           edicao: data.edicao,
-          trilha: data.trilha,
-        },
-      }),
+          trilha: data.trilha
+        }
+      })
     }),
     getCandidatosResultado: builder.mutation<CandidatoByNota, IFiltros>({
-      query: (data) => ({
+      query: data => ({
         url: `/candidato/filtro-candidato-resultado?pagina=0&tamanho=20`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${getToken()}`},
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getToken()}` },
         params: {
           email: data.email,
           edicao: data.edicao,
-          trilha: data.trilha,
-        },
-      }),
-    }),
+          trilha: data.trilha
+        }
+      })
+    })
   }),
   overrideExisting: false
 })
@@ -132,5 +133,5 @@ export const {
   useGetCandidatosByNotaMutation,
   useGetCandidatosByEmailMutation,
   useGetCandidatosEntrevistaMutation,
-  useGetCandidatosResultadoMutation,
+  useGetCandidatosResultadoMutation
 } = candidatoSlice

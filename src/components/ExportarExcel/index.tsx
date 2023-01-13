@@ -2,14 +2,11 @@ import React from "react";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import DownloadIcon from "@mui/icons-material/Download";
-import { useGetExportCsvEntrevistaMutation } from "shared/features/api/entrevista/entrevistaSlice";
-import { useGetExportCsvCandidatosMutation } from "shared/features/api/candidato/candidatoSlice";
 import { useLocation } from "react-router-dom";
+import { getEntrevistasExcel, getResultadosExcel } from "shared/features/api/export";
 
 export const Export = () => {
 	const { pathname } = useLocation();
-	const [getExportCsvEntrevista] = useGetExportCsvEntrevistaMutation();
-	const [getExportCsvCandidatos] = useGetExportCsvCandidatosMutation();
 	
 	return (
 		<>
@@ -27,16 +24,7 @@ export const Export = () => {
 							},
 						}}
 						onClick={() =>
-							getExportCsvEntrevista()
-								.unwrap()
-								.then((response) => {
-									const url = window.URL.createObjectURL(new Blob([response.data]));
-									const link = document.createElement("a");
-									link.href = url;
-									link.setAttribute("download", `${Date.now()}.xlsx`);
-									document.body.appendChild(link);
-									link.click();
-								})
+							getEntrevistasExcel()
 						}
 					>
 						Exportar lista
@@ -57,16 +45,7 @@ export const Export = () => {
 							},
 						}}
 						onClick={() =>
-							getExportCsvCandidatos()
-								.unwrap()
-								.then((response) => {
-									const url = window.URL.createObjectURL(new Blob([response.data]));
-									const link = document.createElement("a");
-									link.href = url;
-									link.setAttribute("download", `${Date.now()}.xlsx`);
-									document.body.appendChild(link);
-									link.click();
-								})
+							getResultadosExcel()
 						}
 					>
 						Exportar lista

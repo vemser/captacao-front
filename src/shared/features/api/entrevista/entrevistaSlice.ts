@@ -13,12 +13,6 @@ import {
   Elemento
 } from './types'
 
-interface IFiltros {
-  email?: string
-  trilha?: string
-  edicao?: string
-}
-
 const entervistaSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     updateObservacao: builder.mutation<void, EntrevistaObsParams>({
@@ -115,18 +109,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    getExportCsvEntrevista: builder.mutation<any, void>({
-      query: (data) => ({
-        url: `entrevista/export-xlsx`,
-        method: "GET",
-        responseType: "blob",
-        responseHandler:(response) => response.blob().then(blob => URL.createObjectURL(blob)),
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-        body: data,
-      }),
-    }),
+
   }),
   overrideExisting: false
 })
@@ -139,5 +122,4 @@ export const {
   useGetEntrevistaPorMesQuery,
   useGetEntrevistasPorTrilhaMutation,
   useGetEntrevistaByEmailQuery,
-  useGetExportCsvEntrevistaMutation
 } = entervistaSlice;

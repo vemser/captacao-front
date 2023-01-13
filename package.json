@@ -25,6 +25,7 @@
     "@types/node": "^16.18.10",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
+    "axios": "^1.2.2",
     "cpf-cnpj-validator": "^1.0.3",
     "datocms-structured-text-utils": "^2.0.4",
     "dayjs": "^1.11.7",

@@ -41,7 +41,7 @@ import {
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { toast } from "react-toastify";
 import { Configurations } from "components/Configurations";
-import { Export } from "components/Csv";
+import { Export } from "components/ExportarExcel";
 
 const drawerWidth = 240;
 

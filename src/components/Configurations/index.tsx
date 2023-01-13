@@ -136,7 +136,7 @@ export const Configurations = () => {
                   <Button
                     variant="outlined"
                     component="a"
-                    href="https://dashboard.datocms.com/"
+                    href="https://splendid-cough-1d2.notion.site/Documenta-o-CMS-VEM-SER-START-9e2988527c754e94b770c4329de6482b"
                     target="_blank"
                     size="small"
                     fullWidth

@@ -69,6 +69,8 @@ const formSlice = apiSlice.injectEndpoints({
               s2Linkedin
               s2Curriculo
               s2ConfiguraEsDaMQuina
+              linguagemDeProgramacao
+              linguagemDeProgramacaoTooltip
             }
           }
         `

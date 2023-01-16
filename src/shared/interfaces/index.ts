@@ -93,6 +93,8 @@ export interface IFormSubscribeFormResponse {
       s2Linkedin?: string;
       s2Curriculo?: string;
       s2ConfiguraEsDaMQuina?: string;
+      linguagemDeProgramacao?: string;
+      linguagemDeProgramacaoTooltip?: string;
     };
   };
 }

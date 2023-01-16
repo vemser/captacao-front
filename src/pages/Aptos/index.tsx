@@ -134,6 +134,12 @@ export const Prova: React.FC = () => {
 
   const [lista, setLista] = useState<IListaAvaliacao | undefined>(undefined)
 
+  let emailLink = email == '' ? '' : `&email=${email}`
+  let edicaoLink = edicao == '' ? '' : `&edicao=${edicao}`
+  let trilhaLink = trilha == '' ? '' : `&trilha=${trilha}`
+
+  let datas: string = edicaoLink + trilhaLink + emailLink
+
   useEffect(() => {
     if (!edicao && !email && !trilha) {
       setisLoading(true)
@@ -141,14 +147,18 @@ export const Prova: React.FC = () => {
         .unwrap()
         .then(data => {
           setLista(data)
+          console.log(data)
         })
         .finally(() => setisLoading(false))
     } else {
       setisLoading(true)
-      getAvaliacaoFiltro({ email, edicao, trilha })
+      getAvaliacaoFiltro({
+        url: `pagina=${page}&tamanho=20${datas}`
+      })
         .unwrap()
         .then(data => {
           setLista(data)
+          console.log(data)
         })
         .finally(() => setisLoading(false))
     }
@@ -159,10 +169,12 @@ export const Prova: React.FC = () => {
     setEmailInput('')
     setEdicao('')
     setTrilha('')
+    setPage(0)
   }
 
-  console.log(lista)
-
+  useEffect(() => {
+    console.log('renanzinho:' + datas)
+  }, [datas])
   const rows = () => {
     return lista?.elementos.map(d => {
       return {
@@ -303,6 +315,7 @@ export const Prova: React.FC = () => {
           onChange={(_, page) => {
             setPage(page - 1)
           }}
+          page={page + 1}
         />
       </Grid>
     </Grid>

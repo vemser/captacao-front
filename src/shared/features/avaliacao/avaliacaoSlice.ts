@@ -6,6 +6,10 @@ interface IFiltros {
   email?: string
   trilha?: string
   edicao?: string
+  quantidadePaginas?: number
+  pagina?: number
+  tamanho?: number
+  url?: string
 }
 const avaliacaoSlice = apiSlice.injectEndpoints({
   endpoints: build => ({
@@ -32,21 +36,13 @@ const avaliacaoSlice = apiSlice.injectEndpoints({
         headers: {
           Authorization: `Bearer ${getToken()}`
         }
-        // params: {
-
-        // }
       })
     }),
     getAvaliacaoFiltro: build.mutation<IListaAvaliacao, IFiltros>({
       query: data => ({
-        url: `avaliacao/filtro-avaliacao?pagina=0&tamanho=20`,
+        url: `avaliacao/filtro-avaliacao?${data.url}`,
         method: 'GET',
-        headers: { Authorization: `Bearer ${getToken()}` },
-        params: {
-          email: data.email,
-          edicao: data.edicao,
-          trilha: data.trilha
-        }
+        headers: { Authorization: `Bearer ${getToken()}` }
       })
     })
   }),

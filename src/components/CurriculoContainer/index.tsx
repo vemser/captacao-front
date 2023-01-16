@@ -1,360 +1,374 @@
-import { DataGrid } from '@mui/x-data-grid'
-import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { useGetInscricaoByIdMutation } from 'shared/features/api/inscricao/inscricaoSlice'
-import { useGetCurriculoMutation } from 'shared/features/api/formulario/formularioSlice'
-import { IElementos } from 'shared/features/api/inscricao/types'
+import { DataGrid } from "@mui/x-data-grid";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import {
+  useGetCurriculoMutation,
+  useGetPrintPcMutation,
+} from "shared/features/api/formulario/formularioSlice";
+import { IElementos } from "shared/features/api/inscricao/types";
 import {
   Box,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
-  Grid
-} from '@mui/material'
-import { Worker, Viewer } from '@react-pdf-viewer/core'
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
-import '@react-pdf-viewer/core/lib/styles/index.css'
-import '@react-pdf-viewer/default-layout/lib/styles/index.css'
+  Grid,
+} from "@mui/material";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import {
   useGetInputsQuery,
-  useGetSubscribeFormQuery
-} from 'shared/features/api/subscription/formSlice'
-import Tab from '@mui/material/Tab'
-import TabContext from '@mui/lab/TabContext'
-import TabList from '@mui/lab/TabList'
-import TabPanel from '@mui/lab/TabPanel'
-import Zoom from 'react-medium-image-zoom'
-import 'react-medium-image-zoom/dist/styles.css'
-import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/candidatoSlice'
-import { Elemento } from 'shared/features/api/candidato/types'
+  useGetSubscribeFormQuery,
+} from "shared/features/api/subscription/formSlice";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+import { useGetCandidatosByEmailMutation } from "shared/features/api/candidato/candidatoSlice";
+import { Elemento } from "shared/features/api/candidato/types";
 
 const columns = [
   {
-    field: 'pergunta',
-    headerName: 'Pergunta',
+    field: "pergunta",
+    headerName: "Pergunta",
     minWidth: 180,
     maxWidth: 550,
-    flex: 1
+    flex: 1,
   },
   {
-    field: 'resposta',
-    headerName: 'Resposta',
+    field: "resposta",
+    headerName: "Resposta",
     minWidth: 230,
-    flex: 1
-  }
-]
+    flex: 1,
+  },
+];
 
 export const CurriculoContainer: React.FC = () => {
-  const { state } = useLocation()
-  const [getCandidatosByEmail] = useGetCandidatosByEmailMutation()
+  const { state } = useLocation();
+  const [getCandidatosByEmail] = useGetCandidatosByEmailMutation();
   const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(
     null
-  )
-  console.log('este:', inscricaoResponse)
-  const [curriculo, setCurriculo] = useState<string | null>(null)
-  const defaultLayoutPluginInstance = defaultLayoutPlugin()
+  );
+  // console.log("este:", inscricaoResponse);
+  const [curriculo, setCurriculo] = useState<string | null>(null);
+  const [printPc, setPrintPc] = useState<any>(null);
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
-  const { data } = useGetInputsQuery()
-  const { data: dataCurriculo } = useGetSubscribeFormQuery()
-  console.log(dataCurriculo)
-  const formulario = data?.data.formulario
-  const formularioCurriculo = dataCurriculo?.data.formulario
+  const { data } = useGetInputsQuery();
+  const { data: dataCurriculo } = useGetSubscribeFormQuery();
+  // console.log(dataCurriculo);
+  const formulario = data?.data.formulario;
+  const formularioCurriculo = dataCurriculo?.data.formulario;
+  const [getPrintPc] = useGetPrintPcMutation();
+  // console.log(printPc)
 
   const [formattedCandidatePdf, setFormattedCandidatePdf] =
-    useState<string>('null')
+    useState<string>("null");
 
   useEffect(() => {
     getCandidatosByEmail(state?.email)
       .unwrap()
-      .then(res => {
-        setInscricaoResponse(res)
-        console.log(res)
+      .then((res) => {
+        setInscricaoResponse(res);
+        // console.log(res);
       })
-      .catch(e => console.log(e))
-  }, [])
+      .catch((e) => console.log(e));
+  }, []);
 
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
-  const [value, setValue] = React.useState('1')
+  const [value, setValue] = React.useState("1");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
-  const [getCurriculo] = useGetCurriculoMutation()
+  const [getCurriculo] = useGetCurriculoMutation();
   useEffect(() => {
     if (inscricaoResponse?.formulario?.idFormulario) {
       getCurriculo(inscricaoResponse.formulario.idFormulario)
         .unwrap()
-        .then(e => {
-          setCurriculo(e)
+        .then((e) => {
+          setCurriculo(e);
         })
-        .catch(err => {
-          console.log(err)
+        .catch((err) => {
+          console.log(err);
+        });
+
+      getPrintPc(inscricaoResponse.formulario.idFormulario)
+        .unwrap()
+        .then((e) => {
+          setPrintPc(e);
         })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, [inscricaoResponse])
+  }, [inscricaoResponse]);
 
   const base64toBlob: any = (data: string) => {
-    const byteString = atob(data)
-    const ab = new ArrayBuffer(byteString.length)
-    const ia = new Uint8Array(ab)
+    const byteString = atob(data);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
     for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i)
+      ia[i] = byteString.charCodeAt(i);
     }
-    return new Blob([ab], { type: 'application/pdf' })
-  }
+    return new Blob([ab], { type: "application/pdf" });
+  };
   useEffect(() => {
-    const blob = base64toBlob(curriculo)
-    const url = URL.createObjectURL(blob)
+    const blob = base64toBlob(curriculo);
+    const url = URL.createObjectURL(blob);
 
-    setFormattedCandidatePdf(url)
-  }, [curriculo])
+    setFormattedCandidatePdf(url);
+  }, [curriculo]);
 
   //
 
   const rows = [
     {
       id: 1,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.nome,
-      resposta: inscricaoResponse?.nome
+      resposta: inscricaoResponse?.nome,
     },
     {
       id: 2,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.email,
-      resposta: inscricaoResponse?.email
+      resposta: inscricaoResponse?.email,
     },
     {
       id: 3,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.telefone,
-      resposta: inscricaoResponse?.telefone
+      resposta: inscricaoResponse?.telefone,
     },
     {
       id: 4,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.cpf,
-      resposta: inscricaoResponse?.cpf
+      resposta: inscricaoResponse?.cpf,
     },
     {
       id: 5,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.rg,
-      resposta: inscricaoResponse?.rg
+      resposta: inscricaoResponse?.rg,
     },
     {
       id: 6,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.dataNascimento,
-      resposta: inscricaoResponse?.dataNascimento
+      resposta: inscricaoResponse?.dataNascimento,
     },
     {
       id: 7,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.estado,
-      resposta: inscricaoResponse?.estado
+      resposta: inscricaoResponse?.estado,
     },
     {
       id: 8,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.cidade,
-      resposta: inscricaoResponse?.cidade
+      resposta: inscricaoResponse?.cidade,
     },
     {
       id: 10,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formulario?.neurodiversidade,
-      resposta: inscricaoResponse?.formulario?.neurodiversidade
+      resposta: inscricaoResponse?.formulario?.neurodiversidade,
     },
     {
       id: 11,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formularioCurriculo?.s2OriSexual,
-      resposta: inscricaoResponse?.formulario?.orientacao
+      resposta: inscricaoResponse?.formulario?.orientacao,
     },
     {
       id: 12,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formularioCurriculo?.s2GNero,
-      resposta: inscricaoResponse?.formulario?.genero
+      resposta: inscricaoResponse?.formulario?.genero,
     },
     {
       id: 13,
-      tipo: 'Pessoal',
+      tipo: "Pessoal",
       pergunta: formularioCurriculo?.s2DeficiNcia,
-      resposta: inscricaoResponse?.pcdboolean
+      resposta: inscricaoResponse?.pcdboolean,
     },
     {
       id: 14,
-      tipo: 'Acadêmico',
+      tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Curso,
-      resposta: inscricaoResponse?.formulario?.curso
+      resposta: inscricaoResponse?.formulario?.curso,
     },
     {
       id: 15,
-      tipo: 'Acadêmico',
+      tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Turno,
-      resposta: inscricaoResponse?.formulario?.turno
+      resposta: inscricaoResponse?.formulario?.turno,
     },
     {
       id: 16,
-      tipo: 'Acadêmico',
+      tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Instituicao,
-      resposta: inscricaoResponse?.formulario?.instituicao
+      resposta: inscricaoResponse?.formulario?.instituicao,
     },
     {
       id: 17,
-      tipo: 'Acadêmico',
+      tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2InglS,
-      resposta: inscricaoResponse?.formulario?.ingles
+      resposta: inscricaoResponse?.formulario?.ingles,
     },
     {
       id: 18,
-      tipo: 'Acadêmico',
+      tipo: "Acadêmico",
       pergunta: formularioCurriculo?.s2Espanhol,
-      resposta: inscricaoResponse?.formulario?.espanhol
+      resposta: inscricaoResponse?.formulario?.espanhol,
     },
     {
       id: 23,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2TextoLingProva,
-      resposta: inscricaoResponse?.formulario?.prova
+      resposta: inscricaoResponse?.formulario?.prova,
     },
     {
       id: 24,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2TextoDisp,
-      resposta: inscricaoResponse?.formulario?.efetivacao
+      resposta: inscricaoResponse?.formulario?.efetivacao,
     },
     {
       id: 25,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2DispHaula,
-      resposta: inscricaoResponse?.formulario?.disponibilidade
+      resposta: inscricaoResponse?.formulario?.disponibilidade,
     },
     {
       id: 26,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2Trilha,
       // resposta: inscricaoResponse?.formulario?.trilhas || "Nenhuma",
       resposta: inscricaoResponse?.formulario?.trilhas
-        .map(trilha => {
-          return trilha.nome
+        .map((trilha) => {
+          return trilha.nome;
         })
-        .join(', ')
+        .join(", "),
     },
     {
       id: 28,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2Linkedin,
-      resposta: inscricaoResponse?.formulario?.linkedin
+      resposta: inscricaoResponse?.formulario?.linkedin,
     },
     {
       id: 29,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2Github,
-      resposta: inscricaoResponse?.formulario?.github
+      resposta: inscricaoResponse?.formulario?.github,
     },
     {
       id: 31,
-      tipo: 'Outros',
-      pergunta: 'LGPD',
-      resposta: inscricaoResponse?.formulario?.lgpd
+      tipo: "Outros",
+      pergunta: "LGPD",
+      resposta: inscricaoResponse?.formulario?.lgpd,
     },
     {
       id: 32,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2OutroMotivo,
-      resposta: inscricaoResponse?.formulario?.resposta
+      resposta: inscricaoResponse?.formulario?.resposta,
     },
     {
       id: 33,
-      tipo: 'Outros',
+      tipo: "Outros",
       pergunta: formularioCurriculo?.s2AlgoImp,
-      resposta: inscricaoResponse?.formulario?.importancia
-    }
-  ]
+      resposta: inscricaoResponse?.formulario?.importancia,
+    },
+  ];
 
   const rowsDois = [
     {
       id: 1,
-      tipo: 'Pessoal',
-      pergunta: 'Nome',
-      resposta: inscricaoResponse?.nome
+      tipo: "Pessoal",
+      pergunta: "Nome",
+      resposta: inscricaoResponse?.nome,
     },
     {
       id: 2,
-      tipo: 'Pessoal',
-      pergunta: 'Email',
-      resposta: inscricaoResponse?.email
+      tipo: "Pessoal",
+      pergunta: "Email",
+      resposta: inscricaoResponse?.email,
     },
     {
       id: 3,
-      tipo: 'Pessoal',
-      pergunta: 'Telefone',
-      resposta: inscricaoResponse?.telefone
+      tipo: "Pessoal",
+      pergunta: "Telefone",
+      resposta: inscricaoResponse?.telefone,
     },
     {
       id: 4,
-      tipo: 'Pessoal',
-      pergunta: 'CPF',
-      resposta: inscricaoResponse?.cpf
+      tipo: "Pessoal",
+      pergunta: "CPF",
+      resposta: inscricaoResponse?.cpf,
     },
     {
       id: 5,
-      tipo: 'Pessoal',
-      pergunta: 'RG',
-      resposta: inscricaoResponse?.rg
+      tipo: "Pessoal",
+      pergunta: "RG",
+      resposta: inscricaoResponse?.rg,
     },
     {
       id: 6,
-      tipo: 'Pessoal',
-      pergunta: 'Data de Nascimento',
-      resposta: inscricaoResponse?.dataNascimento
+      tipo: "Pessoal",
+      pergunta: "Data de Nascimento",
+      resposta: inscricaoResponse?.dataNascimento,
     },
     {
       id: 7,
-      tipo: 'Pessoal',
-      pergunta: 'Estado',
-      resposta: inscricaoResponse?.estado
+      tipo: "Pessoal",
+      pergunta: "Estado",
+      resposta: inscricaoResponse?.estado,
     },
     {
       id: 8,
-      tipo: 'Pessoal',
-      pergunta: 'Cidade',
-      resposta: inscricaoResponse?.cidade
+      tipo: "Pessoal",
+      pergunta: "Cidade",
+      resposta: inscricaoResponse?.cidade,
     },
     {
       id: 9,
-      tipo: 'Pessoal',
-      pergunta: 'Neurodiversidade',
-      resposta: inscricaoResponse?.formulario?.neurodiversidade
+      tipo: "Pessoal",
+      pergunta: "Neurodiversidade",
+      resposta: inscricaoResponse?.formulario?.neurodiversidade,
     },
     {
       id: 10,
-      tipo: 'Pessoal',
-      pergunta: 'PCD',
-      resposta: inscricaoResponse?.pcdboolean
+      tipo: "Pessoal",
+      pergunta: "PCD",
+      resposta: inscricaoResponse?.pcdboolean,
     },
     {
       id: 11,
-      tipo: 'Outros',
-      pergunta: 'Trilhas',
+      tipo: "Outros",
+      pergunta: "Trilhas",
       resposta: inscricaoResponse?.formulario?.trilhas
-        .map(trilha => {
-          return trilha.nome
+        .map((trilha) => {
+          return trilha.nome;
         })
-        .join(', ')
-    }
-  ]
+        .join(", "),
+    },
+  ];
 
   return (
     <>
@@ -372,17 +386,17 @@ export const CurriculoContainer: React.FC = () => {
           Informações do candidato
         </DialogTitle>
         <DialogContent>
-          <Grid item sx={{ height: 'calc(100vh - 90px)', width: '100%' }}>
+          <Grid item sx={{ height: "calc(100vh - 90px)", width: "100%" }}>
             <DataGrid
               rows={rows}
               columns={columns}
               pageSize={rows.length}
-              getRowHeight={() => 'auto'}
+              getRowHeight={() => "auto"}
               sx={{
                 boxShadow: 2,
-                '.MuiDataGrid-cell': {
-                  padding: '20px 10px'
-                }
+                ".MuiDataGrid-cell": {
+                  padding: "20px 10px",
+                },
               }}
               hideFooter
             />
@@ -392,7 +406,7 @@ export const CurriculoContainer: React.FC = () => {
       <Grid
         container
         sx={{
-          maxHeight: 'calc(100vh - 180px)'
+          maxHeight: "calc(100vh - 180px)",
         }}
         spacing={1}
       >
@@ -400,25 +414,25 @@ export const CurriculoContainer: React.FC = () => {
           item
           xs={12}
           lg={6}
-          sx={{ height: 'calc(100vh - 160px)', width: '100%' }}
+          sx={{ height: "calc(100vh - 160px)", width: "100%" }}
         >
           <DataGrid
             rows={rowsDois}
             columns={columns}
-            onRowClick={row => {
-              setOpen(prev => !prev)
+            onRowClick={(row) => {
+              setOpen((prev) => !prev);
             }}
             pageSize={rows.length}
             sx={{
-              boxShadow: 2
+              boxShadow: 2,
             }}
             hideFooter
           />
         </Grid>
         <Grid item xs={12} lg={6}>
-          <Box sx={{ typography: 'body1', boxShadow: 2 }}>
+          <Box sx={{ typography: "body1", boxShadow: 2 }}>
             <TabContext value={value}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <TabList
                   onChange={handleChange}
                   aria-label="Abas de currículo e configurações"
@@ -428,8 +442,8 @@ export const CurriculoContainer: React.FC = () => {
                   <Tab label="Configurações" value="2" />
                 </TabList>
               </Box>
-              <TabPanel value="1" sx={{ height: 'calc(100vh - 224px)', p: 0 }}>
-                {formattedCandidatePdf !== '' && (
+              <TabPanel value="1" sx={{ height: "calc(100vh - 224px)", p: 0 }}>
+                {formattedCandidatePdf !== "" && (
                   <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js">
                     <Viewer
                       fileUrl={formattedCandidatePdf}
@@ -438,24 +452,26 @@ export const CurriculoContainer: React.FC = () => {
                   </Worker>
                 )}
               </TabPanel>
-              <TabPanel value="2" sx={{ height: 'calc(100vh - 224px)', p: 0 }}>
-                <Zoom>
-                  <Box
-                    component="img"
-                    alt=""
-                    sx={{
-                      width: '100%',
-                      height: 'calc(100vh - 224px)',
-                      objectFit: 'cover'
-                    }}
-                    src="https://rpearce.github.io/react-medium-image-zoom/static/media/laura-smetsers-H-TW2CoNtTk-unsplash-smaller.4d1fd239.jpg"
-                  />
-                </Zoom>
+              <TabPanel value="2" sx={{ height: "calc(100vh - 224px)", p: 0 }}>
+                {printPc && (
+                  <Zoom>
+                    <Box
+                      component="img"
+                      alt="Print das configurações do PC do candidato"
+                      sx={{
+                        width: "100%",
+                        height: "calc(100vh - 224px)",
+                        objectFit: "cover",
+                      }}
+                      src={`data:image/png;base64, ${printPc}`}
+                    />
+                  </Zoom>
+                )}
               </TabPanel>
             </TabContext>
           </Box>
         </Grid>
       </Grid>
     </>
-  )
-}
+  );
+};

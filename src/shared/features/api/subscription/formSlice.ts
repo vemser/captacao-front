@@ -88,7 +88,11 @@ const formSlice = apiSlice.injectEndpoints({
           query: `
           query MyQuery {
             formulario {
-              inscrcoes
+              titulo
+              content
+              backgroundImage {
+                url
+              }
             }
           }
         `

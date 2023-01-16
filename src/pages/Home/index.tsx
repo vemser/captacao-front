@@ -119,7 +119,7 @@ export const Home: React.FC = () => {
 									},
 								}}
 							>
-								{inscricao == true ? (
+								{inscricao ? (
 									<Button
 										fullWidth
 										variant="outlined"

@@ -1,4 +1,5 @@
 import {
+  IAbrirouFecharInscricao,
   IFormResponse,
   IFormSubscribeFormResponse,
   IFormSubscribeTextResponse
@@ -87,11 +88,26 @@ const formSlice = apiSlice.injectEndpoints({
           query: `
           query MyQuery {
             formulario {
-              titulo
-              content
-              backgroundImage {
-                url
-              }
+              inscrcoes
+            }
+          }
+        `
+        })
+      })
+    }),
+    getAbrirFecharInscricao: builder.query<IAbrirouFecharInscricao, void>({
+      query: () => ({
+        url: 'https://graphql.datocms.com/',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          query: `
+          query MyQuery {
+            formulario {
+              inscricoes
             }
           }
         `
@@ -105,5 +121,6 @@ const formSlice = apiSlice.injectEndpoints({
 export const {
   useGetInputsQuery,
   useGetSubscribeTextQuery,
-  useGetSubscribeFormQuery
+  useGetSubscribeFormQuery, 
+  useGetAbrirFecharInscricaoQuery
 } = formSlice

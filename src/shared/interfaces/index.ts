@@ -68,6 +68,14 @@ export interface IFormSubscribeTextResponse {
   };
 }
 
+export interface IAbrirouFecharInscricao {
+  data: {
+    formulario: {
+      inscricoes: boolean;
+    };
+  };
+}
+
 export interface IFormSubscribeFormResponse {
   data: {
     formulario: {

@@ -50,7 +50,7 @@ const columns = [
 	},
 	{
 		field: "nota",
-		headerName: "Nota da Prova",
+		headerName: "Média geral",
 		minWidth: 130,
 	},
 	{

@@ -10,8 +10,7 @@ export const Home: React.FC = () => {
 	const navigate = useNavigate();
 	const { data } = useGetAbrirFecharInscricaoQuery();
 	const inscricao = data?.data.formulario.inscricoes;
-	console.log(inscricao);
-
+	
 	return (
 		<Box
 			sx={{
@@ -144,26 +143,6 @@ export const Home: React.FC = () => {
 									</Button>
 								)}
 							</Box>
-						</Box>
-						<Box
-							sx={{
-								height: "80px",
-								display: "flex",
-								alignItems: "flex-end",
-							}}
-						>
-							<Button
-								variant="text"
-								size="medium"
-								startIcon={<PersonIcon />}
-								sx={{ ml: "-5px" }}
-								onClick={() => {
-									navigate("/login");
-								}}
-								id="button-admin"
-							>
-								Área administrativa
-							</Button>
 						</Box>
 					</Stack>
 				</motion.div>

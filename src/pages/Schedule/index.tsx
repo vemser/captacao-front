@@ -34,6 +34,8 @@ import {
 } from "shared/interfaces";
 import { DataGrid } from "@mui/x-data-grid";
 import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { notasSchemas } from '../../shared/schemas/notas'
 import { toast } from "react-toastify";
 import {
 	useUpdateNotaParecerComportamentalMutation,
@@ -91,26 +93,25 @@ export const Schedule = () => {
 			});
 	}, []);
 
-	const { register, handleSubmit } = useForm<IAtualizarInformacoesEntrevista>();
+	const { register, handleSubmit, formState: { errors } } = useForm<IAtualizarInformacoesEntrevista>({ resolver: yupResolver(notasSchemas) });
 
 	useEffect(() => {
 		trilhaValue !== ""
 			? getEntrevistasPorTrilha({
-					trilha: trilhaValue,
-			  })
-					.unwrap()
-					.then((data) => {
-						setEntrevistasList(data);
-					})
+				trilha: trilhaValue,
+			})
+				.unwrap()
+				.then((data) => {
+					setEntrevistasList(data);
+				})
 			: getEntrevistas({
-					pagina: 0,
-					tamanho: 20,
-			  })
-					.unwrap()
-					.then((data) => {
-						console.log(data);
-						setEntrevistasList(data.elementos);
-					});
+				pagina: 0,
+				tamanho: 20,
+			})
+				.unwrap()
+				.then((data) => {
+					setEntrevistasList(data.elementos);
+				});
 	}, [trilhaValue]);
 
 	var entrevistasFilter = entrevistasList?.map((entrevista) => {
@@ -119,10 +120,10 @@ export const Schedule = () => {
 		entrevista.legenda == "CONFIRMADA"
 			? (legendaColor = "#4caf50")
 			: entrevista.legenda == "PENDENTE"
-			? (legendaColor = "#ffeb3b")
-			: entrevista.legenda == "CANCELADA"
-			? (legendaColor = "#f6685e")
-			: (legendaColor = "#999");
+				? (legendaColor = "#ffeb3b")
+				: entrevista.legenda == "CANCELADA"
+					? (legendaColor = "#f6685e")
+					: (legendaColor = "#999");
 
 		return {
 			date: entrevista.dataEntrevista,
@@ -151,12 +152,9 @@ export const Schedule = () => {
 		};
 	});
 
-	console.log(entrevistasList);
-
 	const handleModal = (info: any) => {
 		setOpen(!open);
 		setModalInfos(info.event);
-		console.log(info.event);
 		document.getElementById("modal-id")?.classList.toggle("hide");
 		document
 			.getElementById("container-calendar-schedules")
@@ -257,44 +255,43 @@ export const Schedule = () => {
 				flexDirection="column"
 				alignItems="center"
 				margin="0 auto"
-        >
-          <Box sx={{display: 'flex', width:'80%', flexDirection: 'row-reverse'}}>
-            <Box sx={{display: 'flex'}}>
-              <FormControl sx={{display: 'flex', flexDirection:'row-reverse'}}>
-                <InputLabel id="demo-simple-select-label" sx={{width: '400px'}}>
-                  Selecione agenda por trilha
-                </InputLabel>
-                <Select sx={{width: '400px'}}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Selecione agenda por trilha"
-                  value={trilhaValue}
-                  onChange={(e) => {
-                    console.log(trilhaValue);
-                    setTrilhaValue(e.target.value);
-                  }}
-                  fullWidth
-                  >
-                  {data?.map((trilha) => (
-                    <MenuItem
-                      key={trilha.nome}
-                      value={trilha.nome}
-                      onClick={() => { 
-                        setTrilhaId(trilha.idTrilha);
-                      }}
-                    >
-                      {trilha.nome}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Box>
-          
-          <Box mb={4} sx={{width: '80%', display: 'flex', justifyContent:'center', marginLeft:'100px'}}>
-            <AgendaTitle title={trilhaValue}/>   
-          </Box>
-			
+			>
+				<Box sx={{ display: 'flex', width: '80%', flexDirection: 'row-reverse' }}>
+					<Box sx={{ display: 'flex' }}>
+						<FormControl sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
+							<InputLabel id="demo-simple-select-label" sx={{ width: '400px' }}>
+								Selecione agenda por trilha
+							</InputLabel>
+							<Select sx={{ width: '400px' }}
+								labelId="demo-simple-select-label"
+								id="demo-simple-select"
+								label="Selecione agenda por trilha"
+								value={trilhaValue}
+								onChange={(e) => {
+									setTrilhaValue(e.target.value);
+								}}
+								fullWidth
+							>
+								{data?.map((trilha) => (
+									<MenuItem
+										key={trilha.nome}
+										value={trilha.nome}
+										onClick={() => {
+											setTrilhaId(trilha.idTrilha);
+										}}
+									>
+										{trilha.nome}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</Box>
+				</Box>
+
+				<Box mb={4} sx={{ width: '80%', display: 'flex', justifyContent: 'center', marginLeft: '100px' }}>
+					<AgendaTitle title={trilhaValue} />
+				</Box>
+
 				{/* calendário */}
 				<Box width="100%" id="container-calendar-schedules">
 					<Box width="100%" sx={{ paddingBottom: "3%" }}>
@@ -636,9 +633,11 @@ export const Schedule = () => {
 										margin="dense"
 										id="notaComportamental"
 										label="Nota Comportamental"
-										type={"number"}
+										type="text"
 										sx={{ width: "20%" }}
 										{...register("notaComportamental")}
+										error={!!errors.notaComportamental?.message}
+										helperText={errors.notaComportamental?.message ? errors.notaComportamental?.message : ''}
 									/>
 								</Box>
 
@@ -655,9 +654,11 @@ export const Schedule = () => {
 										margin="dense"
 										id="notaTecnico"
 										label="Nota Técnica"
-										type={"number"}
+										type="text"
 										sx={{ width: "20%" }}
 										{...register("notaTecnica")}
+										error={!!errors.notaTecnica?.message}
+										helperText={errors.notaTecnica?.message ? errors.notaTecnica?.message : ''}
 									/>
 								</Box>
 							</Box>

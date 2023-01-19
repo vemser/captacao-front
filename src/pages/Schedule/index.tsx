@@ -55,7 +55,7 @@ export const Schedule = () => {
 	const [dataAtual, setDataAtual] = useState<Date | null>(null);
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+	const lgDown = useMediaQuery(theme.breakpoints.down("lg"));
 	const [modalInfos, setModalInfos] = useState<any>();
 	const [open, setOpen] = React.useState(false);
 	const [getEntrevistas] = useGetEntrevistasMutation();
@@ -166,6 +166,7 @@ export const Schedule = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+		setTrilhaValue("")
 	};
 
 	const handleFormSubmit = async (data: IAtualizarInformacoesEntrevista) => {
@@ -333,9 +334,16 @@ export const Schedule = () => {
 				</Box>
 
 				<Box maxWidth="80%" display="flex" >
-					<Box width="80%" display="flex" flexDirection="row" gap={2}>
+					<Box 
+					width="80%" 
+					display="flex"  
+					sx={{
+						flexWrap: {sm: "noWrap", xs: "wrap"}
+					}}
+					 gap={2} >
 						<Box width="80%" display="flex" mt="1rem">
 							<Box
+							
 								width="50px"
 								height="100%"
 								bgcolor="#4caf50"
@@ -382,38 +390,7 @@ export const Schedule = () => {
 							</Typography>
 						</Box>
 					</Box>
-					{/* <Box width="45%" display="flex" flexDirection="column" gap="1rem">
-            <Typography id="subtitle-editar-calendario-schedules">
-              Editar Calendário
-            </Typography>
-            {!isAdmin || isGestor || isInstructor ? (
-            <Button
-              id="button-register-interview-schedules"
-              sx={{ width: '100%' }}
-              variant="outlined"
-              onClick={() => navigate('/register-interview')}
-            >
-              Cadastrar Nova Entrevista
-            </Button>
-            ) : (
-              ''
-            )}
 
-            <Button
-              id="update-calendar-schedules"
-              sx={{ width: '100%' }}
-              variant="outlined"
-              onClick={() => {
-                if (dataAtual)
-                  getByMonthYear(
-                    dataAtual.getMonth() + 2,
-                    dataAtual.getFullYear()
-                  )
-              }}
-            >
-              Atualizar Agenda
-            </Button>
-          </Box> */}
 				</Box>
 
 				<Dialog open={open} onClose={handleClose} fullScreen>

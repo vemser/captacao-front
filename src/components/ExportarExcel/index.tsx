@@ -13,10 +13,10 @@ export const Export = () => {
 
 	return (
 		<>
-			{pathname == "/agenda" && (
+			{(pathname == "/agenda" || pathname == "/resultado") && (
 				<Box display="flex" justifyContent="flex-end">
-					
 					<Button
+
 						variant="outlined"
 						color="secondary"
 						startIcon={<DownloadIcon />}
@@ -35,7 +35,7 @@ export const Export = () => {
 					</Button>
 				</Box>
 			)}
-			{pathname == "/resultado" && (
+			{/* {pathname == "/resultado" && (
 				<Box width="80%" display="flex" justifyContent="flex-end">
 					<Button
 						variant="outlined"
@@ -53,7 +53,7 @@ export const Export = () => {
 						Exportar lista
 					</Button>
 				</Box>
-			)}
+			)} */}
 		</>
 	);
 };

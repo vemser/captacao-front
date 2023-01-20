@@ -79,7 +79,13 @@ export const Schedule = () => {
 	const AgendaTitle = ({ title }: IAgenda) => {
 		title = title.toLowerCase();
 		return (
-			<h1>Agenda: {title && title[0].toUpperCase() + title.substring(1)}</h1>
+			<>
+				{title?.[0] && (
+					<Typography  sx={{ fontSize: {xs: "2rem", sm: "3rem"}, fontWeight: "700"}}>
+						Agenda: {title[0].toUpperCase()}{title.substring(1)}
+					</Typography>
+				)}
+			</>
 		);
 	};
 
@@ -94,25 +100,20 @@ export const Schedule = () => {
 	const { register, handleSubmit } = useForm<IAtualizarInformacoesEntrevista>();
 
 	useEffect(() => {
-		trilhaValue === ""
-
-			? getEntrevistas({
-					pagina: 0,
-					tamanho: 20,
+		trilhaValue !== ""
+			? getEntrevistasPorTrilha({
+					trilha: trilhaValue,
 			  })
 					.unwrap()
 					.then((data) => {
-						console.log(data);
-						setEntrevistasList(data.elementos);
+						setEntrevistasList(data);
 					})
-			: getEntrevistasPorTrilha({
-				trilha: trilhaValue,
-		  })
-				.unwrap()
-				.then((data) => {
-					setEntrevistasList(data);
-				});
-	}, [trilhaValue])
+			: getEntrevistas()
+					.unwrap()
+					.then((data) => {
+						setEntrevistasList(data);
+					});
+	}, [trilhaValue]);
 
 	var entrevistasFilter = entrevistasList?.map((entrevista) => {
 		let legendaColor = "";
@@ -169,7 +170,7 @@ export const Schedule = () => {
 
 	const handleClose = () => {
 		setOpen(false);
-		setTrilhaValue("")
+		setTrilhaValue("");
 	};
 
 	const handleFormSubmit = async (data: IAtualizarInformacoesEntrevista) => {
@@ -238,13 +239,10 @@ export const Schedule = () => {
 		} catch (error) {
 			console.error(error);
 		} finally {
-			getEntrevistas({
-				pagina: 0,
-				tamanho: 20,
-			})
+			getEntrevistas()
 				.unwrap()
 				.then((data) => {
-					setEntrevistasList(data.elementos);
+					setEntrevistasList(data);
 				});
 			handleClose();
 		}
@@ -258,45 +256,58 @@ export const Schedule = () => {
 				display="flex"
 				flexDirection="column"
 				alignItems="center"
-				margin="0 auto"
-        >
-          <Box sx={{display: 'flex', width:'80%', flexDirection: 'row-reverse'}}>
-            <Box sx={{display: 'flex'}}>
-              <FormControl sx={{display: 'flex', flexDirection:'row-reverse'}}>
-                <InputLabel id="demo-simple-select-label" sx={{width: '400px'}}>
-                  Selecione agenda por trilha
-                </InputLabel>
-                <Select sx={{width: '400px'}}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Selecione agenda por trilha"
-                  value={trilhaValue}
-                  onChange={(e) => {
-                    console.log(trilhaValue);
-                    setTrilhaValue(e.target.value);
-                  }}
-                  fullWidth
-                  >
-                  {data?.map((trilha) => (
-                    <MenuItem
-                      key={trilha.nome}
-                      value={trilha.nome}
-                      onClick={() => { 
-                        setTrilhaId(trilha.idTrilha);
-                      }}
-                    >
-                      {trilha.nome}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Box>
-          
-          <Box mb={4} sx={{width: '80%', display: 'flex', justifyContent:'center', marginLeft:'100px'}}>
-            <AgendaTitle title={trilhaValue}/>   
-          </Box>
-			
+			>
+				<Box
+					sx={{
+						width: "80%",
+						display: "flex",
+						justifyContent: "flex-end",
+					}}
+				>
+					<Grid container xs={12} lg={4}>
+						<FormControl fullWidth>
+							<InputLabel id="demo-simple-select-label">
+								Selecione agenda por trilha
+							</InputLabel>
+							<Select
+								labelId="demo-simple-select-label"
+								id="demo-simple-select"
+								label="Selecione agenda por trilha"
+								value={trilhaValue}
+								onChange={(e) => {
+									console.log(trilhaValue);
+									setTrilhaValue(e.target.value);
+								}}
+								fullWidth
+							>
+								{data?.map((trilha) => (
+									<MenuItem
+										key={trilha.nome}
+										value={trilha.nome}
+										onClick={() => {
+											setTrilhaId(trilha.idTrilha);
+										}}
+									>
+										{trilha.nome}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</Grid>
+				</Box>
+
+				<Box
+					mb={4}
+					sx={{
+						width: "80%",
+						display: "flex",
+						justifyContent: "center",
+						marginLeft: "100px",
+					}}
+				>
+					<AgendaTitle title={trilhaValue} />
+				</Box>
+
 				{/* calendário */}
 				<Box width="100%" id="container-calendar-schedules">
 					<Box width="100%" sx={{ paddingBottom: "3%" }}>
@@ -331,32 +342,28 @@ export const Schedule = () => {
 						/>
 					</Box>
 				</Box>
+
 				<Box>
-					<Typography id="subtitle-legenda-schedules">
-						Legenda
-					</Typography>
+					<Typography id="subtitle-legenda-schedules">Legenda</Typography>
 				</Box>
 
-				<Box maxWidth="80%" display="flex" >
-					<Box 
-					width="80%" 
-					display="flex"  
-					sx={{
-						flexWrap: {sm: "noWrap", xs: "wrap"}
-					}}
-					 gap={2} >
+				<Box maxWidth="80%" display="flex">
+					<Box
+						width="80%"
+						display="flex"
+						sx={{
+							flexWrap: { sm: "noWrap", xs: "wrap" },
+						}}
+						gap={2}
+					>
 						<Box width="80%" display="flex" mt="1rem">
 							<Box
-							
 								width="50px"
 								height="100%"
 								bgcolor="#4caf50"
 								borderRadius={"3px"}
 							></Box>
-							<Typography
-								pl="1rem"
-								id="text-confirmada-schedules"
-							>
+							<Typography pl="1rem" id="text-confirmada-schedules">
 								Confirmada
 							</Typography>
 						</Box>
@@ -394,7 +401,6 @@ export const Schedule = () => {
 							</Typography>
 						</Box>
 					</Box>
-
 				</Box>
 
 				<Dialog open={open} onClose={handleClose} fullScreen>

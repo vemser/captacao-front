@@ -52,17 +52,13 @@ const entervistaSlice = apiSlice.injectEndpoints({
         body: data
       })
     }),
-    getEntrevistas: builder.mutation<EntrervistaResponse, EntrevistasParams>({
+    getEntrevistas: builder.mutation<Elemento[], void>({
       query: data => ({
         url: 'entrevista',
         method: 'GET',
         headers: {
           Authorization: `Bearer ${getToken()}`
         },
-        params: {
-          pagina: data.pagina, // data.pagina,
-          tamanho: data.tamanho // data.tamanho,
-        }
       })
     }),
 

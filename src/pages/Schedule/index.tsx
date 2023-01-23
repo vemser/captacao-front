@@ -83,7 +83,7 @@ export const Schedule = () => {
 		return (
 			<>
 				{title?.[0] && (
-					<Typography  sx={{ fontSize: {xs: "2rem", sm: "3rem"}, fontWeight: "700"}}>
+					<Typography sx={{ fontSize: {xs: "2rem", sm: "3rem"}, fontWeight: "700"}}>
 						Agenda: {title[0].toUpperCase()}{title.substring(1)}
 					</Typography>
 				)}
@@ -311,6 +311,7 @@ export const Schedule = () => {
 				<Box width="100%" id="container-calendar-schedules">
 					<Box width="100%" sx={{ paddingBottom: "3%" }}>
 						<FullCalendar
+						
 							plugins={[dayGridPlugin]}
 							events={entrevistasFilter}
 							selectable={true}
@@ -328,9 +329,10 @@ export const Schedule = () => {
 								handleModal(info);
 							}}
 							headerToolbar={{
-								left: "dayGridMonth,dayGridWeek,dayGridDay",
-								center: "title",
-								right: "prev,next,today",
+								left: lgDown ? "title": "dayGridMonth,dayGridWeek,dayGridDay",
+								center: lgDown ? "dayGridMonth,dayGridWeek,dayGridDay" : "title",
+								right: "prev,next",
+								
 							}}
 							buttonText={{
 								today: "Hoje",
@@ -346,18 +348,19 @@ export const Schedule = () => {
 					<Typography id="subtitle-legenda-schedules">Legenda</Typography>
 				</Box>
 
-				<Box maxWidth="80%" display="flex">
+				<Box maxWidth="80%" display="flex" >
 					<Box
+						fontSize={lgDown ? "0.3rem" : "2rem"}
 						width="80%"
 						display="flex"
 						sx={{
-							flexWrap: { sm: "noWrap", xs: "wrap" },
+							flexWrap: { md: "noWrap", xs: "wrap" },
 						}}
-						gap={2}
+						gap={lgDown ? 0 : 2}
 					>
-						<Box width="80%" display="flex" mt="1rem">
+						<Box width="80%" display="flex" mt="1rem" >
 							<Box
-								width="50px"
+								width= {lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#4caf50"
 								borderRadius={"3px"}
@@ -368,7 +371,7 @@ export const Schedule = () => {
 						</Box>
 						<Box width="100%" display="flex" mt="1rem">
 							<Box
-								width="50px"
+								width= {lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#ffeb3b"
 								borderRadius={"3px"}
@@ -379,7 +382,7 @@ export const Schedule = () => {
 						</Box>
 						<Box width="100%" display="flex" mt="1rem">
 							<Box
-								width="50px"
+								width= {lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#f6685e"
 								borderRadius={"3px"}
@@ -390,7 +393,7 @@ export const Schedule = () => {
 						</Box>
 						<Box width="100%" display="flex" mt="1rem">
 							<Box
-								width="50px"
+								width= {lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#999"
 								borderRadius={"3px"}

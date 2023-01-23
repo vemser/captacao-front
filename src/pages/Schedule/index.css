@@ -24,6 +24,7 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  text-align: center;
 }
 
 .fc-today-button {
@@ -38,6 +39,32 @@
 .fc-toolbar-title {
   font-size: 25px !important;
 }
-.hide{
+
+.hide {
   display: none;
+}
+
+@media (max-width: 800px) {
+  .fc-toolbar-title {
+    font-size: 1.5rem !important;
+  }
+
+  .fc .fc-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    display: flex;
+  }
+
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+
+  }
+}
+
+@media (max-width: 375px) {
+  .fc .fc-toolbar {
+
+    font-size: .93rem;
+  }
 }

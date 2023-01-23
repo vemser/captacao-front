@@ -316,7 +316,7 @@ export const DrawerContainer = (props: Props) => {
 					</Typography>
 					<Box sx={{ flexGrow: 1 }} />
 					{(pathname === "/agenda" || pathname === "/resultado") && <Export />}
-
+						
 					<Configurations />
 				</Toolbar>
 			</AppBar>

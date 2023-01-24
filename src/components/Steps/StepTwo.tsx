@@ -146,7 +146,7 @@ export const StepTwo: React.FC = () => {
 
   const matriculado = watch("matriculado");
   const curriculo = watch("curriculo");
-  const configuracoes = watch("configuracoes");
+  const configuracoes = watch("configuracoes"); 
 
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
@@ -655,7 +655,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Github} />}
-              defaultValue={formData?.github}
+              defaultValue={formData?.github == 'Nenhum'? '': formData?.github}
               variant="outlined"
               sx={{
                 width: "100%",
@@ -679,7 +679,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Linkedin} />}
-              defaultValue={formData?.linkedin}
+              defaultValue={formData?.linkedin != "Nenhum"? formData?.linkedin : ''}
               variant="outlined"
               sx={{
                 width: "100%",

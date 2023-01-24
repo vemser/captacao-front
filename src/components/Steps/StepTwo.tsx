@@ -80,10 +80,6 @@ export const StepTwo: React.FC = () => {
   }, [languages]);
 
   useEffect(() => {
-    console.log(formulario);
-  }, [formulario]);
-
-  useEffect(() => {
     setHasLang(false);
     window.scrollTo(0, 0);
   }, []);
@@ -103,13 +99,13 @@ export const StepTwo: React.FC = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors },    
   } = useForm<SubscribeData>({
     defaultValues: {
       matriculado: "T",
     },
     resolver: yupResolver(stepTwoSchema),
-  });
+  }); 
 
   const verificar = () => {
     languages.length == 0 ? setHasLang(true) : setHasLang(false);
@@ -132,7 +128,7 @@ export const StepTwo: React.FC = () => {
           key,
           value === "T" ? true : value === "F" ? false : value,
         ])
-      );
+      );  
 
       dispatch(nextStep());
       dispatch(
@@ -433,16 +429,16 @@ export const StepTwo: React.FC = () => {
                       key={trilha.nome}
                       control={
                         <Checkbox
-                        // defaultChecked={
-                        //   // @ts-ignore
-                        //   formData?.trilhas?.includes(trilha.nome)
-                        // }
+                        defaultChecked={
+                          // @ts-ignore
+                          formData?.trilhas?.includes(trilha.nome)
+                        }                    
                         />
                       }
                       label={trilha.nome}
                       value={trilha.nome}
                       id={`s2-trilha-${trilha.nome}`}
-                      {...register("trilhas")}
+                      {...register("trilhas")}                      
                     />
                   );
                 })

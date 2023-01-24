@@ -4,7 +4,7 @@ export const apiSlice = createApi({
   reducerPath: "apiSlice",
   keepUnusedDataFor: 0,
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://vemser-dbc.dbccompany.com.br:39000/vemser/captacao-back/",
+    baseUrl: "http://vemser-dbc.dbccompany.com.br:39000/vemser/captacao-back-prd/",
   }),
   endpoints: () => ({}),
 });

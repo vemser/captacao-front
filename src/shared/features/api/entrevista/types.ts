@@ -25,7 +25,6 @@ export interface EntrevistaUpdateBody {
 
 export interface NovaEntrevistaBody {
   candidatoEmail: string;
-  usuarioEmail: string;
   dataEntrevista: Date;
   observacoes: string;
   avaliado: string;

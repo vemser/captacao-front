@@ -38,7 +38,6 @@ export const InterviewCurriculum = () => {
     isLoading === false &&
       postNewEntrevista({
         candidatoEmail: state.email,
-        usuarioEmail: `admin@dbccompany.com.br`,
         dataEntrevista: form.dataEntrevista,
         avaliado: "T",
         observacoes: form.observacoes,

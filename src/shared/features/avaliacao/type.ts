@@ -9,7 +9,6 @@ export interface IListaAvaliacao {
 export interface IAvaliacao {
   aprovadoBoolean: boolean
   idInscricao: number
-  emailGestor: string
 }
 
 export interface Elemento {

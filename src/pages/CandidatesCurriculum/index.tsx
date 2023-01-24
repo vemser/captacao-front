@@ -56,8 +56,6 @@ export const CandidatesCurriculum = () => {
               await toast.promise(
                 avaliarCandidato({
                   aprovadoBoolean: true,
-                  // emailGestor: `${data?.login}@dbccompany.com.br`,
-                  emailGestor: "admin@dbccompany.com.br",
                   idInscricao: state.id,
                 })
                   .unwrap()
@@ -84,8 +82,6 @@ export const CandidatesCurriculum = () => {
               await toast.promise(
                 avaliarCandidato({
                   aprovadoBoolean: false,
-                  // emailGestor: `${data?.login}@dbccompany.com.br`,
-                  emailGestor: "admin@dbccompany.com.br",
                   idInscricao: state.id,
                 })
                   .unwrap()

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -145,6 +145,7 @@ export const StepOne: React.FC = () => {
           id="step-1-dataNascimento"
           InputLabelProps={{ shrink: true }}
           {...register("dataNascimento")}
+          defaultValue={new Date(`${formData?.dataNascimento}`).toLocaleDateString().split('/').reverse().join("-")}
         />
       </Grid>
 

@@ -5,61 +5,146 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
-  TextField,
-} from "@mui/material";
-import { CurriculoContainer } from "../../components/CurriculoContainer";
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { usePostNewEntrevistaMutation } from "shared/features/api/entrevista/entrevistaSlice";
-import { useForm } from "react-hook-form";
-import { NovaEntrevistaBody } from "../../shared/features/api/entrevista/types";
-import { useGetLoggedUserQuery } from "shared/features/api/usuario/authSlice";
-import { toast } from "react-toastify";
+  TextField
+} from '@mui/material'
+import { CurriculoContainer } from '../../components/CurriculoContainer'
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { usePostNewEntrevistaMutation } from 'shared/features/api/entrevista/entrevistaSlice'
+import { useForm } from 'react-hook-form'
+import { NovaEntrevistaBody } from '../../shared/features/api/entrevista/types'
+import { useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
+import { toast } from 'react-toastify'
+import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/candidatoSlice'
+import { Elemento, ITrilha } from 'shared/features/api/candidato/types'
+import { useUpdateFormMutation } from 'shared/features/api/formulario/formularioSlice'
+import { StringifyOptions } from 'querystring'
 
 export const InterviewCurriculum = () => {
-  const [open, setOpen] = React.useState(false);
-  const { data, isLoading } = useGetLoggedUserQuery();
-  const { state } = useLocation();
-  const navigate = useNavigate();
+  const [getCandidatosByEmail] = useGetCandidatosByEmailMutation()
+  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(
+    null
+  )
 
-  const [postNewEntrevista] = usePostNewEntrevistaMutation();
-  const { register, handleSubmit } = useForm<NovaEntrevistaBody>();
+  const [open, setOpen] = React.useState(false)
+
+  const { data, isLoading } = useGetLoggedUserQuery()
+  const { state } = useLocation()
+
+  const [updateTrilha] = useUpdateFormMutation()
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getCandidatosByEmail(state?.email)
+      .unwrap()
+      .then(res => {
+        setInscricaoResponse(res)
+        console.log(res)
+      })
+      .catch(e => console.log(e))
+  }, [])
+
+  const formValues = (data: string) => {
+    return data === 'T' ? true : data === 'F' ? false : data
+  }
+
+  const [postNewEntrevista] = usePostNewEntrevistaMutation()
+  const { register, handleSubmit } = useForm<NovaEntrevistaBody>()
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
+
+  const [trilha, setTrilha] = useState<string>('')
+  console.log(trilha)
+
+  useEffect(() => {
+    console.log('abacate', trilha)
+  }, [])
 
   const handleSubmitEntrevista = async (form: NovaEntrevistaBody) => {
     isLoading === false &&
       postNewEntrevista({
         candidatoEmail: state.email,
         dataEntrevista: form.dataEntrevista,
-        avaliado: "T",
-        observacoes: form.observacoes,
+        avaliado: 'T',
+        observacoes: form.observacoes
       })
         .unwrap()
         .then(() => {
-          toast.success("Entrevista agendada com sucesso!");
-          navigate("/entrevista");
+          toast.success('Entrevista agendada com sucesso!')
+          navigate('/entrevista')
+
+          inscricaoResponse &&
+            updateTrilha({
+              idFormulario: inscricaoResponse?.formulario.idFormulario,
+              formulario: {
+                matriculadoBoolean: formValues(
+                  inscricaoResponse.formulario.matriculado
+                ),
+                curso: inscricaoResponse.formulario.curso,
+                turno: inscricaoResponse?.formulario.turno,
+                instituicao: inscricaoResponse?.formulario.instituicao,
+                github: inscricaoResponse?.formulario.github,
+                linkedin: inscricaoResponse?.formulario.linkedin,
+                desafiosBoolean: formValues(
+                  inscricaoResponse?.formulario.desafios
+                ),
+                problemaBoolean: formValues(
+                  inscricaoResponse?.formulario.problema
+                ),
+                reconhecimentoBoolean: formValues(
+                  inscricaoResponse?.formulario.reconhecimento
+                ),
+                altruismoBoolean: formValues(
+                  inscricaoResponse?.formulario.altruismo
+                ),
+                resposta: inscricaoResponse?.formulario.resposta,
+                lgpdBoolean: formValues(inscricaoResponse?.formulario.lgpd),
+                provaBoolean: formValues(inscricaoResponse?.formulario.prova),
+                ingles: inscricaoResponse?.formulario.ingles,
+                espanhol: inscricaoResponse?.formulario.espanhol,
+                neurodiversidade:
+                  inscricaoResponse?.formulario.neurodiversidade,
+                efetivacaoBoolean: formValues(
+                  inscricaoResponse?.formulario.efetivacao
+                ),
+                disponibilidadeBoolean: formValues(
+                  inscricaoResponse?.formulario.disponibilidade
+                ),
+                genero: inscricaoResponse?.formulario.genero,
+                orientacao: inscricaoResponse?.formulario.orientacao,
+                trilhas: [trilha],
+                importancia: inscricaoResponse?.formulario.importancia
+              }
+            })
+              .unwrap()
+              .then(() => console.log('funcionou ihul'))
+              .catch((err: any) => {
+                console.log(err)
+              })
         })
         .catch((err: any) => {
-          console.log(err);
+          console.log(err)
           toast.error(
             err.data.status === 400
-              ? "Entrevista já agendada"
-              : "Erro ao agendar entrevista"
-          );
-        });
+              ? 'Entrevista já agendada'
+              : 'Erro ao agendar entrevista'
+          )
+        })
 
-    console.log(form);
-  };
-
-  console.log(state);
+    console.log(form)
+  }
 
   return (
     <Grid container spacing={2}>
@@ -85,18 +170,43 @@ export const InterviewCurriculum = () => {
                 autoFocus
                 type="datetime-local"
                 InputLabelProps={{
-                  shrink: true,
+                  shrink: true
                 }}
                 id="name"
                 label="Data e hora da entrevista"
-                {...register("dataEntrevista")}
+                {...register('dataEntrevista')}
                 fullWidth
               />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Trilha</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Trilha"
+                  value={trilha}
+                  onChange={e => {
+                    setTrilha(e.target.value)
+                  }}
+                >
+                  {inscricaoResponse?.formulario.trilhas.map(trilha => {
+                    return (
+                      <MenuItem
+                        key={trilha.nome}
+                        value={trilha.nome}
+                        id={`filtro-trilha-${trilha.nome}`}
+                      >
+                        {trilha.nome}
+                      </MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
               <TextField
                 margin="dense"
                 id="name"
                 label="Observações"
-                {...register("observacoes")}
+                {...register('observacoes')}
                 multiline
                 rows={4}
                 fullWidth
@@ -104,12 +214,12 @@ export const InterviewCurriculum = () => {
               <Stack spacing={2} direction="row">
                 <Button
                   color="error"
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                   onClick={handleClose}
                 >
                   Cancelar
                 </Button>
-                <Button sx={{ width: "100%" }} type="submit">
+                <Button sx={{ width: '100%' }} type="submit">
                   Agendar
                 </Button>
               </Stack>
@@ -121,5 +231,5 @@ export const InterviewCurriculum = () => {
         <CurriculoContainer />
       </Grid>
     </Grid>
-  );
-};
+  )
+}

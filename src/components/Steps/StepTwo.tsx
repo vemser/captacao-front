@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import {
   TextField,
   Button,
@@ -22,129 +22,131 @@ import {
   SelectChangeEvent,
   OutlinedInput,
   ListItemText,
-  FormHelperText
-} from '@mui/material'
+  FormHelperText,
+} from "@mui/material";
 import {
   previousStep,
   changeData,
   nextStep,
-  useSteps
-} from '../../shared/features/subscription/stepsSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { FormGrid } from 'components/FormGrid'
-import { IFormQuery, SubscribeData } from 'shared/interfaces'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { stepTwoSchema } from 'shared/schemas/stepTwo'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import UploadFileIcon from '@mui/icons-material/UploadFile'
-import { Error } from '../TextError/index'
-import { useGetSubscribeFormQuery } from 'shared/features/api/subscription/formSlice'
-import { useGetTrilhasQuery } from 'shared/features/api/trilha/trilhaSlice'
+  useSteps,
+} from "../../shared/features/subscription/stepsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { FormGrid } from "components/FormGrid";
+import { IFormQuery, SubscribeData } from "shared/interfaces";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { stepTwoSchema } from "shared/schemas/stepTwo";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import { Error } from "../TextError/index";
+import { useGetSubscribeFormQuery } from "shared/features/api/subscription/formSlice";
+import { useGetTrilhasQuery } from "shared/features/api/trilha/trilhaSlice";
 
 const names = [
-  'C#',
-  'Javascript',
-  'Kotlin',
-  'Java',
-  'C++',
-  'PHP',
-  'Ruby',
-  'Python',
-  'Swift',
-  'C',
-  'Outras'
-]
+  "C#",
+  "Javascript",
+  "Kotlin",
+  "Java",
+  "C++",
+  "PHP",
+  "Ruby",
+  "Python",
+  "Swift",
+  "C",
+  "Outras",
+];
 
 export const StepTwo: React.FC = () => {
-  const dispatch = useDispatch()
-  const { data } = useGetSubscribeFormQuery()
-  const { data: getTrilha, isLoading: isLoadingTrilha } = useGetTrilhasQuery()
-  const { data: formData } = useSelector(useSteps)
-  const formulario = data?.data.formulario
-  const [deficiencia, setDeficiencia] = useState('F')
-  const [languages, setLanguage] = React.useState<string[]>(formData?.linguagens || [])
-  const [hasLang, setHasLang] = useState<boolean>(false)
+  const dispatch = useDispatch();
+  const { data } = useGetSubscribeFormQuery();
+  const { data: getTrilha, isLoading: isLoadingTrilha } = useGetTrilhasQuery();
+  const { data: formData } = useSelector(useSteps);
+  const formulario = data?.data.formulario;
+  const [deficiencia, setDeficiencia] = useState("F");
+  const [languages, setLanguage] = React.useState<string[]>(
+    formData?.linguagens || []
+  );
+  const [hasLang, setHasLang] = useState<boolean>(false);
 
   const handleChange = (event: SelectChangeEvent<typeof languages>) => {
     const {
-      target: { value }
-    } = event
-    setLanguage(typeof value === 'string' ? value.split(',') : value)
-  }
+      target: { value },
+    } = event;
+    setLanguage(typeof value === "string" ? value.split(",") : value);
+  };
 
   useEffect(() => {
-    languages.length == 0 ? setHasLang(true) : setHasLang(false)
-  }, [languages])
+    languages.length == 0 ? setHasLang(true) : setHasLang(false);
+  }, [languages]);
 
   useEffect(() => {
-    setHasLang(false)
-    window.scrollTo(0, 0)
-  }, [])
+    setHasLang(false);
+    window.scrollTo(0, 0);
+  }, []);
 
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
   const MenuProps = {
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250
-      }
-    }
-  }
+        width: 250,
+      },
+    },
+  };
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors },    
   } = useForm<SubscribeData>({
     defaultValues: {
-      matriculado: 'T'
+      matriculado: "T",
     },
-    resolver: yupResolver(stepTwoSchema)
-  })
+    resolver: yupResolver(stepTwoSchema),
+  }); 
 
   const verificar = () => {
-    languages.length == 0 ? setHasLang(true) : setHasLang(false)
-  }
+    languages.length == 0 ? setHasLang(true) : setHasLang(false);
+  };
 
   const onSubmit = (data: SubscribeData) => {
-
     if (languages.length == 0) {
-      setHasLang(true)
-      const selecao: HTMLElement | null = document.getElementById("s2-select-linguagens-checkbox")
-      selecao?.scrollIntoView()
+      setHasLang(true);
+      const selecao: HTMLElement | null = document.getElementById(
+        "s2-select-linguagens-checkbox"
+      );
+      selecao?.scrollIntoView();
     } else {
-
-      data.resposta === '' && (data.resposta = 'Nenhuma')
-      data.linkedin.length === 0 && (data.linkedin = 'Nenhum')
-      data.github.length === 0 && (data.github = 'Nenhum')
+      data.resposta === "" && (data.resposta = "Nenhuma");
+      data.linkedin.length === 0 && (data.linkedin = "Nenhum");
+      data.github.length === 0 && (data.github = "Nenhum");
 
       const formValues = Object.fromEntries(
         Object.entries(data).map(([key, value]) => [
           key,
-          value === 'T' ? true : value === 'F' ? false : value
+          value === "T" ? true : value === "F" ? false : value,
         ])
-      )
+      );  
 
-      dispatch(nextStep())
+      dispatch(nextStep());
       dispatch(
         changeData({
           ...formValues,
-          linguagens: languages
+          linguagens: languages,
         })
-      )
+      );
     }
-  }
+  };
 
   const FormName: React.FC<IFormQuery> = ({ nome }) => {
-    return <>{nome ? nome : <CircularProgress size={22} />}</>
-  }
+    return <>{nome ? nome : <CircularProgress size={22} />}</>;
+  };
 
-  const matriculado = watch('matriculado')
-  const curriculo = watch('curriculo')
-  const configuracoes = watch('configuracoes')
+  const matriculado = watch("matriculado");
+  const curriculo = watch("curriculo");
+  const configuracoes = watch("configuracoes"); 
 
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
@@ -155,7 +157,7 @@ export const StepTwo: React.FC = () => {
         <RadioGroup
           row
           sx={{
-            color: 'GrayText'
+            color: "GrayText",
           }}
           defaultValue="T"
         >
@@ -164,23 +166,23 @@ export const StepTwo: React.FC = () => {
             value="T"
             control={<Radio />}
             label="Sim"
-            {...register('matriculado')}
+            {...register("matriculado")}
           />
           <FormControlLabel
             id="matriculado-nao"
             value="F"
             control={<Radio />}
             label="Não"
-            {...register('matriculado')}
+            {...register("matriculado")}
           />
         </RadioGroup>
       </Grid>
-      {matriculado === 'T' && (
+      {matriculado === "T" && (
         <>
           <Grid item xs={12} lg={6}>
             <FormLabel
               sx={{
-                color: 'GrayText'
+                color: "GrayText",
               }}
             >
               <FormName nome={formulario?.s2Turno} />
@@ -188,10 +190,10 @@ export const StepTwo: React.FC = () => {
             <RadioGroup
               row
               sx={{
-                color: 'GrayText'
+                color: "GrayText",
               }}
               defaultValue={
-                formData?.turno ? formData.turno : 'MANHA' || 'MANHA'
+                formData?.turno ? formData.turno : "MANHA" || "MANHA"
               }
             >
               <FormControlLabel
@@ -199,24 +201,24 @@ export const StepTwo: React.FC = () => {
                 value="MANHA"
                 control={<Radio />}
                 label="Manhã"
-                {...register('turno')}
+                {...register("turno")}
               />
               <FormControlLabel
                 id="turno-tarde"
                 value="TARDE"
                 control={<Radio />}
                 label="Tarde"
-                {...register('turno')}
+                {...register("turno")}
               />
               <FormControlLabel
                 id="turno-noite"
                 value="NOITE"
                 control={<Radio />}
                 label="Noite"
-                {...register('turno')}
+                {...register("turno")}
               />
             </RadioGroup>
-            <Error id={'mensagem-erro-campo-matriculado'} width={'100%'}>
+            <Error id={"mensagem-erro-campo-matriculado"} width={"100%"}>
               {errors.turno?.message}
             </Error>
           </Grid>
@@ -229,7 +231,7 @@ export const StepTwo: React.FC = () => {
               label={<FormName nome={formulario?.s2Instituicao} />}
               error={!!errors.instituicao}
               helperText={errors.instituicao?.message}
-              {...register('instituicao')}
+              {...register("instituicao")}
             />
           </Grid>
 
@@ -241,7 +243,7 @@ export const StepTwo: React.FC = () => {
               label={<FormName nome={formulario?.s2Curso} />}
               error={!!errors.curso}
               helperText={errors.curso?.message}
-              {...register('curso')}
+              {...register("curso")}
             />
           </Grid>
 
@@ -249,7 +251,7 @@ export const StepTwo: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel
                 sx={{
-                  color: 'GrayText'
+                  color: "GrayText",
                 }}
               >
                 <FormName nome={formulario?.s2InglS} />
@@ -260,9 +262,9 @@ export const StepTwo: React.FC = () => {
                 defaultValue={
                   formData?.ingles
                     ? formData.ingles
-                    : 'iniciante' || 'iniciante'
+                    : "iniciante" || "iniciante"
                 }
-                {...register('ingles')}
+                {...register("ingles")}
               >
                 <MenuItem value="iniciante">Iniciante</MenuItem>
                 <MenuItem value="intermediario">Intermediário</MenuItem>
@@ -275,7 +277,7 @@ export const StepTwo: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel
                 sx={{
-                  color: 'GrayText'
+                  color: "GrayText",
                 }}
               >
                 <FormName nome={formulario?.s2Espanhol} />
@@ -286,9 +288,9 @@ export const StepTwo: React.FC = () => {
                 defaultValue={
                   formData?.espanhol
                     ? formData.espanhol
-                    : 'iniciante' || 'iniciante'
+                    : "iniciante" || "iniciante"
                 }
-                {...register('espanhol')}
+                {...register("espanhol")}
               >
                 <MenuItem value="iniciante">Iniciante</MenuItem>
                 <MenuItem value="intermediario">Intermediário</MenuItem>
@@ -302,7 +304,7 @@ export const StepTwo: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel
                 sx={{
-                  color: 'GrayText'
+                  color: "GrayText",
                 }}
               >
                 <FormName nome={formulario?.s2OriSexual} />
@@ -313,9 +315,9 @@ export const StepTwo: React.FC = () => {
                 defaultValue={
                   formData?.orientacao
                     ? formData.orientacao
-                    : 'heterossexual' || 'heterossexual'
+                    : "heterossexual" || "heterossexual"
                 }
-                {...register('orientacao')}
+                {...register("orientacao")}
               >
                 <MenuItem value="heterossexual">Heterossexual</MenuItem>
                 <MenuItem value="homossexual">Homossexual</MenuItem>
@@ -331,7 +333,7 @@ export const StepTwo: React.FC = () => {
               <InputLabel
                 id="label-genero-candidato"
                 sx={{
-                  color: 'GrayText'
+                  color: "GrayText",
                 }}
               >
                 <FormName nome={formulario?.s2GNero} />
@@ -342,10 +344,10 @@ export const StepTwo: React.FC = () => {
                 defaultValue={
                   formData?.genero
                     ? formData.genero
-                    : 'cisgenero' || 'cisgenero'
+                    : "cisgenero" || "cisgenero"
                 }
                 fullWidth
-                {...register('genero')}
+                {...register("genero")}
               >
                 <MenuItem value="cisgenero">Homem cisgênero</MenuItem>
                 <MenuItem value="transgenero">Homem transgênero</MenuItem>
@@ -359,42 +361,54 @@ export const StepTwo: React.FC = () => {
           </Grid>
 
           <Grid item xs={12} lg={6}>
-            <FormControl
-              fullWidth
-              error={hasLang}
+            <Tooltip
+              title={formulario?.linguagemDeProgramacaoTooltip}
+              placement="top"
+              arrow
             >
-              <InputLabel id="s2-select-linguagens">
-                Linguagens de programação
-              </InputLabel>
-              <Select
-                labelId="s2-select-linguagens"
-                id="s2-select-linguagens-checkbox"
-                multiple
-                value={languages}
-                onChange={handleChange}
-                input={<OutlinedInput label="Linguagens de programação" />}
-                renderValue={selected => selected.join(', ')}
-                MenuProps={MenuProps}
-              >
-                {names.map(name => (
-                  <MenuItem key={name} value={name}>
-                    <Checkbox
-                      checked={languages.indexOf(name) > -1}
-                    // defaultChecked={formData?.linguagens.includes(name)}
-                    />
-                    <ListItemText id={`s2-linguagens-${name}`} primary={name} />
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText >{hasLang ? 'Pelo menos uma linguagem deve ser selecionada' : ''}</FormHelperText>
-            </FormControl>
+              <FormControl fullWidth error={hasLang}>
+                <InputLabel id="s2-select-linguagens">
+                  <FormName nome={formulario?.linguagemDeProgramacao} />
+                </InputLabel>
+                <Select
+                  labelId="s2-select-linguagens"
+                  id="s2-select-linguagens-checkbox"
+                  multiple
+                  value={languages}
+                  onChange={handleChange}
+                  input={
+                    <OutlinedInput label={formulario?.linguagemDeProgramacao} />
+                  }
+                  renderValue={(selected) => selected.join(", ")}
+                  MenuProps={MenuProps}
+                >
+                  {names.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      <Checkbox
+                        checked={languages.indexOf(name) > -1}
+                        // defaultChecked={formData?.linguagens.includes(name)}
+                      />
+                      <ListItemText
+                        id={`s2-linguagens-${name}`}
+                        primary={name}
+                      />
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>
+                  {hasLang
+                    ? "Pelo menos uma linguagem deve ser selecionada"
+                    : ""}
+                </FormHelperText>
+              </FormControl>
+            </Tooltip>
           </Grid>
 
           <Grid item xs={12} lg={6}>
             <FormLabel
               id="label-trilha-candidato"
               sx={{
-                color: 'GrayText'
+                color: "GrayText",
               }}
             >
               <FormName nome={formulario?.s2Trilha} />
@@ -403,30 +417,30 @@ export const StepTwo: React.FC = () => {
               aria-label="position"
               row
               sx={{
-                color: 'GrayText'
+                color: "GrayText",
               }}
             >
               {isLoadingTrilha ? (
                 <CircularProgress />
               ) : (
-                getTrilha?.map(trilha => {
+                getTrilha?.map((trilha) => {
                   return (
                     <FormControlLabel
                       key={trilha.nome}
                       control={
                         <Checkbox
-                        // defaultChecked={
-                        //   // @ts-ignore
-                        //   formData?.trilhas?.includes(trilha.nome)
-                        // }
+                        defaultChecked={
+                          // @ts-ignore
+                          formData?.trilhas?.includes(trilha.nome)
+                        }                    
                         />
                       }
                       label={trilha.nome}
                       value={trilha.nome}
                       id={`s2-trilha-${trilha.nome}`}
-                      {...register('trilhas')}
+                      {...register("trilhas")}                      
                     />
-                  )
+                  );
                 })
               )}
             </FormGroup>
@@ -447,7 +461,7 @@ export const StepTwo: React.FC = () => {
               <FormControl fullWidth>
                 <InputLabel
                   sx={{
-                    color: 'primary.main'
+                    color: "primary.main",
                   }}
                 >
                   <FormName nome={formulario?.s2DeficiNcia} />
@@ -457,7 +471,7 @@ export const StepTwo: React.FC = () => {
                   label={<FormName nome={formulario?.s2DeficiNcia} />}
                   defaultValue="F"
                   onChange={() => {
-                    setDeficiencia(deficiencia === 'F' ? 'T' : 'F')
+                    setDeficiencia(deficiencia === "F" ? "T" : "F");
                   }}
                 >
                   <MenuItem value="F">Não</MenuItem>
@@ -466,17 +480,17 @@ export const StepTwo: React.FC = () => {
               </FormControl>
             </Tooltip>
           </Grid>
-          {deficiencia === 'T' && (
+          {deficiencia === "T" && (
             <Grid item xs={12}>
               <TextField
                 label={<FormName nome={formulario?.s2DefDesc} />}
                 variant="outlined"
-                sx={{ width: '100%' }}
+                sx={{ width: "100%" }}
                 defaultValue={formData?.deficiencia}
                 id="s2-candidato-deficiencia-descricao"
                 error={!!errors.deficiencia}
                 helperText={errors.deficiencia?.message}
-                {...register('deficiencia')}
+                {...register("deficiencia")}
               />
             </Grid>
           )}
@@ -493,7 +507,7 @@ export const StepTwo: React.FC = () => {
               error={!!errors.resposta}
               helperText={errors.resposta?.message}
               id="s2-candidato-motivo"
-              {...register('resposta')}
+              {...register("resposta")}
             />
           </Grid>
 
@@ -509,7 +523,7 @@ export const StepTwo: React.FC = () => {
               error={!!errors.algoimportante}
               helperText={errors.algoimportante?.message}
               id="textarea-importante-candidato"
-              {...register('algoimportante')}
+              {...register("algoimportante")}
             />
           </Grid>
           <Grid item xs={12}>
@@ -520,17 +534,17 @@ export const StepTwo: React.FC = () => {
             <Stack direction="row" spacing={2}>
               <FormLabel
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center'
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
                 <RadioGroup
                   defaultValue={
-                    formData?.provaBoolean === true ? 'T' : 'F' || 'F'
+                    formData?.provaBoolean === true ? "T" : "F" || "F"
                   }
                   row
                   sx={{
-                    color: 'GrayText'
+                    color: "GrayText",
                   }}
                 >
                   <FormControlLabel
@@ -538,18 +552,18 @@ export const StepTwo: React.FC = () => {
                     value="T"
                     control={<Radio />}
                     label="Sim"
-                    {...register('provaBoolean')}
+                    {...register("provaBoolean")}
                   />
                   <FormControlLabel
                     id="s2-candidato-prova-nao"
                     value="F"
                     control={<Radio />}
                     label="Não"
-                    {...register('provaBoolean', {
+                    {...register("provaBoolean", {
                       required: {
                         value: false,
-                        message: 'abacate'
-                      }
+                        message: "abacate",
+                      },
                     })}
                   />
                 </RadioGroup>
@@ -567,17 +581,17 @@ export const StepTwo: React.FC = () => {
             <Stack direction="row" spacing={2}>
               <FormLabel
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center'
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
                 <RadioGroup
                   row
                   sx={{
-                    color: 'GrayText'
+                    color: "GrayText",
                   }}
                   defaultValue={
-                    formData?.disponibilidadeBoolean === true ? 'T' : 'F' || 'F'
+                    formData?.disponibilidadeBoolean === true ? "T" : "F" || "F"
                   }
                 >
                   <FormControlLabel
@@ -585,14 +599,14 @@ export const StepTwo: React.FC = () => {
                     value="T"
                     control={<Radio />}
                     label="Sim"
-                    {...register('efetivacaoBoolean')}
+                    {...register("efetivacaoBoolean")}
                   />
                   <FormControlLabel
                     id="s2-candidato-efetivacao-nao"
                     value="F"
                     control={<Radio />}
                     label="Não"
-                    {...register('efetivacaoBoolean')}
+                    {...register("efetivacaoBoolean")}
                   />
                 </RadioGroup>
               </FormLabel>
@@ -606,17 +620,17 @@ export const StepTwo: React.FC = () => {
             <Stack direction="row" spacing={2}>
               <FormLabel
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center'
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
                 <RadioGroup
                   row
                   sx={{
-                    color: 'GrayText'
+                    color: "GrayText",
                   }}
                   defaultValue={
-                    formData?.disponibilidadeBoolean === true ? 'T' : 'F' || 'F'
+                    formData?.disponibilidadeBoolean === true ? "T" : "F" || "F"
                   }
                 >
                   <FormControlLabel
@@ -624,14 +638,14 @@ export const StepTwo: React.FC = () => {
                     control={<Radio />}
                     label="Sim"
                     id="s2-candidato-disponibilidade-sim"
-                    {...register('disponibilidadeBoolean')}
+                    {...register("disponibilidadeBoolean")}
                   />
                   <FormControlLabel
                     value="F"
                     control={<Radio />}
                     label="Não"
                     id="s2-candidato-disponibilidade-nao"
-                    {...register('disponibilidadeBoolean')}
+                    {...register("disponibilidadeBoolean")}
                   />
                 </RadioGroup>
               </FormLabel>
@@ -641,10 +655,10 @@ export const StepTwo: React.FC = () => {
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Github} />}
-              defaultValue={formData?.github}
+              defaultValue={formData?.github == 'Nenhum'? '': formData?.github}
               variant="outlined"
               sx={{
-                width: '100%'
+                width: "100%",
               }}
               id="s2-candidato-github"
               InputProps={{
@@ -652,23 +666,23 @@ export const StepTwo: React.FC = () => {
                   <Box display="flex" alignItems="center" mr={1}>
                     <GitHubIcon
                       sx={{
-                        color: 'primary.main'
+                        color: "primary.main",
                       }}
                     />
                   </Box>
-                )
+                ),
               }}
-              {...register('github')}
+              {...register("github")}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Linkedin} />}
-              defaultValue={formData?.linkedin}
+              defaultValue={formData?.linkedin != "Nenhum"? formData?.linkedin : ''}
               variant="outlined"
               sx={{
-                width: '100%'
+                width: "100%",
               }}
               id="s2-candidato-linkedin"
               InputProps={{
@@ -676,13 +690,13 @@ export const StepTwo: React.FC = () => {
                   <Box display="flex" alignItems="center" mr={1}>
                     <LinkedInIcon
                       sx={{
-                        color: 'primary.main'
+                        color: "primary.main",
                       }}
                     />
                   </Box>
-                )
+                ),
               }}
-              {...register('linkedin')}
+              {...register("linkedin")}
             />
           </Grid>
           <Grid item xs={12} lg={6}>
@@ -690,7 +704,7 @@ export const StepTwo: React.FC = () => {
               <FormLabel
                 id="label-curriculo-candidato"
                 sx={{
-                  color: 'GrayText'
+                  color: "GrayText",
                 }}
               >
                 <FormName nome={formulario?.s2Curriculo} />
@@ -707,7 +721,7 @@ export const StepTwo: React.FC = () => {
                       id="s2-input-curriculo"
                       hidden
                       type="file"
-                      {...register('curriculo')}
+                      {...register("curriculo")}
                     />
                   </Button>
                 )}
@@ -719,7 +733,7 @@ export const StepTwo: React.FC = () => {
                   >
                     <UploadFileIcon
                       sx={{
-                        marginRight: '0.5rem'
+                        marginRight: "0.5rem",
                       }}
                     />
                     {curriculo?.[0]?.name}
@@ -727,7 +741,7 @@ export const StepTwo: React.FC = () => {
                       id="s2-input-curriculo-2"
                       hidden
                       type="file"
-                      {...register('curriculo')}
+                      {...register("curriculo")}
                     />
                   </Button>
                 )}
@@ -743,7 +757,7 @@ export const StepTwo: React.FC = () => {
               <FormLabel
                 id="label-configuracao-candidato"
                 sx={{
-                  color: 'GrayText'
+                  color: "GrayText",
                 }}
               >
                 <FormName nome={formulario?.s2ConfiguraEsDaMQuina} />
@@ -760,7 +774,7 @@ export const StepTwo: React.FC = () => {
                       id="s2-input-configuracoes"
                       hidden
                       type="file"
-                      {...register('configuracoes')}
+                      {...register("configuracoes")}
                     />
                   </Button>
                 )}
@@ -770,10 +784,10 @@ export const StepTwo: React.FC = () => {
                     variant="outlined"
                     component="label"
                   >
-                    {' '}
+                    {" "}
                     <UploadFileIcon
                       sx={{
-                        marginRight: '0.5rem'
+                        marginRight: "0.5rem",
                       }}
                     />
                     {configuracoes?.[0]?.name}
@@ -782,7 +796,7 @@ export const StepTwo: React.FC = () => {
                       accept=""
                       hidden
                       type="file"
-                      {...register('configuracoes')}
+                      {...register("configuracoes")}
                     />
                   </Button>
                 )}
@@ -801,17 +815,17 @@ export const StepTwo: React.FC = () => {
               aria-label="position"
               row
               sx={{
-                color: 'GrayText'
+                color: "GrayText",
               }}
             >
               <FormControlLabel
                 control={<Checkbox defaultChecked={formData?.lgpdBoolean} />}
                 id="s2-candidato-lgpd"
                 label="Você concorda com o tratamento dos seus dados pessoais para fins de seleção de candidatos?"
-                {...register('lgpdBoolean')}
+                {...register("lgpdBoolean")}
               />
             </FormGroup>
-            <Error id={'mensagem-erro-lgpd'} width={'100%'}>
+            <Error id={"mensagem-erro-lgpd"} width={"100%"}>
               {errors.lgpdBoolean?.message}
             </Error>
           </Grid>
@@ -820,10 +834,10 @@ export const StepTwo: React.FC = () => {
             item
             xs={12}
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 2
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
             }}
           >
             <Button
@@ -831,10 +845,10 @@ export const StepTwo: React.FC = () => {
               id="s2-botao-voltar"
               variant="outlined"
               onClick={() => {
-                dispatch(previousStep())
+                dispatch(previousStep());
               }}
               sx={{
-                width: '8rem'
+                width: "8rem",
               }}
             >
               Voltar
@@ -844,10 +858,10 @@ export const StepTwo: React.FC = () => {
               variant="contained"
               type="submit"
               sx={{
-                width: '8rem'
+                width: "8rem",
               }}
               onClick={() => verificar()}
-            // disabled={!curriculo?.[0] || !configuracoes?.[0]}
+              // disabled={!curriculo?.[0] || !configuracoes?.[0]}
             >
               Enviar
             </Button>
@@ -855,7 +869,7 @@ export const StepTwo: React.FC = () => {
         </>
       )}
       <Grid item xs={12}>
-        {matriculado !== 'T' && (
+        {matriculado !== "T" && (
           <Error id="erro-não-matriculado" width="100%">
             Devido as restrições impostas pelas leis brasileiras, somente alunos
             que possuem vínculo com uma instituição de ensino podem se
@@ -864,5 +878,5 @@ export const StepTwo: React.FC = () => {
         )}
       </Grid>
     </FormGrid>
-  )
-}
+  );
+};

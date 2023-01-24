@@ -12,7 +12,10 @@ import {
 	Pagination,
 	Box,
 	LinearProgress,
+	Typography,
 } from "@mui/material";
+import CheckBoxIcon from '@mui/icons-material/CheckBox'
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox'
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
@@ -23,6 +26,11 @@ import { useGetCandidatosResultadoMutation } from "shared/features/api/candidato
 import { CandidatoByNota } from "shared/features/api/candidato/types";
 
 const columns = [
+	{
+		field: 'id',
+		headerName: 'ID',
+		width: 60
+	},
 	{
 		field: "nome",
 		headerName: "Nome",
@@ -42,19 +50,41 @@ const columns = [
 	},
 	{
 		field: "nota",
-		headerName: "Nota da Prova",
+		headerName: "Média geral",
 		minWidth: 130,
 	},
 	{
-		field: "telefone",
-		headerName: "Telefone",
-		minWidth: 160,
-	},
-	{
-		field: "estado",
-		headerName: "Estado",
-		minWidth: 90,
-	},
+		field: 'status',
+		headerName: 'Status',
+		width: 140,
+		renderCell: (params: any) => {
+		  return (
+			<Typography
+			  sx={{
+				color: 'green'
+			  }}
+			>
+				<Box
+				  sx={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					gap: 1
+				  }}
+				>
+				  <CheckBoxIcon />
+				  <Typography
+					sx={{
+					  fontSize: '14px'
+					}}
+				  >
+					Aprovado
+				  </Typography>
+				</Box>
+			</Typography>
+		  )
+		}
+	  },
 ];
 
 export const Result: React.FC = () => {
@@ -103,6 +133,9 @@ export const Result: React.FC = () => {
 		setTrilha("");
 	};
 
+	console.log(listaResultado);
+	
+
 	const rows = () => {
 		return listaResultado?.elementos.map((dados) => {
 			return {
@@ -124,23 +157,6 @@ export const Result: React.FC = () => {
 
 	return (
 		<Grid container spacing={2}>
-			<Box
-				width="100%"
-				display="flex"
-				justifyContent="flex-start"
-				paddingLeft="16px"
-			>
-				<Button
-					sx={{
-						background: "#1e62fe ",
-						height: "2.5rem",
-					}}
-					variant="contained"
-					// onClick={resetFiltro}
-				>
-					Exportar CSV
-				</Button>
-			</Box>
 			<Grid item xs={12}>
 				<Stack
 					direction={{
@@ -154,10 +170,7 @@ export const Result: React.FC = () => {
 						<OutlinedInput
 							endAdornment={
 								<InputAdornment position="end">
-									<IconButton
-										onClick={() => setEmail(emailInput)}
-										edge="end"
-									>
+									<IconButton onClick={() => setEmail(emailInput)} edge="end">
 										<Search color="primary" />
 									</IconButton>
 								</InputAdornment>
@@ -220,11 +233,7 @@ export const Result: React.FC = () => {
 							;
 						</Select>
 					</FormControl>
-					<Box
-						display="flex"
-						alignItems="center"
-						justifyContent="center"
-					>
+					<Box display="flex" alignItems="center" justifyContent="center">
 						<Button
 							fullWidth
 							sx={{
@@ -238,11 +247,8 @@ export const Result: React.FC = () => {
 					</Box>
 				</Stack>
 			</Grid>
-			<Grid
-				item
-				xs={12}
-				sx={{ height: "calc(100vh - 211px)", width: "100%" }}
-			>
+
+			<Grid item xs={12} sx={{ height: "calc(100vh - 211px)", width: "100%" }}>
 				{isLoading ? (
 					<LinearProgress />
 				) : (
@@ -259,7 +265,13 @@ export const Result: React.FC = () => {
 					/>
 				)}
 			</Grid>
-			<Grid item xs={12} display="flex" justifyContent="center">
+			<Grid
+				item
+				xs={12}
+				display="flex"
+				alignItems="center"
+				justifyContent="center"
+			>
 				<Pagination
 					count={listaResultado?.quantidadePaginas}
 					color="primary"

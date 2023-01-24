@@ -1,8 +1,10 @@
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useGetInscricaoByIdMutation } from "shared/features/api/inscricao/inscricaoSlice";
-import { useGetCurriculoMutation } from "shared/features/api/formulario/formularioSlice";
+import {
+  useGetCurriculoMutation,
+  useGetPrintPcMutation,
+} from "shared/features/api/formulario/formularioSlice";
 import { IElementos } from "shared/features/api/inscricao/types";
 import {
   Box,
@@ -51,13 +53,18 @@ export const CurriculoContainer: React.FC = () => {
   const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(
     null
   );
+  // console.log("este:", inscricaoResponse);
   const [curriculo, setCurriculo] = useState<string | null>(null);
+  const [printPc, setPrintPc] = useState<any>(null);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   const { data } = useGetInputsQuery();
   const { data: dataCurriculo } = useGetSubscribeFormQuery();
+  // console.log(dataCurriculo);
   const formulario = data?.data.formulario;
   const formularioCurriculo = dataCurriculo?.data.formulario;
+  const [getPrintPc] = useGetPrintPcMutation();
+  // console.log(printPc)
 
   const [formattedCandidatePdf, setFormattedCandidatePdf] =
     useState<string>("null");
@@ -67,7 +74,7 @@ export const CurriculoContainer: React.FC = () => {
       .unwrap()
       .then((res) => {
         setInscricaoResponse(res);
-        console.log(res);
+        // console.log(res);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -92,6 +99,15 @@ export const CurriculoContainer: React.FC = () => {
         .unwrap()
         .then((e) => {
           setCurriculo(e);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      getPrintPc(inscricaoResponse.formulario.idFormulario)
+        .unwrap()
+        .then((e) => {
+          setPrintPc(e);
         })
         .catch((err) => {
           console.log(err);
@@ -437,18 +453,20 @@ export const CurriculoContainer: React.FC = () => {
                 )}
               </TabPanel>
               <TabPanel value="2" sx={{ height: "calc(100vh - 224px)", p: 0 }}>
-                <Zoom>
-                  <Box
-                    component="img"
-                    alt=""
-                    sx={{
-                      width: "100%",
-                      height: "calc(100vh - 224px)",
-                      objectFit: "cover",
-                    }}
-                    src="https://rpearce.github.io/react-medium-image-zoom/static/media/laura-smetsers-H-TW2CoNtTk-unsplash-smaller.4d1fd239.jpg"
-                  />
-                </Zoom>
+                {printPc && (
+                  <Zoom>
+                    <Box
+                      component="img"
+                      alt="Print das configurações do PC do candidato"
+                      sx={{
+                        width: "100%",
+                        height: "calc(100vh - 224px)",
+                        objectFit: "cover",
+                      }}
+                      src={`data:image/png;base64, ${printPc}`}
+                    />
+                  </Zoom>
+                )}
               </TabPanel>
             </TabContext>
           </Box>

@@ -68,6 +68,14 @@ export interface IFormSubscribeTextResponse {
   };
 }
 
+export interface IAbrirouFecharInscricao {
+  data: {
+    formulario: {
+      inscricoes: boolean;
+    };
+  };
+}
+
 export interface IFormSubscribeFormResponse {
   data: {
     formulario: {
@@ -93,6 +101,8 @@ export interface IFormSubscribeFormResponse {
       s2Linkedin?: string;
       s2Curriculo?: string;
       s2ConfiguraEsDaMQuina?: string;
+      linguagemDeProgramacao?: string;
+      linguagemDeProgramacaoTooltip?: string;
     };
   };
 }

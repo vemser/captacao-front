@@ -24,11 +24,10 @@ export interface EntrevistaUpdateBody {
 }
 
 export interface NovaEntrevistaBody {
-  candidatoEmail: string
-
-  dataEntrevista: Date
-  observacoes: string
-  avaliado: string
+  candidatoEmail: string;
+  dataEntrevista: Date;
+  observacoes: string;
+  avaliado: string;
 }
 
 

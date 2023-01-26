@@ -77,16 +77,31 @@ export const StepOne: React.FC = () => {
           {...register("email")}
         />
       </Grid>
-      <Grid item xs={12} lg={6}>
-        <TextField
-          fullWidth
-          defaultValue={formData?.rg}
-          label={<FormName nome={formulario?.rg} />}
-          error={!!errors.rg}
-          helperText={errors.rg?.message}
-          id="step-1-rg"
+
+      <Grid item xs={6}>
+        <InputMask
+          mask="************"
+          maskChar=" "
           {...register("rg")}
-        />
+          defaultValue={formData?.rg}
+        >
+          {
+            // @ts-ignore
+            (inputProps) => (
+              <TextField
+                {...inputProps}
+                label={<FormName nome={formulario?.rg} />}
+                variant="outlined"
+                id="step-1-rg"
+                helperText={errors.rg?.message}
+                error={!!errors.rg}
+                sx={{
+                  width: "100%",
+                }}
+              />
+            )
+          }
+        </InputMask>
       </Grid>
       <Grid item xs={6}>
         <InputMask

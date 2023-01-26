@@ -56,8 +56,7 @@ export const CandidatesCurriculum = () => {
               await toast.promise(
                 avaliarCandidato({
                   aprovadoBoolean: true,
-
-                  idInscricao: state.id
+                  idInscricao: state.id,
                 })
                   .unwrap()
                   .then(() => {
@@ -83,8 +82,7 @@ export const CandidatesCurriculum = () => {
               await toast.promise(
                 avaliarCandidato({
                   aprovadoBoolean: false,
-
-                  idInscricao: state.id
+                  idInscricao: state.id,
                 })
                   .unwrap()
                   .then(() => {

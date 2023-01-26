@@ -76,7 +76,6 @@ export const InterviewCurriculum = () => {
     isLoading === false &&
       postNewEntrevista({
         candidatoEmail: state.email,
-
         dataEntrevista: form.dataEntrevista,
         avaliado: 'T',
         observacoes: form.observacoes

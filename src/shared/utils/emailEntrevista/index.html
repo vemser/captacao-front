@@ -55,16 +55,21 @@
     .container-footer {
       width: 40%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       border-top: 1px solid #999;
       padding-top: 3rem;
+      font-size: 0.9rem;
     }
     .link {
       color: #ffff;
       font-weight: 700;
       text-decoration: none;
 
+    }
+    .azul {
+      color: #1e62fe
     }
   </style>
 </head>
@@ -77,11 +82,12 @@
       <h1>Olá, ${nome}</h1>
       <p>Parabéns, você passou para a próxima etapa do processo seletivo, sua entrevista será dia ${data} as
         ${horario}!</p>
-        <button class="button-confirmar"><a class="link" href=entrevista/atualizar-entrevista/${idEntrevista}">Clique para confirmar</a></button>
+        <button class="button-confirmar"><a class="link" href="http://vemser-dbc.dbccompany.com.br:39000/vemser/captacao/confirmar-entrevista?tokenEntrevista=${token}">Clique para confirmar</a></button>
     </div>
     
     <div class="container-footer">
       <p>Enviado por <span>${colaborador}</span></p>
+      <div><span>Em caso de dúvidas entre em contato através do email:</span> <span class="azul">vemser@dbccompany.com.br</span></div>
     </div>
   </main>
 </body>

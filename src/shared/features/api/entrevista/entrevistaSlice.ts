@@ -10,8 +10,10 @@ import {
   EntrevistasParams,
   EntrevistasMesParams,
   EntrevistaPorTrilhaParams,
-  Elemento
+  Elemento,
+  EntrevistaUpdateBody
 } from './types'
+
 
 const entervistaSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -105,7 +107,15 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-
+    confirmaEntrevista: builder.mutation<EntrevistaUpdateBody, string >({
+      query: data => ({
+        url: `entrevista/confirmar-entrevista?tokenEntrevista=${data}`,
+        method: 'PUT',
+        body: {
+         
+        }
+      })
+    }),
   }),
   overrideExisting: false
 })
@@ -118,4 +128,5 @@ export const {
   useGetEntrevistaPorMesQuery,
   useGetEntrevistasPorTrilhaMutation,
   useGetEntrevistaByEmailQuery,
+  useConfirmaEntrevistaMutation,
 } = entervistaSlice;

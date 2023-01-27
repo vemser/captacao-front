@@ -15,6 +15,7 @@ import { InterviewCurriculum } from 'pages/InterviewCurriculum'
 import { ResultCurriculum } from 'pages/ResultCurriculum'
 import { AptosCurriculum } from 'pages/AptosCurriculum'
 import { Prova } from 'pages/Aptos'
+import { ConfirmaEntrevista } from 'pages/ConfirmaEntrevista'
 
 export const Router = () => {
   return (
@@ -24,6 +25,7 @@ export const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/subscription" element={<Subscription />} />
+        <Route path="/confirmar-entrevista" element={<ConfirmaEntrevista />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/candidatos" index element={<Registers />} />

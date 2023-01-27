@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/;
+const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ",""."";" ]+$/;
 
 export const stepTwoSchema = Yup.object().shape({
   instituicao: Yup.string().when("matriculado", {

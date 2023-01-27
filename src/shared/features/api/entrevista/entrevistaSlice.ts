@@ -107,13 +107,11 @@ const entervistaSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    confirmaEntrevista: builder.mutation<EntrevistaUpdateBody, string >({
+    confirmaEntrevista: builder.mutation<void, string >({
       query: data => ({
         url: `entrevista/confirmar-entrevista?tokenEntrevista=${data}`,
         method: 'PUT',
-        body: {
-         
-        }
+      
       })
     }),
   }),

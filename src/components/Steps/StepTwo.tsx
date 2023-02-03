@@ -262,10 +262,11 @@ export const StepTwo: React.FC = () => {
                 defaultValue={
                   formData?.ingles
                     ? formData.ingles
-                    : "iniciante" || "iniciante"
+                    : "nenhum" || "nenhum"
                 }
                 {...register("ingles")}
               >
+                <MenuItem value="nenhum">Nenhum</MenuItem>
                 <MenuItem value="iniciante">Iniciante</MenuItem>
                 <MenuItem value="intermediario">Intermediário</MenuItem>
                 <MenuItem value="avancado">Avançado</MenuItem>
@@ -288,10 +289,11 @@ export const StepTwo: React.FC = () => {
                 defaultValue={
                   formData?.espanhol
                     ? formData.espanhol
-                    : "iniciante" || "iniciante"
+                    : "nenhum" || "nenhum"
                 }
                 {...register("espanhol")}
               >
+                <MenuItem value="nenhum">Nenhum</MenuItem>
                 <MenuItem value="iniciante">Iniciante</MenuItem>
                 <MenuItem value="intermediario">Intermediário</MenuItem>
                 <MenuItem value="avancado">Avançado</MenuItem>
@@ -470,7 +472,7 @@ export const StepTwo: React.FC = () => {
 
           <Grid item xs={12}>
             <Tooltip
-              title="Essa não é uma pergunta obrigatória, mas é importante para que possamos oferecer uma melhor experiência para você."
+              title="Essa pergunta é importante para que possamos oferecer uma melhor experiência para você."
               placement="top"
               arrow
             >
@@ -837,7 +839,7 @@ export const StepTwo: React.FC = () => {
               <FormControlLabel
                 control={<Checkbox defaultChecked={formData?.lgpdBoolean} />}
                 id="s2-candidato-lgpd"
-                label="Você concorda com o tratamento dos seus dados pessoais para fins de seleção de candidatos?"
+                label="Você concorda com o tratamento dos seus dados pessoais para fins de seleção de candidatos?*"
                 {...register("lgpdBoolean")}
               />
             </FormGroup>

@@ -40,7 +40,6 @@ export const stepOneSchema = Yup.object().shape({
       /^\(\d{2}\)\d{5}-\d{4}$/,
       "O telefone deve ser um número válido no formato (99)99999-9999"
     ),
-
   cidade: Yup.string()
     .required("A cidade é obrigatória")
     .min(3, "A cidade deve ter no mínimo 3 letras")

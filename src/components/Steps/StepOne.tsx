@@ -177,7 +177,7 @@ export const StepOne: React.FC = () => {
       </Grid>
       <Grid item xs={12} lg={6}>
         <FormControl fullWidth>
-          <InputLabel>Estado</InputLabel>
+          <InputLabel>Estado*</InputLabel>
           <Select
             label={<FormName nome={formulario?.estado} />}
             error={!!errors.estado}
@@ -196,7 +196,7 @@ export const StepOne: React.FC = () => {
 
       <Grid item xs={12} lg={6}>
         <Tooltip
-          title="Essa não é uma pergunta obrigatória, mas é importante para que possamos oferecer uma melhor experiência para você."
+          title="Essa pergunta é importante para que possamos oferecer uma melhor experiência para você."
           placement="top"
           arrow
         >

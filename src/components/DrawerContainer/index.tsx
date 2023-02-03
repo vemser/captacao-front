@@ -202,7 +202,7 @@ export const DrawerContainer = (props: Props) => {
 				<Typography
 					variant="body1"
 					component="p"
-					sx={{ fontWeight: 600, textTransform: "capitalize" }}
+					sx={{ fontWeight: 600, textTransform: "capitalize", userSelect: "none" }}
 				>
 					<Box
 						component="span"

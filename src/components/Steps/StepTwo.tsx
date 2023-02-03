@@ -99,13 +99,13 @@ export const StepTwo: React.FC = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },    
+    formState: { errors },
   } = useForm<SubscribeData>({
     defaultValues: {
       matriculado: "T",
     },
     resolver: yupResolver(stepTwoSchema),
-  }); 
+  });
 
   const verificar = () => {
     languages.length == 0 ? setHasLang(true) : setHasLang(false);
@@ -128,7 +128,7 @@ export const StepTwo: React.FC = () => {
           key,
           value === "T" ? true : value === "F" ? false : value,
         ])
-      );  
+      );
 
       dispatch(nextStep());
       dispatch(
@@ -146,7 +146,7 @@ export const StepTwo: React.FC = () => {
 
   const matriculado = watch("matriculado");
   const curriculo = watch("curriculo");
-  const configuracoes = watch("configuracoes"); 
+  const configuracoes = watch("configuracoes");
 
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
@@ -386,7 +386,7 @@ export const StepTwo: React.FC = () => {
                     <MenuItem key={name} value={name}>
                       <Checkbox
                         checked={languages.indexOf(name) > -1}
-                        // defaultChecked={formData?.linguagens.includes(name)}
+                      // defaultChecked={formData?.linguagens.includes(name)}
                       />
                       <ListItemText
                         id={`s2-linguagens-${name}`}
@@ -423,25 +423,41 @@ export const StepTwo: React.FC = () => {
               {isLoadingTrilha ? (
                 <CircularProgress />
               ) : (
-                getTrilha?.map((trilha) => {
+                getTrilha ? getTrilha.map((trilha) => {
                   return (
                     <FormControlLabel
                       key={trilha.nome}
                       control={
                         <Checkbox
-                        defaultChecked={
-                          // @ts-ignore
-                          formData?.trilhas?.includes(trilha.nome)
-                        }                    
+                          defaultChecked={
+                            // @ts-ignore
+                            formData?.trilhas?.includes(trilha.nome)
+                          }
                         />
                       }
                       label={trilha.nome}
                       value={trilha.nome}
                       id={`s2-trilha-${trilha.nome}`}
-                      {...register("trilhas")}                      
+                      {...register("trilhas")}
                     />
                   );
-                })
+                }) : (
+                    <FormControlLabel
+                    disabled
+                    key={"sem-trilha"}
+                    control={
+                      <Checkbox
+                        defaultChecked={
+                          // @ts-ignore
+                          formData?.trilhas?.includes(trilha.nome)
+                        }
+                      />
+                    }
+                    label={"Nenhuma trilha encontrada"}
+                    value={"Nenhuma trilha encontrada"}
+                    id={"sem-trilha"}
+                  />
+                )
               )}
             </FormGroup>
             {errors.trilhas && (
@@ -655,7 +671,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Github} />}
-              defaultValue={formData?.github == 'Nenhum'? '': formData?.github}
+              defaultValue={formData?.github == 'Nenhum' ? '' : formData?.github}
               variant="outlined"
               sx={{
                 width: "100%",
@@ -679,7 +695,7 @@ export const StepTwo: React.FC = () => {
             <TextField
               type="url"
               label={<FormName nome={formulario?.s2Linkedin} />}
-              defaultValue={formData?.linkedin != "Nenhum"? formData?.linkedin : ''}
+              defaultValue={formData?.linkedin != "Nenhum" ? formData?.linkedin : ''}
               variant="outlined"
               sx={{
                 width: "100%",
@@ -861,7 +877,7 @@ export const StepTwo: React.FC = () => {
                 width: "8rem",
               }}
               onClick={() => verificar()}
-              // disabled={!curriculo?.[0] || !configuracoes?.[0]}
+            // disabled={!curriculo?.[0] || !configuracoes?.[0]}
             >
               Enviar
             </Button>

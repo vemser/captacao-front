@@ -439,7 +439,7 @@ export const CurriculoContainer: React.FC = () => {
                   sx={{ p: 0.45 }}
                 >
                   <Tab label="Currículo" value="1" />
-                  <Tab label="Configurações" value="2" />
+                  <Tab label="Configurações da máquina" value="2" />
                 </TabList>
               </Box>
               <TabPanel value="1" sx={{ height: "calc(100vh - 224px)", p: 0 }}>

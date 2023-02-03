@@ -2,7 +2,6 @@ import { Home } from '../pages/Home'
 import { Subscription } from '../pages/Subscription'
 import { PrivateRoute } from 'pages/PrivateRoute'
 import { Registers } from 'pages/Candidates'
-
 import { ToastContainer } from 'react-toastify'
 import { Routes, Route } from 'react-router-dom'
 import { Login } from 'pages/Login'
@@ -16,6 +15,7 @@ import { ResultCurriculum } from 'pages/ResultCurriculum'
 import { AptosCurriculum } from 'pages/AptosCurriculum'
 import { Prova } from 'pages/Aptos'
 import { ConfirmaEntrevista } from 'pages/ConfirmaEntrevista'
+import { PageError } from 'components/PageError'
 
 export const Router = () => {
   return (
@@ -50,7 +50,7 @@ export const Router = () => {
           <Route path="/resultado/curriculo" element={<ResultCurriculum />} />
         </Route>
 
-        <Route path="*" element={<div>Erro</div>} />
+        <Route path="*" element={<PageError />} />
       </Routes>
     </>
   )

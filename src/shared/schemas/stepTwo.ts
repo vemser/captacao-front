@@ -42,7 +42,7 @@ export const stepTwoSchema = Yup.object().shape({
       }
       return true;
     }),
-  lgpdBoolean: Yup.boolean().oneOf([true], "São necessários aceitar os termos"),
+  lgpdBoolean: Yup.boolean().oneOf([true], "É necessário aceitar os termos para prosseguir"),
   resposta: Yup.string()
     .required("Campo obrigatório")
     .min(10, "São necessários 10 caracteres, no mínimo")
@@ -73,7 +73,7 @@ export const stepTwoSchema = Yup.object().shape({
       return value.length && value[0].size <= 5242880;
     }),
   configuracoes: Yup.mixed()
-    .test("required", "O currículo é obrigatório", (value) => value.length > 0)
+    .test("required", "O print é obrigatório", (value) => value.length > 0)
     .test("fileType", "O tipo de arquivo não é suportado", (value) => {
       return (
         value.length &&

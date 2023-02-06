@@ -130,8 +130,8 @@ export const StepOne: React.FC = () => {
       </Grid>
       <Grid item xs={6} display="flex" flexDirection="column">
         <InputMask
-          mask="(99)99999-9999"
-          maskChar=" "
+          mask="(99)99999-999999"
+          maskChar=""
           {...register("telefone")}
           defaultValue={formData?.telefone}
         >

@@ -204,7 +204,7 @@ export const CurriculoContainer: React.FC = () => {
       id: 13,
       tipo: "Pessoal",
       pergunta: formularioCurriculo?.s2DeficiNcia,
-      resposta: inscricaoResponse?.pcdboolean,
+      resposta: inscricaoResponse?.pcdboolean ? "Sim" : "Não",
     },
     {
       id: 14,
@@ -356,7 +356,7 @@ export const CurriculoContainer: React.FC = () => {
       id: 10,
       tipo: "Pessoal",
       pergunta: "PCD",
-      resposta: inscricaoResponse?.pcdboolean,
+      resposta: inscricaoResponse?.pcdboolean ? "Sim" : "Não",
     },
     {
       id: 11,

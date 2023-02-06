@@ -151,13 +151,15 @@ export const StepTwo: React.FC = () => {
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
       <Grid item xs={12} lg={6}>
-        <FormLabel>
+        <FormLabel sx={{
+          color: "#525252"
+        }}>
           <FormName nome={formulario?.s2Matriculado} />
         </FormLabel>
         <RadioGroup
           row
           sx={{
-            color: "GrayText",
+            color: "#525252",
           }}
           defaultValue="T"
         >
@@ -182,7 +184,7 @@ export const StepTwo: React.FC = () => {
           <Grid item xs={12} lg={6}>
             <FormLabel
               sx={{
-                color: "GrayText",
+                color: "#525252",
               }}
             >
               <FormName nome={formulario?.s2Turno} />
@@ -190,7 +192,7 @@ export const StepTwo: React.FC = () => {
             <RadioGroup
               row
               sx={{
-                color: "GrayText",
+                color: "#525252",
               }}
               defaultValue={
                 formData?.turno ? formData.turno : "MANHA" || "MANHA"
@@ -226,6 +228,7 @@ export const StepTwo: React.FC = () => {
           <Grid item xs={12} lg={6}>
             <TextField
               fullWidth
+              sx={{ "&::placeholder":{ color: "#525252"} }}
               id="instituicao-de-ensino-candidato"
               defaultValue={formData?.instituicao}
               label={<FormName nome={formulario?.s2Instituicao} />}
@@ -251,7 +254,7 @@ export const StepTwo: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel
                 sx={{
-                  color: "GrayText",
+                  color: "#525252",
                 }}
               >
                 <FormName nome={formulario?.s2InglS} />
@@ -278,7 +281,7 @@ export const StepTwo: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel
                 sx={{
-                  color: "GrayText",
+                  color: "#525252",
                 }}
               >
                 <FormName nome={formulario?.s2Espanhol} />
@@ -306,7 +309,7 @@ export const StepTwo: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel
                 sx={{
-                  color: "GrayText",
+                  color: "#525252",
                 }}
               >
                 <FormName nome={formulario?.s2OriSexual} />
@@ -335,7 +338,7 @@ export const StepTwo: React.FC = () => {
               <InputLabel
                 id="label-genero-candidato"
                 sx={{
-                  color: "GrayText",
+                  color: "#525252",
                 }}
               >
                 <FormName nome={formulario?.s2GNero} />
@@ -369,7 +372,9 @@ export const StepTwo: React.FC = () => {
               arrow
             >
               <FormControl fullWidth error={hasLang}>
-                <InputLabel id="s2-select-linguagens">
+                <InputLabel sx={{
+                  color: "#525252"
+                }} id="s2-select-linguagens">
                   <FormName nome={formulario?.linguagemDeProgramacao} />
                 </InputLabel>
                 <Select
@@ -410,7 +415,7 @@ export const StepTwo: React.FC = () => {
             <FormLabel
               id="label-trilha-candidato"
               sx={{
-                color: "GrayText",
+                color: "#525252",
               }}
             >
               <FormName nome={formulario?.s2Trilha} />
@@ -419,7 +424,7 @@ export const StepTwo: React.FC = () => {
               aria-label="position"
               row
               sx={{
-                color: "GrayText",
+                color: "#525252",
               }}
             >
               {isLoadingTrilha ? (
@@ -479,7 +484,7 @@ export const StepTwo: React.FC = () => {
               <FormControl fullWidth>
                 <InputLabel
                   sx={{
-                    color: "primary.main",
+                    color: "#525252",
                   }}
                 >
                   <FormName nome={formulario?.s2DeficiNcia} />
@@ -488,6 +493,7 @@ export const StepTwo: React.FC = () => {
                   id="s2-select-deficiencia-candidato"
                   label={<FormName nome={formulario?.s2DeficiNcia} />}
                   defaultValue="F"
+
                   onChange={() => {
                     setDeficiencia(deficiencia === "F" ? "T" : "F");
                   }}
@@ -545,7 +551,9 @@ export const StepTwo: React.FC = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormLabel component="legend">
+            <FormLabel sx={{
+              color: "#525252"
+            }} component="legend">
               <FormName nome={formulario?.s2TextoLingProva} />
             </FormLabel>
 
@@ -554,6 +562,7 @@ export const StepTwo: React.FC = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  color: "#525252"
                 }}
               >
                 <RadioGroup
@@ -562,7 +571,7 @@ export const StepTwo: React.FC = () => {
                   }
                   row
                   sx={{
-                    color: "GrayText",
+                    color: "#525252",
                   }}
                 >
                   <FormControlLabel
@@ -592,7 +601,9 @@ export const StepTwo: React.FC = () => {
             {errors.provaBoolean?.message}
           </Typography>
           <Grid item xs={12}>
-            <FormLabel component="legend">
+            <FormLabel sx={{
+              color: "#525252"
+            }} component="legend">
               <FormName nome={formulario?.s2TextoDisp} />
             </FormLabel>
 
@@ -601,12 +612,13 @@ export const StepTwo: React.FC = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  color: "#525252"
                 }}
               >
                 <RadioGroup
                   row
                   sx={{
-                    color: "GrayText",
+                    color: "#525252",
                   }}
                   defaultValue={
                     formData?.disponibilidadeBoolean === true ? "T" : "F" || "F"
@@ -631,7 +643,9 @@ export const StepTwo: React.FC = () => {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <FormLabel component="legend">
+            <FormLabel sx={{
+              color: "#525252"
+            }} component="legend">
               <FormName nome={formulario?.s2DispHaula} />
             </FormLabel>
 
@@ -640,12 +654,13 @@ export const StepTwo: React.FC = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  color: "#525252"
                 }}
               >
                 <RadioGroup
                   row
                   sx={{
-                    color: "GrayText",
+                    color: "#525252",
                   }}
                   defaultValue={
                     formData?.disponibilidadeBoolean === true ? "T" : "F" || "F"
@@ -675,6 +690,7 @@ export const StepTwo: React.FC = () => {
               label={<FormName nome={formulario?.s2Github} />}
               defaultValue={formData?.github == 'Nenhum' ? '' : formData?.github}
               variant="outlined"
+
               sx={{
                 width: "100%",
               }}
@@ -722,7 +738,7 @@ export const StepTwo: React.FC = () => {
               <FormLabel
                 id="label-curriculo-candidato"
                 sx={{
-                  color: "GrayText",
+                  color: "#525252",
                 }}
               >
                 <FormName nome={formulario?.s2Curriculo} />
@@ -775,7 +791,7 @@ export const StepTwo: React.FC = () => {
               <FormLabel
                 id="label-configuracao-candidato"
                 sx={{
-                  color: "GrayText",
+                  color: "#525252",
                 }}
               >
                 <FormName nome={formulario?.s2ConfiguraEsDaMQuina} />
@@ -833,7 +849,7 @@ export const StepTwo: React.FC = () => {
               aria-label="position"
               row
               sx={{
-                color: "GrayText",
+                color: "#525252",
               }}
             >
               <FormControlLabel

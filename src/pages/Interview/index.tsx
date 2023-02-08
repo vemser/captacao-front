@@ -54,15 +54,15 @@ export const Interview: React.FC = () => {
       getCandidatosEntrevista({
         pagina: page,
         tamanho: 20,
-        email,
-        edicao,
-        trilha
+        email: email ? email : undefined,
+        edicao: edicao ? edicao : undefined,
+        trilha: trilha ? trilha : undefined
       })
         .unwrap()
-        .then(data => setListaEntrevistas(data))
+        .then(data => { setListaEntrevistas(data); console.log(data) })
         .finally(() => setisLoading(false))
     }
-  }, [email, edicao, trilha, page])
+  }, [email, edicao, trilha, page, getCandidatosEntrevista])
 
   const resetFiltro = () => {
     setEmail('')

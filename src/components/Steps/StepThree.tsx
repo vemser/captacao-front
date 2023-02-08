@@ -70,12 +70,12 @@ export const StepThree: React.FC = () => {
         ingles: data.ingles,
         espanhol: data.espanhol,
         neurodiversidade: data.neurodiversidade,
-        configuracoes: "Não informado", // corrigir
+        configuracoes: "Não informado",
         efetivacaoBoolean: data.efetivacaoBoolean,
         disponibilidadeBoolean: data.disponibilidadeBoolean,
         genero: data.genero,
         orientacao: data.orientacao,
-        trilhas: data.trilhas, // corrigir quando mudar no back end
+        trilhas: data.trilhas,
         importancia: data.algoimportante,
       })
         .unwrap()

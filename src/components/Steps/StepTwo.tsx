@@ -228,7 +228,7 @@ export const StepTwo: React.FC = () => {
           <Grid item xs={12} lg={6}>
             <TextField
               fullWidth
-              sx={{ "&::placeholder":{ color: "#525252"} }}
+              sx={{ "&::placeholder": { color: "#525252" } }}
               id="instituicao-de-ensino-candidato"
               defaultValue={formData?.instituicao}
               label={<FormName nome={formulario?.s2Instituicao} />}
@@ -449,7 +449,7 @@ export const StepTwo: React.FC = () => {
                     />
                   );
                 }) : (
-                    <FormControlLabel
+                  <FormControlLabel
                     disabled
                     key={"sem-trilha"}
                     control={
@@ -775,6 +775,7 @@ export const StepTwo: React.FC = () => {
                       id="s2-input-curriculo-2"
                       hidden
                       type="file"
+                      accept=".doc, .docx, .pdf, .odt"
                       {...register("curriculo")}
                     />
                   </Button>
@@ -808,6 +809,7 @@ export const StepTwo: React.FC = () => {
                       id="s2-input-configuracoes"
                       hidden
                       type="file"
+                      accept="image/png, image/jpeg, image/jpg"
                       {...register("configuracoes")}
                     />
                   </Button>

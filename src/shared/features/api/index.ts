@@ -4,7 +4,7 @@ export const apiSlice = createApi({
   reducerPath: "apiSlice",
   keepUnusedDataFor: 0,
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_BACKEND_URL
+    baseUrl: `${process.env.REACT_APP_BACKEND_URL}/vemser/captacao-back/`
   }),
   endpoints: () => ({}),
 });

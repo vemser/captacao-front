@@ -9,7 +9,7 @@ const authSlice = apiSlice.injectEndpoints({
   endpoints: build => ({
     authLogin: build.mutation<string, IUser>({
       query: user => ({
-        url: 'http://vemser-dbc.dbccompany.com.br:39000/vemser/usuario-back/usuario/login',
+        url: `${process.env.REACT_APP_BACKEND_URL}/vemser/usuario-back/usuario/login`,
         method: 'POST',
         body: user,
         responseHandler: response => response.text()
@@ -17,7 +17,7 @@ const authSlice = apiSlice.injectEndpoints({
     }),
     getLoggedUser: build.query<ILoggedUser, void>({
       query: () => ({
-        url: 'http://vemser-dbc.dbccompany.com.br:39000/vemser/usuario-back/usuario/logged-user',
+        url: `${process.env.REACT_APP_BACKEND_URL}/vemser/usuario-back/usuario/logged-user`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${getToken()}`
@@ -26,7 +26,7 @@ const authSlice = apiSlice.injectEndpoints({
     }),
     changeImage: build.mutation<string, any>({
       query: data => ({
-        url: 'http://vemser-dbc.dbccompany.com.br:39000/vemser/usuario-back/foto/upload-image-perfil',
+        url: `${process.env.REACT_APP_BACKEND_URL}/vemser/usuario-back/foto/upload-image-perfil`,
         method: 'PUT',
         body: data,
         headers: {

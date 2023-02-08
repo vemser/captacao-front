@@ -10,7 +10,6 @@ export const CandidatesCurriculum = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [avaliarCandidato] = useAvaliarCandidatoMutation()
   const { state } = useLocation()
-  console.log(state)
 
   const { data } = useGetLoggedUserQuery()
   const navigate = useNavigate()

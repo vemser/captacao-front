@@ -57,7 +57,6 @@ const columns = [
     headerName: 'Status',
     width: 140,
     renderCell: (params: any) => {
-      console.log(params)
       return (
         <Typography
           variant="body2"

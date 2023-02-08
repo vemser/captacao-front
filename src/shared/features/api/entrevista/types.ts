@@ -3,10 +3,10 @@ export interface EntrevistaObsParams {
   observacao: string
 }
 
-  export interface Linguagem {
-    nome: string
-  }
-  
+export interface Linguagem {
+  nome: string
+}
+
 
 export interface EntrevistaUpdateParams {
   idEntrevista: number

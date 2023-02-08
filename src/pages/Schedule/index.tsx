@@ -41,7 +41,7 @@ import {
 	useUpdateNotaParecerComportamentalMutation,
 	useUpdateNotaParecerTecnicoMutation,
 } from "shared/features/api/candidato/candidatoSlice";
-import { EntrervistaResponse } from "shared/features/api/entrevista/types";
+import { EntrervistaResponse, Trilha } from "shared/features/api/entrevista/types";
 import { Trilhas } from "shared/features/api/trilha/types";
 import {
 	useDeleteTrilhaMutation,
@@ -150,6 +150,7 @@ export const Schedule = () => {
 				parecerTecnico: entrevista.candidatoDTO.parecerTecnico,
 				idCandidato: entrevista.candidatoDTO.idCandidato,
 				idEntrevista: entrevista.idEntrevista,
+				candidatoTrilha: entrevista.candidatoDTO.formulario.trilhas
 			},
 			color: legendaColor,
 		};
@@ -424,10 +425,18 @@ export const Schedule = () => {
 					</Button>
 
 					<DialogTitle
-						sx={{ marginTop: "40px", textAlign: "center", fontWeight: 600 }}
+						sx={{ marginTop: "40px", textAlign: "center", fontWeight: 600, display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}
 					>
 						<Box sx={{ color: "#1e62fe" }} component="span">
 							{modalInfos?.title}
+						</Box>
+						<Box sx={{ fontSize: "1.1rem", fontWeight: 600 }} component="span">
+							<span>Trilha: </span>
+							{modalInfos?.extendedProps.candidatoTrilha.map(
+								(trilha: Trilha) => {
+									return trilha.nome;
+								}
+							).join(", ")}
 						</Box>
 					</DialogTitle>
 					<DialogContent

@@ -83,7 +83,7 @@ export const Schedule = () => {
 		return (
 			<>
 				{title?.[0] && (
-					<Typography sx={{ fontSize: {xs: "2rem", sm: "3rem"}, fontWeight: "700"}}>
+					<Typography sx={{ fontSize: { xs: "2rem", sm: "3rem" }, fontWeight: "700" }}>
 						Agenda: {title[0].toUpperCase()}{title.substring(1)}
 					</Typography>
 				)}
@@ -104,17 +104,17 @@ export const Schedule = () => {
 	useEffect(() => {
 		trilhaValue !== ""
 			? getEntrevistasPorTrilha({
-					trilha: trilhaValue,
-			  })
-					.unwrap()
-					.then((data) => {
-						setEntrevistasList(data);
-					})
+				trilha: trilhaValue,
+			})
+				.unwrap()
+				.then((data) => {
+					setEntrevistasList(data);
+				})
 			: getEntrevistas()
-					.unwrap()
-					.then((data) => {
-						setEntrevistasList(data);
-					});
+				.unwrap()
+				.then((data) => {
+					setEntrevistasList(data);
+				});
 	}, [trilhaValue]);
 
 	var entrevistasFilter = entrevistasList?.map((entrevista) => {
@@ -279,6 +279,15 @@ export const Schedule = () => {
 								}}
 								fullWidth
 							>
+								<MenuItem
+									key={'todas-as-trilhas'}
+									value={""}
+									onClick={() => {
+										setTrilhaValue("");
+									}}
+								>
+									GERAL
+								</MenuItem>
 								{data?.map((trilha) => (
 									<MenuItem
 										key={trilha.nome}
@@ -311,7 +320,7 @@ export const Schedule = () => {
 				<Box width="100%" id="container-calendar-schedules">
 					<Box width="100%" sx={{ paddingBottom: "3%" }}>
 						<FullCalendar
-						
+
 							plugins={[dayGridPlugin]}
 							events={entrevistasFilter}
 							selectable={true}
@@ -329,10 +338,10 @@ export const Schedule = () => {
 								handleModal(info);
 							}}
 							headerToolbar={{
-								left: lgDown ? "title": "dayGridMonth,dayGridWeek,dayGridDay",
+								left: lgDown ? "title" : "dayGridMonth,dayGridWeek,dayGridDay",
 								center: lgDown ? "dayGridMonth,dayGridWeek,dayGridDay" : "title",
 								right: "prev,next",
-								
+
 							}}
 							buttonText={{
 								today: "Hoje",
@@ -360,7 +369,7 @@ export const Schedule = () => {
 					>
 						<Box width="80%" display="flex" mt="1rem" >
 							<Box
-								width= {lgDown ? "30px" : "50px"}
+								width={lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#4caf50"
 								borderRadius={"3px"}
@@ -371,7 +380,7 @@ export const Schedule = () => {
 						</Box>
 						<Box width="100%" display="flex" mt="1rem">
 							<Box
-								width= {lgDown ? "30px" : "50px"}
+								width={lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#ffeb3b"
 								borderRadius={"3px"}
@@ -382,7 +391,7 @@ export const Schedule = () => {
 						</Box>
 						<Box width="100%" display="flex" mt="1rem">
 							<Box
-								width= {lgDown ? "30px" : "50px"}
+								width={lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#f6685e"
 								borderRadius={"3px"}
@@ -393,7 +402,7 @@ export const Schedule = () => {
 						</Box>
 						<Box width="100%" display="flex" mt="1rem">
 							<Box
-								width= {lgDown ? "30px" : "50px"}
+								width={lgDown ? "30px" : "50px"}
 								height="100%"
 								bgcolor="#999"
 								borderRadius={"3px"}

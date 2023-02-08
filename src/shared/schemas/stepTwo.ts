@@ -69,8 +69,8 @@ export const stepTwoSchema = Yup.object().shape({
         )
       );
     })
-    .test("fileSize", "O tamanho do arquivo deve ser menor que 5 MB", (value) => {
-      return value.length && value[0].size <= 5242880;
+    .test("fileSize", "O tamanho do arquivo deve ser menor que 800kb", (value) => {
+      return value.length && value[0].size <= 800000;
     }),
   configuracoes: Yup.mixed()
     .test("required", "O print é obrigatório", (value) => value.length > 0)
@@ -80,7 +80,7 @@ export const stepTwoSchema = Yup.object().shape({
         ["image/jpeg", "image/png", "image/jpg"].includes(value[0].type)
       );
     })
-    .test("fileSize", "O arquivo é muito grande", (value) => {
-      return value.length && value[0].size <= 5242880;
+    .test("fileSize", "O tamanho do arquivo deve ser menor que 800kb", (value) => {
+      return value.length && value[0].size <= 800000;
     })
 });

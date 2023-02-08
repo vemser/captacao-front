@@ -58,33 +58,33 @@ const columns = [
 		headerName: 'Status',
 		width: 140,
 		renderCell: (params: any) => {
-		  return (
-			<Typography
-			  sx={{
-				color: 'green'
-			  }}
-			>
-				<Box
-				  sx={{
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					gap: 1
-				  }}
-				>
-				  <CheckBoxIcon />
-				  <Typography
+			return (
+				<Typography
 					sx={{
-					  fontSize: '14px'
+						color: 'green'
 					}}
-				  >
-					Aprovado
-				  </Typography>
-				</Box>
-			</Typography>
-		  )
+				>
+					<Box
+						sx={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							gap: 1
+						}}
+					>
+						<CheckBoxIcon />
+						<Typography
+							sx={{
+								fontSize: '14px'
+							}}
+						>
+							Aprovado
+						</Typography>
+					</Box>
+				</Typography>
+			)
 		}
-	  },
+	},
 ];
 
 export const Result: React.FC = () => {
@@ -116,9 +116,9 @@ export const Result: React.FC = () => {
 			getCandidatosResultado({
 				pagina: page,
 				tamanho: 20,
-				email,
-				edicao,
-				trilha,
+				email: email ? email : undefined,
+				edicao: edicao ? edicao : undefined,
+				trilha: trilha ? trilha : undefined
 			})
 				.unwrap()
 				.then((data) => setListaResultado(data))
@@ -134,7 +134,7 @@ export const Result: React.FC = () => {
 	};
 
 	console.log(listaResultado);
-	
+
 
 	const rows = () => {
 		return listaResultado?.elementos.map((dados) => {

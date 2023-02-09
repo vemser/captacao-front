@@ -589,7 +589,7 @@ export const StepTwo: React.FC = () => {
                     {...register("provaBoolean", {
                       required: {
                         value: false,
-                        message: "abacate",
+                        message: "",
                       },
                     })}
                   />

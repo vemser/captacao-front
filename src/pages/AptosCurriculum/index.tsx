@@ -32,7 +32,6 @@ export const AptosCurriculum = () => {
   const [updateNota] = useUpdateNotaMutation()
 
   const [valueNota, setValueNota] = useState<number>(0)
-  console.log(state.notaProva)
   return (
     <Grid container spacing={2}>
       <Grid xs={12} item>

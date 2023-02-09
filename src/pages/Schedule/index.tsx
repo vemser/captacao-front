@@ -275,7 +275,6 @@ export const Schedule = () => {
 								label="Selecione agenda por trilha"
 								value={trilhaValue}
 								onChange={(e) => {
-									console.log(trilhaValue);
 									setTrilhaValue(e.target.value);
 								}}
 								fullWidth

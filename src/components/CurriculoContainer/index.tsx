@@ -50,22 +50,15 @@ const columns = [
 export const CurriculoContainer: React.FC = () => {
   const { state } = useLocation();
   const [getCandidatosByEmail] = useGetCandidatosByEmailMutation();
-  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(
-    null
-  );
-  // console.log("este:", inscricaoResponse);
+  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(null);
   const [curriculo, setCurriculo] = useState<string | null>(null);
   const [printPc, setPrintPc] = useState<any>(null);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-
   const { data } = useGetInputsQuery();
   const { data: dataCurriculo } = useGetSubscribeFormQuery();
-  // console.log(dataCurriculo);
   const formulario = data?.data.formulario;
   const formularioCurriculo = dataCurriculo?.data.formulario;
   const [getPrintPc] = useGetPrintPcMutation();
-  // console.log(printPc)
-
   const [formattedCandidatePdf, setFormattedCandidatePdf] =
     useState<string>("null");
 
@@ -74,7 +67,6 @@ export const CurriculoContainer: React.FC = () => {
       .unwrap()
       .then((res) => {
         setInscricaoResponse(res);
-        // console.log(res);
       })
       .catch((e) => console.log(e));
   }, []);

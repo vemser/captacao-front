@@ -67,11 +67,6 @@ export const InterviewCurriculum = () => {
   }
 
   const [trilha, setTrilha] = useState<string>('')
-  console.log(trilha)
-
-  useEffect(() => {
-    console.log('abacate', trilha)
-  }, [])
 
   const handleSubmitEntrevista = async (form: NovaEntrevistaBody) => {
     isLoading === false &&
@@ -141,8 +136,6 @@ export const InterviewCurriculum = () => {
           message.data.message ? message = message.data.message : message = message.data.errors[0];
           toast.error(message);
         })
-
-    console.log(form)
   }
 
   return (

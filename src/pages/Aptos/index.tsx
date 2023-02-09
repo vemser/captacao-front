@@ -147,7 +147,6 @@ export const Prova: React.FC = () => {
         .unwrap()
         .then(data => {
           setLista(data)
-          console.log(data)
         })
         .finally(() => setisLoading(false))
     } else {
@@ -158,7 +157,6 @@ export const Prova: React.FC = () => {
         .unwrap()
         .then(data => {
           setLista(data)
-          console.log(data)
         })
         .finally(() => setisLoading(false))
     }
@@ -172,9 +170,6 @@ export const Prova: React.FC = () => {
     setPage(0)
   }
 
-  useEffect(() => {
-    console.log('renanzinho:' + datas)
-  }, [datas])
   const rows = () => {
     return lista?.elementos.map(d => {
       return {

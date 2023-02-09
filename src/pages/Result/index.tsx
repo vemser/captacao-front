@@ -133,9 +133,6 @@ export const Result: React.FC = () => {
 		setTrilha("");
 	};
 
-	console.log(listaResultado);
-
-
 	const rows = () => {
 		return listaResultado?.elementos.map((dados) => {
 			return {

@@ -59,7 +59,7 @@ export const Interview: React.FC = () => {
         trilha: trilha ? trilha : undefined
       })
         .unwrap()
-        .then(data => { setListaEntrevistas(data); console.log(data) })
+        .then(data => { setListaEntrevistas(data) })
         .finally(() => setisLoading(false))
     }
   }, [email, edicao, trilha, page, getCandidatosEntrevista])

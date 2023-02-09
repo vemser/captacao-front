@@ -25,6 +25,7 @@ import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/c
 import { Elemento, ITrilha } from 'shared/features/api/candidato/types'
 import { useUpdateFormMutation } from 'shared/features/api/formulario/formularioSlice'
 import { StringifyOptions } from 'querystring'
+import axios from 'axios'
 
 export const InterviewCurriculum = () => {
   const [getCandidatosByEmail] = useGetCandidatosByEmailMutation()
@@ -134,13 +135,11 @@ export const InterviewCurriculum = () => {
                 console.log(err)
               })
         })
-        .catch((err: any) => {
-          console.log(err)
-          toast.error(
-            err.data.status === 400
-              ? 'Entrevista já agendada'
-              : 'Erro ao agendar entrevista'
-          )
+        .catch((error: any) => {
+          console.log(error)
+          let message = error;
+          message.data.message ? message = message.data.message : message = message.data.errors[0];
+          toast.error(message);
         })
 
     console.log(form)

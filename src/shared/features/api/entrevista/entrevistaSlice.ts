@@ -103,15 +103,15 @@ const entervistaSlice = apiSlice.injectEndpoints({
         url: `/entrevista/buscar-entrevista-email-candidato/${data}`,
         method: 'GET',
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }),
     }),
-    confirmaEntrevista: builder.mutation<void, string >({
+    confirmaEntrevista: builder.mutation<void, string>({
       query: data => ({
         url: `entrevista/confirmar-entrevista?tokenEntrevista=${data}`,
         method: 'PUT',
-      
+
       })
     }),
   }),

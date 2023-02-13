@@ -16,7 +16,7 @@ import {
 import { CurriculoContainer } from '../../components/CurriculoContainer'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { usePostNewEntrevistaMutation } from 'shared/features/api/entrevista/entrevistaSlice'
+import { useGetEntrevistaByEmailQuery, usePostNewEntrevistaMutation } from 'shared/features/api/entrevista/entrevistaSlice'
 import { useForm } from 'react-hook-form'
 import { NovaEntrevistaBody } from '../../shared/features/api/entrevista/types'
 import { useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
@@ -28,15 +28,14 @@ import { StringifyOptions } from 'querystring'
 import axios from 'axios'
 
 export const InterviewCurriculum = () => {
+  const { state } = useLocation()
   const [getCandidatosByEmail] = useGetCandidatosByEmailMutation()
-  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(
-    null
-  )
+  const { data, isLoading: loading } = useGetEntrevistaByEmailQuery(state?.email)
+  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(null)
 
   const [open, setOpen] = React.useState(false)
 
-  const { data, isLoading } = useGetLoggedUserQuery()
-  const { state } = useLocation()
+  const { isLoading } = useGetLoggedUserQuery()
 
   const [updateTrilha] = useUpdateFormMutation()
 
@@ -47,7 +46,6 @@ export const InterviewCurriculum = () => {
       .unwrap()
       .then(res => {
         setInscricaoResponse(res)
-        console.log(res)
       })
       .catch(e => console.log(e))
   }, [])

@@ -134,7 +134,7 @@ export const Interview: React.FC = () => {
       headerName: 'Agendar entrevista',
       width: 160,
       renderCell: () => {
-        return <Button variant="contained">Agendar</Button>
+        return <Button variant="contained">Visualizar</Button>
       }
     }
   ]

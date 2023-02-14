@@ -82,7 +82,7 @@
       <h1>Olá, ${nome}</h1>
       <p>Parabéns, você passou para a próxima etapa do processo seletivo, sua entrevista será dia ${data} as
         ${horario}!</p>
-        <button class="button-confirmar"><a class="link" href="http://vemser-dbc.dbccompany.com.br:39000/vemser/captacao/confirmar-entrevista?tokenEntrevista=${token}">Clique para confirmar</a></button>
+        <button class="button-confirmar"><a class="link" href="${process.env.REACT_APP_BACKEND_URL}/vemser/captacao/confirmar-entrevista?tokenEntrevista=${token}">Clique para confirmar</a></button>
     </div>
     
     <div class="container-footer">

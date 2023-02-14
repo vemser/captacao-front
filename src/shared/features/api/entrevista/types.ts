@@ -16,10 +16,8 @@ export interface EntrevistaUpdateParams {
 
 export interface EntrevistaUpdateBody {
   dataEntrevista: Date
-  cidade: string
-  estado: string
   observacoes: string
-  email: string
+  candidatoEmail: string
   avaliado: string
 }
 

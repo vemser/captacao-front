@@ -11,7 +11,8 @@ import {
   EntrevistasMesParams,
   EntrevistaPorTrilhaParams,
   Elemento,
-  EntrevistaUpdateBody
+  EntrevistaUpdateBody,
+  EntrevistaByEmail
 } from './types'
 
 
@@ -98,7 +99,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         }
       })
     }),
-    getEntrevistaByEmail: builder.query<EntrervistaResponse, string>({
+    getEntrevistaByEmail: builder.query<EntrevistaByEmail, string>({
       query: data => ({
         url: `/entrevista/buscar-entrevista-email-candidato/${data}`,
         method: 'GET',

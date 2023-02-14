@@ -42,6 +42,15 @@ export interface EntrervistaResponse {
   elementos: Elemento[]
 }
 
+export interface EntrevistaByEmail {
+  candidatoEmail: string
+  dataEntrevista: Date
+  observacoes: string
+  avaliado: string
+  idEntrevista: number
+  candidatoDTO: CandidatoDTO
+}
+
 export interface Elemento {
   candidatoEmail: string
   usuarioEmail: string

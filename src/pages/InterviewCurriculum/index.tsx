@@ -1,8 +1,6 @@
 import {
-  Box,
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
@@ -22,10 +20,8 @@ import { NovaEntrevistaBody } from '../../shared/features/api/entrevista/types'
 import { useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
 import { toast } from 'react-toastify'
 import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/candidatoSlice'
-import { Elemento, ITrilha } from 'shared/features/api/candidato/types'
+import { Elemento } from 'shared/features/api/candidato/types'
 import { useUpdateFormMutation } from 'shared/features/api/formulario/formularioSlice'
-import { StringifyOptions } from 'querystring'
-import axios from 'axios'
 
 export const InterviewCurriculum = () => {
   const { state } = useLocation()
@@ -34,6 +30,10 @@ export const InterviewCurriculum = () => {
   const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(null)
 
   const [open, setOpen] = React.useState(false)
+  const [openEditar, setOpenEditar] = React.useState(false)
+  const [openCancelar, setOpenCancelar] = React.useState(false)
+
+  console.log(data)
 
   const { isLoading } = useGetLoggedUserQuery()
 
@@ -62,6 +62,20 @@ export const InterviewCurriculum = () => {
   }
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const handleClickOpenEditar = () => {
+    setOpenEditar(true)
+  }
+  const handleCloseEditar = () => {
+    setOpenEditar(false)
+  }
+
+  const handleClickOpenCancelar = () => {
+    setOpenCancelar(true)
+  }
+  const handleCloseCancelar = () => {
+    setOpenCancelar(false)
   }
 
   const [trilha, setTrilha] = useState<string>('')
@@ -138,85 +152,176 @@ export const InterviewCurriculum = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid xs={12} item>
-        <Button
-          variant="contained"
-          id="interview-curriculum-agendar"
-          onClick={handleClickOpen}
-        >
-          Agendar entrevista
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle color="primary">Agendar entrevista</DialogTitle>
-          <DialogContent>
-            <Stack
-              direction="column"
-              component="form"
-              onSubmit={handleSubmit(handleSubmitEntrevista)}
-              spacing={1}
-            >
-              <TextField
-                margin="dense"
-                autoFocus
-                type="datetime-local"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                id="name"
-                label="Data e hora da entrevista"
-                {...register('dataEntrevista')}
-                fullWidth
-              />
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Trilha</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  // value={age}
-                  label="Trilha"
-                  value={trilha}
-                  onChange={e => {
-                    setTrilha(e.target.value)
+      {!loading} {!data ? (
+        <Grid xs={12} item>
+          <Button
+            variant="contained"
+            id="interview-curriculum-agendar"
+            onClick={handleClickOpen}
+          >
+            Agendar entrevista
+          </Button>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle color="primary">Agendar entrevista</DialogTitle>
+            <DialogContent>
+              <Stack
+                direction="column"
+                component="form"
+                onSubmit={handleSubmit(handleSubmitEntrevista)}
+                spacing={1}
+              >
+                <TextField
+                  margin="dense"
+                  autoFocus
+                  type="datetime-local"
+                  InputLabelProps={{
+                    shrink: true
                   }}
-                >
-                  {inscricaoResponse?.formulario.trilhas.map(trilha => {
-                    return (
-                      <MenuItem
-                        key={trilha.nome}
-                        value={trilha.nome}
-                        id={`filtro-trilha-${trilha.nome}`}
-                      >
-                        {trilha.nome}
-                      </MenuItem>
-                    )
-                  })}
-                </Select>
-              </FormControl>
-              <TextField
-                margin="dense"
-                id="name"
-                label="Observações"
-                {...register('observacoes')}
-                multiline
-                rows={4}
-                fullWidth
-              />
-              <Stack spacing={2} direction="row">
-                <Button
-                  color="error"
-                  sx={{ width: '100%' }}
-                  onClick={handleClose}
-                >
-                  Cancelar
-                </Button>
-                <Button sx={{ width: '100%' }} type="submit">
-                  Agendar
-                </Button>
+                  id="name"
+                  label="Data e hora da entrevista"
+                  {...register('dataEntrevista')}
+                  fullWidth
+                />
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Trilha</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    // value={age}
+                    label="Trilha"
+                    value={trilha}
+                    onChange={e => {
+                      setTrilha(e.target.value)
+                    }}
+                  >
+                    {inscricaoResponse?.formulario.trilhas.map(trilha => {
+                      return (
+                        <MenuItem
+                          key={trilha.nome}
+                          value={trilha.nome}
+                          id={`filtro-trilha-${trilha.nome}`}
+                        >
+                          {trilha.nome}
+                        </MenuItem>
+                      )
+                    })}
+                  </Select>
+                </FormControl>
+                <TextField
+                  margin="dense"
+                  id="name"
+                  label="Observações"
+                  {...register('observacoes')}
+                  multiline
+                  rows={4}
+                  fullWidth
+                />
+                <Stack spacing={2} direction="row">
+                  <Button
+                    color="error"
+                    sx={{ width: '100%' }}
+                    onClick={handleClose}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button sx={{ width: '100%' }} type="submit">
+                    Agendar
+                  </Button>
+                </Stack>
               </Stack>
-            </Stack>
-          </DialogContent>
-        </Dialog>
-      </Grid>
+            </DialogContent>
+          </Dialog>
+        </Grid>
+      ) : (
+        <Grid xs={12} item sx={{ display: "flex", gap: "10px" }}>
+          <Button
+            variant="contained"
+            id="interview-curriculum-agendar"
+            onClick={handleClickOpenEditar}
+          >
+            Editar agendamento
+          </Button>
+          <Button
+            variant="contained"
+            id="interview-curriculum-agendar"
+            onClick={handleClickOpenCancelar}
+          >
+            Cancelar entrevista
+          </Button>
+          <Dialog open={openEditar} onClose={handleCloseEditar}>
+            <DialogTitle color="primary">Editar agendamento de entrevista</DialogTitle>
+            <DialogContent>
+              <Stack
+                direction="column"
+                component="form"
+                onSubmit={handleSubmit(handleSubmitEntrevista)}
+                spacing={1}
+              >
+                <TextField
+                  margin="dense"
+                  autoFocus
+                  type="datetime-local"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  id="name"
+                  label="Data e hora da entrevista"
+                  defaultValue={data.dataEntrevista}
+                  {...register('dataEntrevista')}
+                  fullWidth
+                />
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Trilha</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Trilha"
+                    defaultValue={`filtro-trilha`}
+                    value={trilha}
+                    onChange={e => {
+                      setTrilha(e.target.value)
+                    }}
+                  >
+                    {inscricaoResponse?.formulario.trilhas.map(trilha => {
+                      return (
+                        <MenuItem
+                          key={trilha.nome}
+                          value={trilha.nome}
+                          id={`filtro-trilha`}
+                        >
+                          {trilha.nome}
+                        </MenuItem>
+                      )
+                    })}
+                  </Select>
+                </FormControl>
+                <TextField
+                  margin="dense"
+                  id="name"
+                  label="Observações"
+                  defaultValue={data.observacoes}
+                  {...register('observacoes')}
+                  multiline
+                  rows={4}
+                  fullWidth
+                />
+                <Stack spacing={2} direction="row">
+                  <Button
+                    color="error"
+                    sx={{ width: '100%' }}
+                    onClick={handleClose}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button sx={{ width: '100%' }} type="submit">
+                    Salvar
+                  </Button>
+                </Stack>
+              </Stack>
+            </DialogContent>
+          </Dialog>
+        </Grid>
+      )}
       <Grid item xs={12}>
         <CurriculoContainer />
       </Grid>

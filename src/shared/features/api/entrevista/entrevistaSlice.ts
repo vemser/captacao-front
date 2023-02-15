@@ -11,7 +11,8 @@ import {
   EntrevistasMesParams,
   EntrevistaPorTrilhaParams,
   Elemento,
-  EntrevistaUpdateBody
+  EntrevistaUpdateBody,
+  EntrevistaByEmail
 } from './types'
 
 
@@ -34,10 +35,10 @@ const entervistaSlice = apiSlice.injectEndpoints({
         url: `entrevista/atualizar-entrevista/${data.idEntrevista}`,
         method: 'PUT',
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`
         },
         params: {
-          observacao: data.legenda
+          legenda: data.legenda
         },
         body: {
           dataEntrevista: data.body
@@ -98,21 +99,30 @@ const entervistaSlice = apiSlice.injectEndpoints({
         }
       })
     }),
-    getEntrevistaByEmail: builder.query<EntrervistaResponse, string>({
+    getEntrevistaByEmail: builder.query<EntrevistaByEmail, string>({
       query: data => ({
         url: `/entrevista/buscar-entrevista-email-candidato/${data}`,
         method: 'GET',
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }),
     }),
-    confirmaEntrevista: builder.mutation<void, string >({
+    confirmaEntrevista: builder.mutation<void, string>({
       query: data => ({
         url: `entrevista/confirmar-entrevista?tokenEntrevista=${data}`,
         method: 'PUT',
-      
+
       })
+    }),
+    deleteEntrevista: builder.mutation<void, string>({
+      query: (email) => ({
+        url: `entrevista/deletar-entrevista-email-candidato/${email}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }),
     }),
   }),
   overrideExisting: false
@@ -127,4 +137,5 @@ export const {
   useGetEntrevistasPorTrilhaMutation,
   useGetEntrevistaByEmailQuery,
   useConfirmaEntrevistaMutation,
+  useDeleteEntrevistaMutation,
 } = entervistaSlice;

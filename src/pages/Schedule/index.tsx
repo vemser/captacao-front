@@ -15,6 +15,7 @@ import {
 	Stack,
 	Select,
 	MenuItem,
+	Modal,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import useMediaQuery from "@mui/material/useMediaQuery";

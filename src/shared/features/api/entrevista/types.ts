@@ -16,10 +16,8 @@ export interface EntrevistaUpdateParams {
 
 export interface EntrevistaUpdateBody {
   dataEntrevista: Date
-  cidade: string
-  estado: string
   observacoes: string
-  email: string
+  candidatoEmail: string
   avaliado: string
 }
 
@@ -40,6 +38,15 @@ export interface EntrervistaResponse {
   pagina: number
   tamanho: number
   elementos: Elemento[]
+}
+
+export interface EntrevistaByEmail {
+  candidatoEmail: string
+  dataEntrevista: Date
+  observacoes: string
+  avaliado: string
+  idEntrevista: number
+  candidatoDTO: CandidatoDTO
 }
 
 export interface Elemento {

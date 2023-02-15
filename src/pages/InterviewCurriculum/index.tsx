@@ -16,22 +16,23 @@ import {
 import { CurriculoContainer } from '../../components/CurriculoContainer'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { usePostNewEntrevistaMutation } from 'shared/features/api/entrevista/entrevistaSlice'
+import { useGetEntrevistaByEmailQuery, usePostNewEntrevistaMutation } from 'shared/features/api/entrevista/entrevistaSlice'
 import { useForm } from 'react-hook-form'
 import { NovaEntrevistaBody } from '../../shared/features/api/entrevista/types'
 import { useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
 import { toast } from 'react-toastify'
 import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/candidatoSlice'
 import { Elemento, ITrilha } from 'shared/features/api/candidato/types'
+import { ElementoEntrevista } from 'shared/features/api/entrevista/types'
 import { useUpdateFormMutation } from 'shared/features/api/formulario/formularioSlice'
 import { StringifyOptions } from 'querystring'
 import axios from 'axios'
 
 export const InterviewCurriculum = () => {
   const [getCandidatosByEmail] = useGetCandidatosByEmailMutation()
-  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(
-    null
-  )
+  const [getEntrevistaByEmail] = useGetEntrevistaByEmailQuery()
+  const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(null)
+  const [candidatoEntrevista, setCandidatoEntrevista] = useState<ElementoEntrevista | null>(null)
 
   const [open, setOpen] = React.useState(false)
 
@@ -47,6 +48,14 @@ export const InterviewCurriculum = () => {
       .unwrap()
       .then(res => {
         setInscricaoResponse(res)
+        console.log(res)
+      })
+      .catch(e => console.log(e))
+
+    getEntrevistaByEmail(state?.email)
+      .unwrap()
+      .then(res => {
+        setCandidatoEntrevista(res)
         console.log(res)
       })
       .catch(e => console.log(e))
@@ -125,7 +134,7 @@ export const InterviewCurriculum = () => {
               }
             })
               .unwrap()
-              .then(() => console.log('funcionou ihul'))
+              .then(() => console.log(''))
               .catch((err: any) => {
                 console.log(err)
               })

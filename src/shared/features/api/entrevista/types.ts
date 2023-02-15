@@ -54,6 +54,18 @@ export interface Elemento {
   legenda: string
 }
 
+export interface ElementoEntrevista {
+  candidatoEmail: string
+  usuarioEmail: string
+  dataEntrevista: Date
+  observacoes: string
+  avaliado: string
+  idEntrevista: number
+  candidatoDTO: CandidatoDTO
+  gestorDTO: GestorDTO
+  legenda: string
+}
+
 export interface CandidatoDTO {
   idCandidato: number
   nome: string

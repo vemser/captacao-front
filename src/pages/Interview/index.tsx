@@ -131,10 +131,10 @@ export const Interview: React.FC = () => {
     },
     {
       field: 'entrervista',
-      headerName: 'Agendar entrevista',
+      headerName: 'Agendamento',
       width: 160,
       renderCell: () => {
-        return <Button variant="contained">Agendar</Button>
+        return <Button variant="contained">Visualizar</Button>
       }
     }
   ]

@@ -11,7 +11,6 @@ import {
   EntrevistasMesParams,
   EntrevistaPorTrilhaParams,
   Elemento,
-  EntrevistaUpdateBody,
   EntrevistaByEmail
 } from './types'
 
@@ -41,18 +40,18 @@ const entervistaSlice = apiSlice.injectEndpoints({
           legenda: data.legenda
         },
         body: {
-          dataEntrevista: data.body
+          body: data.body
         }
       })
     }),
-    postNewEntrevista: builder.mutation<void, NovaEntrevistaBody>({
+    postNewEntrevista: builder.mutation<void, EntrevistaUpdateParams>({
       query: data => ({
         url: `entrevista/marcar-entrevista?token=${getToken()}`,
         method: 'POST',
         headers: {
           Authorization: `Bearer ${getToken()}`
         },
-        body: data
+        body: data.body
       })
     }),
     getEntrevistas: builder.mutation<Elemento[], void>({

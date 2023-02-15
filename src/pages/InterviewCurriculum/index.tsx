@@ -1,79 +1,38 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  Stack,
-  TextField,
-  Typography
-} from '@mui/material'
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
 import { CurriculoContainer } from '../../components/CurriculoContainer'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useGetEntrevistaByEmailQuery, usePostNewEntrevistaMutation, useDeleteEntrevistaMutation, useUpdateEntrevistaMutation } from 'shared/features/api/entrevista/entrevistaSlice'
 import { useForm } from 'react-hook-form'
-import { NovaEntrevistaBody } from '../../shared/features/api/entrevista/types'
+import { EntrevistaUpdateParams, NovaEntrevistaBody } from '../../shared/features/api/entrevista/types'
 import { useGetLoggedUserQuery } from 'shared/features/api/usuario/authSlice'
 import { toast } from 'react-toastify'
 import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/candidatoSlice'
 import { Elemento } from 'shared/features/api/candidato/types'
 import { useUpdateFormMutation } from 'shared/features/api/formulario/formularioSlice'
 
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 320,
-  bgcolor: "background.paper",
-  border: "none",
-  borderRadius: "5px",
-  textAlign: "center",
-  boxShadow: 20,
-  p: 4,
-}
-
 export const InterviewCurriculum = () => {
   const { state } = useLocation()
+  const navigate = useNavigate()
+
   const [getCandidatosByEmail] = useGetCandidatosByEmailMutation()
+  const [postNewEntrevista] = usePostNewEntrevistaMutation()
   const [deleteEntrevista] = useDeleteEntrevistaMutation()
   const [updateEntrevista] = useUpdateEntrevistaMutation()
-  const { data, isLoading: loading } = useGetEntrevistaByEmailQuery(state?.email)
+  const [updateTrilha] = useUpdateFormMutation()
+  const { isLoading } = useGetLoggedUserQuery()
+  const { data, isLoading: loading, refetch } = useGetEntrevistaByEmailQuery(state?.email)
+
+  const { register, handleSubmit } = useForm<EntrevistaUpdateParams>()
   const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(null)
   const [trilha, setTrilha] = useState<string>('')
-
   const [open, setOpen] = React.useState(false)
   const [openEditar, setOpenEditar] = React.useState(false)
   const [openCancelar, setOpenCancelar] = React.useState(false)
 
-  const { isLoading } = useGetLoggedUserQuery()
-
-  const [updateTrilha] = useUpdateFormMutation()
-
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    getCandidatosByEmail(state?.email)
-      .unwrap()
-      .then(res => {
-        setInscricaoResponse(res)
-      })
-      .catch(e => console.log(e))
-  }, [])
-
   const formValues = (data: string) => {
     return data === 'T' ? true : data === 'F' ? false : data
   }
-
-  const [postNewEntrevista] = usePostNewEntrevistaMutation()
-  const { register, handleSubmit } = useForm<NovaEntrevistaBody>()
 
   const handleClickOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -86,23 +45,27 @@ export const InterviewCurriculum = () => {
     deleteEntrevista(state?.email)
       .unwrap()
       .then(() => {
-        toast.success("Entrevista cancelada com sucesso")
+        toast.success("Entrevista cancelada com sucesso!")
+        refetch()
       })
       .catch(() => {
         toast.error("Erro ao cancelar entrevista")
       })
       .finally(() => {
+        console.log('chegou', data)
         handleCloseCancelar()
       })
   }
 
-  const handleSubmitEntrevista = async (form: NovaEntrevistaBody) => {
+  const handleSubmitEntrevista = async (form: EntrevistaUpdateParams) => {
     isLoading === false &&
       postNewEntrevista({
-        candidatoEmail: state.email,
-        dataEntrevista: form.dataEntrevista,
-        avaliado: 'T',
-        observacoes: form.observacoes
+        body: {
+          candidatoEmail: state.email,
+          dataEntrevista: form.body.dataEntrevista,
+          avaliado: 'T',
+          observacoes: form.body.observacoes
+        }
       })
         .unwrap()
         .then(() => {
@@ -165,9 +128,45 @@ export const InterviewCurriculum = () => {
         })
   }
 
+  const handleSubmitUpdateEntrevista = async (form: EntrevistaUpdateParams) => {
+    isLoading === false &&
+      updateEntrevista({
+        idEntrevista: form.idEntrevista,
+        legenda: "PENDENTE",
+        body: {
+          candidatoEmail: state.email,
+          dataEntrevista: form.body.dataEntrevista,
+          avaliado: 'T',
+          observacoes: form.body.observacoes
+        }
+      })
+        .unwrap()
+        .then(() => {
+          toast.success('Entrevista atualizada com sucesso!')
+          navigate('/entrevista')
+        })
+        .catch((error: any) => {
+          console.log(error)
+          let message = error;
+          message.data.message ? message = message.data.message : message = message.data.errors[0];
+          toast.error(message);
+        })
+  }
+
+  useEffect(() => {
+    getCandidatosByEmail(state?.email)
+      .unwrap()
+      .then(res => {
+        setInscricaoResponse(res)
+      })
+      .catch(e => console.log(e))
+
+    console.log(data)
+  }, [data])
+
   return (
     <Grid container spacing={2}>
-      {!loading} {!data ? (
+      {!data ? (
         <Grid xs={12} item>
           <Button
             variant="contained"
@@ -194,7 +193,7 @@ export const InterviewCurriculum = () => {
                   }}
                   id="name"
                   label="Data e hora da entrevista"
-                  {...register('dataEntrevista')}
+                  {...register('body.dataEntrevista')}
                   fullWidth
                 />
                 <FormControl fullWidth>
@@ -225,7 +224,7 @@ export const InterviewCurriculum = () => {
                   margin="dense"
                   id="name"
                   label="Observações"
-                  {...register('observacoes')}
+                  {...register('body.observacoes')}
                   multiline
                   rows={4}
                   fullWidth
@@ -268,7 +267,7 @@ export const InterviewCurriculum = () => {
               <Stack
                 direction="column"
                 component="form"
-                onSubmit={handleSubmit(handleSubmitEntrevista)}
+                onSubmit={handleSubmit(handleSubmitUpdateEntrevista)}
                 spacing={1}
               >
                 <TextField
@@ -280,16 +279,16 @@ export const InterviewCurriculum = () => {
                   }}
                   id="name"
                   label="Data e hora da entrevista"
-                  defaultValue={data.dataEntrevista}
-                  {...register('dataEntrevista')}
+                  defaultValue={data?.dataEntrevista}
+                  {...register('body.dataEntrevista')}
                   fullWidth
                 />
                 <TextField
                   margin="dense"
                   id="name"
                   label="Observações"
-                  defaultValue={data.observacoes}
-                  {...register('observacoes')}
+                  defaultValue={data?.observacoes}
+                  {...register('body.observacoes')}
                   multiline
                   rows={4}
                   fullWidth

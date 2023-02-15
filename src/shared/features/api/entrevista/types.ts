@@ -9,16 +9,9 @@ export interface Linguagem {
 
 
 export interface EntrevistaUpdateParams {
-  idEntrevista: number
-  legenda: 'CONFIRMADA' | 'PENDENTE' | 'CANCELADA' | 'OUTROS'
-  body: EntrevistaUpdateBody
-}
-
-export interface EntrevistaUpdateBody {
-  dataEntrevista: Date
-  observacoes: string
-  candidatoEmail: string
-  avaliado: string
+  idEntrevista?: number
+  legenda?: 'CONFIRMADA' | 'PENDENTE' | 'CANCELADA' | 'OUTROS'
+  body: NovaEntrevistaBody
 }
 
 export interface NovaEntrevistaBody {

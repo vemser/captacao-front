@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/candidatoSlice'
 import { Elemento } from 'shared/features/api/candidato/types'
 import { useUpdateFormMutation } from 'shared/features/api/formulario/formularioSlice'
+import nProgress from "nprogress";
 
 export const InterviewCurriculum = () => {
   const { state } = useLocation()
@@ -21,7 +22,7 @@ export const InterviewCurriculum = () => {
   const [updateEntrevista] = useUpdateEntrevistaMutation()
   const [updateTrilha] = useUpdateFormMutation()
   const { isLoading } = useGetLoggedUserQuery()
-  const { data, isLoading: loading, refetch } = useGetEntrevistaByEmailQuery(state?.email)
+  const { data, refetch } = useGetEntrevistaByEmailQuery(state?.email)
 
   const { register, handleSubmit } = useForm<EntrevistaUpdateParams>()
   const [inscricaoResponse, setInscricaoResponse] = useState<Elemento | null>(null)
@@ -48,16 +49,19 @@ export const InterviewCurriculum = () => {
         toast.success("Entrevista cancelada com sucesso!")
         refetch()
       })
-      .catch(() => {
-        toast.error("Erro ao cancelar entrevista")
+      .catch((error: any) => {
+        console.log(error)
+        let message = error;
+        message.data.message ? message = message.data.message : message = message.data.errors[0];
+        toast.error(message);
       })
       .finally(() => {
-        console.log('chegou', data)
         handleCloseCancelar()
       })
   }
 
   const handleSubmitEntrevista = async (form: EntrevistaUpdateParams) => {
+    nProgress.start()
     isLoading === false &&
       postNewEntrevista({
         body: {
@@ -70,7 +74,7 @@ export const InterviewCurriculum = () => {
         .unwrap()
         .then(() => {
           toast.success('Entrevista agendada com sucesso!')
-          navigate('/entrevista')
+          refetch()
 
           inscricaoResponse &&
             updateTrilha({
@@ -126,6 +130,9 @@ export const InterviewCurriculum = () => {
           message.data.message ? message = message.data.message : message = message.data.errors[0];
           toast.error(message);
         })
+        .finally(() => {
+          handleClose()
+        })
   }
 
   const handleSubmitUpdateEntrevista = async (form: EntrevistaUpdateParams) => {
@@ -143,13 +150,16 @@ export const InterviewCurriculum = () => {
         .unwrap()
         .then(() => {
           toast.success('Entrevista atualizada com sucesso!')
-          navigate('/entrevista')
+          refetch()
         })
         .catch((error: any) => {
           console.log(error)
           let message = error;
           message.data.message ? message = message.data.message : message = message.data.errors[0];
           toast.error(message);
+        })
+        .finally(() => {
+          handleCloseEditar()
         })
   }
 
@@ -160,8 +170,6 @@ export const InterviewCurriculum = () => {
         setInscricaoResponse(res)
       })
       .catch(e => console.log(e))
-
-    console.log(data)
   }, [data])
 
   return (
@@ -176,7 +184,7 @@ export const InterviewCurriculum = () => {
             Agendar entrevista
           </Button>
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle color="primary">Agendar entrevista</DialogTitle>
+            <DialogTitle color="primary" sx={{ textAlign: "center" }}>Agendar entrevista</DialogTitle>
             <DialogContent>
               <Stack
                 direction="column"
@@ -262,7 +270,7 @@ export const InterviewCurriculum = () => {
             Cancelar entrevista
           </Button>
           <Dialog open={openEditar} onClose={handleCloseEditar}>
-            <DialogTitle color="primary">Editar agendamento de entrevista</DialogTitle>
+            <DialogTitle color="primary" sx={{ textAlign: "center" }}>Editar agendamento</DialogTitle>
             <DialogContent>
               <Stack
                 direction="column"
@@ -293,6 +301,13 @@ export const InterviewCurriculum = () => {
                   rows={4}
                   fullWidth
                 />
+                <TextField
+                  value={data?.idEntrevista}
+                  {...register('idEntrevista')}
+                  sx={{
+                    display: "none"
+                  }}
+                />
                 <Stack spacing={2} direction="row">
                   <Button
                     color="error"
@@ -309,7 +324,7 @@ export const InterviewCurriculum = () => {
             </DialogContent>
           </Dialog>
           <Dialog open={openCancelar} onClose={handleCloseCancelar}>
-            <DialogTitle color="secondary" sx={{ userSelect: "none", textAlign: "center", marginBottom: "20px" }}>Tem certeza?</DialogTitle>
+            <DialogTitle color="secondary" sx={{ userSelect: "none", textAlign: "center", marginBottom: "12px" }}>Tem certeza?</DialogTitle>
             <DialogContent>
               <Stack
                 direction="column"

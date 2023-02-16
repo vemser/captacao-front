@@ -39,9 +39,7 @@ const entervistaSlice = apiSlice.injectEndpoints({
         params: {
           legenda: data.legenda
         },
-        body: {
-          body: data.body
-        }
+        body: data.body
       })
     }),
     postNewEntrevista: builder.mutation<void, EntrevistaUpdateParams>({

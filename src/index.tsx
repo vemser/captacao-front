@@ -11,6 +11,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "./index.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "react-toastify/dist/ReactToastify.css";
+import 'nprogress/nprogress.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

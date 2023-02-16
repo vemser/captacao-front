@@ -196,6 +196,7 @@ export const InterviewCurriculum = () => {
                   margin="dense"
                   autoFocus
                   type="datetime-local"
+                  required={true}
                   InputLabelProps={{
                     shrink: true
                   }}
@@ -210,6 +211,7 @@ export const InterviewCurriculum = () => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Trilha"
+                    required={true}
                     value={trilha}
                     onChange={e => {
                       setTrilha(e.target.value)
@@ -282,6 +284,7 @@ export const InterviewCurriculum = () => {
                   margin="dense"
                   autoFocus
                   type="datetime-local"
+                  required={true}
                   InputLabelProps={{
                     shrink: true
                   }}

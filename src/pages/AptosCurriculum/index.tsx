@@ -13,6 +13,7 @@ import { CurriculoContainer } from '../../components/CurriculoContainer'
 import { useUpdateNotaMutation } from 'shared/features/api/candidato/candidatoSlice'
 import { UpdateNota } from 'shared/features/api/candidato/types'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify"
 
 export const AptosCurriculum = () => {
   const { state } = useLocation()
@@ -36,7 +37,7 @@ export const AptosCurriculum = () => {
     <Grid container spacing={2}>
       <Grid xs={12} item>
         <Button variant="contained" onClick={handleClickOpen}>
-          {state.notaProva > 1 ? ' Editar Nota' : 'Adicionar Nota'}
+          {state.notaProva ? 'Editar Nota' : 'Adicionar Nota'}
         </Button>
         <Dialog
           open={open}
@@ -54,7 +55,7 @@ export const AptosCurriculum = () => {
               type="number"
               maxRows={4}
               sx={{ mt: 1 }}
-              value={valueNota}
+              defaultValue={state.notaProva}
               onChange={e => setValueNota(parseInt(e.target.value))}
             />
           </DialogContent>
@@ -65,12 +66,16 @@ export const AptosCurriculum = () => {
             <Button
               id="botao-enviar"
               onClick={() => {
+                if (valueNota > 100 || valueNota <= 0) {
+                  return toast.error("Nota deve ser de 1 a 100!")
+                }
                 updateNota({
                   nota: {
                     notaProva: valueNota
                   },
                   idCandidato: state.idCandidato
                 })
+                toast.success("Nota atualizada com sucesso!")
                 navigate('/prova')
               }}
               autoFocus

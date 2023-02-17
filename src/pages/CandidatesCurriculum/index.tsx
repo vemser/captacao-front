@@ -89,7 +89,7 @@ export const CandidatesCurriculum = () => {
                   }),
                 {
                   pending: 'Carregando...',
-                  success: 'Candidato reprovado com sucesso!',
+                  success: 'Candidato avaliado com sucesso!',
                   error: {
                     render() {
                       return 'Houve um erro ao avaliar esse candidato.'

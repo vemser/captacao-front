@@ -84,7 +84,7 @@ export const Schedule = () => {
 		return (
 			<>
 				{title?.[0] && (
-					<Typography sx={{ fontSize: { xs: "2rem", sm: "3rem" }, fontWeight: "700" }}>
+					<Typography sx={{ fontSize: { xs: "2rem", sm: "2.4rem" }, fontWeight: "700", cursor: "default" }}>
 						Agenda: {title[0].toUpperCase()}{title.substring(1)}
 					</Typography>
 				)}
@@ -265,7 +265,7 @@ export const Schedule = () => {
 						justifyContent: "flex-end",
 					}}
 				>
-					<Grid container xs={12} lg={4}>
+					<Grid container xs={12} lg={4} item={true}>
 						<FormControl fullWidth>
 							<InputLabel id="demo-simple-select-label">
 								Selecione agenda por trilha

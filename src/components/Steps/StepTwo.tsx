@@ -355,9 +355,9 @@ export const StepTwo: React.FC = () => {
                 {...register("genero")}
               >
                 <MenuItem value="cisgenero">Homem cisgênero</MenuItem>
-                <MenuItem value="transgenero">Homem transgênero</MenuItem>
                 <MenuItem value="mulherCisgenero">Mulher cisgênero</MenuItem>
-                <MenuItem value="mulherCisgenero">Mulher transgênero</MenuItem>
+                <MenuItem value="transgenero">Homem transgênero</MenuItem>
+                <MenuItem value="mulherTransgenero">Mulher transgênero</MenuItem>
                 <MenuItem value="naoBinario">Não binário</MenuItem>
                 <MenuItem value="outro">Outro</MenuItem>
                 <MenuItem value="naoInformado">Prefiro não informar</MenuItem>

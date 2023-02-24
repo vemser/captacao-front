@@ -131,7 +131,6 @@ export const InterviewCurriculum = () => {
         })
         .finally(() => {
           handleClose()
-          nProgress.done()
         })
   }
 

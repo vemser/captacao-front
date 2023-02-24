@@ -34,7 +34,8 @@ export const stepTwoSchema = Yup.object().shape({
 
   algoimportante: Yup.string()
     .required("Campo obrigatório")
-    .max(255, "O campo deve ter no máximo 255 letras")
+    .min(10, "São necessários 10 caracteres, no mínimo")
+    .max(500, "O campo deve ter no máximo 500 caracteres")
     .matches(regex, "Este campo deve ter apenas letras e espaços")
     .test("algoimportante", "Este campo não pode conter apenas espaço", (value: any) => {
       if (value.trim().length == 0) {
@@ -46,6 +47,7 @@ export const stepTwoSchema = Yup.object().shape({
   resposta: Yup.string()
     .required("Campo obrigatório")
     .min(10, "São necessários 10 caracteres, no mínimo")
+    .max(500, "O campo deve ter no máximo 500 caracteres")
     .matches(regex, "A resposta deve ter apenas letras e espaços")
     .test("resposta", "A resposta não pode conter apenas espaço", (value: any) => {
       if (value.trim().length == 0) {
@@ -55,7 +57,7 @@ export const stepTwoSchema = Yup.object().shape({
     }),
   deficiencia: Yup.string()
     .min(2, "São necessários 2 caracteres, no mínimo")
-    .max(255, "O campo deve ter no máximo 255 letras"),
+    .max(255, "O campo deve ter no máximo 255 caracteres"),
   curriculo: Yup.mixed()
     .test("required", "O currículo é obrigatório", (value) => value.length > 0)
     .test("fileType", "O tipo de arquivo não é suportado. Os tipos aceitos são: PDF, DOC, DOCX e ODT", (value) => {

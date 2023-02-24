@@ -512,6 +512,7 @@ export const StepTwo: React.FC = () => {
                 sx={{ width: "100%" }}
                 defaultValue={formData?.deficiencia}
                 id="s2-candidato-deficiencia-descricao"
+                inputProps={{ maxLength: 255 }}
                 error={!!errors.deficiencia}
                 helperText={errors.deficiencia?.message}
                 {...register("deficiencia")}
@@ -528,6 +529,7 @@ export const StepTwo: React.FC = () => {
               type="textArea"
               size="medium"
               fullWidth
+              inputProps={{ maxLength: 500 }}
               error={!!errors.resposta}
               helperText={errors.resposta?.message}
               id="s2-candidato-motivo"
@@ -544,12 +546,14 @@ export const StepTwo: React.FC = () => {
               type="textArea"
               size="medium"
               fullWidth
+              inputProps={{ maxLength: 500 }}
               error={!!errors.algoimportante}
               helperText={errors.algoimportante?.message}
               id="textarea-importante-candidato"
               {...register("algoimportante")}
             />
           </Grid>
+
           <Grid item xs={12}>
             <FormLabel sx={{
               color: "#525252"

@@ -211,7 +211,7 @@ export const DrawerContainer = (props: Props) => {
 						Olá,
 					</Box>
 
-					{" " + data?.login.split(".").join(" ")}
+					{data ? " " + data?.login.split(".").join(" ") : " ..."}
 				</Typography>
 			</Toolbar>
 			<Divider />
@@ -316,7 +316,7 @@ export const DrawerContainer = (props: Props) => {
 					</Typography>
 					<Box sx={{ flexGrow: 1 }} />
 					{(pathname === "/agenda" || pathname === "/resultado") && <Export />}
-						
+
 					<Configurations />
 				</Toolbar>
 			</AppBar>

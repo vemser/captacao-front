@@ -61,7 +61,6 @@ export const InterviewCurriculum = () => {
   }
 
   const handleSubmitEntrevista = async (form: EntrevistaUpdateParams) => {
-    nProgress.start()
     isLoading === false &&
       postNewEntrevista({
         body: {
@@ -132,6 +131,7 @@ export const InterviewCurriculum = () => {
         })
         .finally(() => {
           handleClose()
+          nProgress.done()
         })
   }
 

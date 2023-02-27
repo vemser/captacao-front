@@ -515,6 +515,7 @@ export const StepTwo: React.FC = () => {
                 inputProps={{ maxLength: 255 }}
                 error={!!errors.deficiencia}
                 helperText={errors.deficiencia?.message}
+                required
                 {...register("deficiencia")}
               />
             </Grid>

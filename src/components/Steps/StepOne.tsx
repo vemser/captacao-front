@@ -42,7 +42,7 @@ export const StepOne: React.FC = () => {
   const formulario = data?.data.formulario;
 
   const onSubmit = (data: SubscribeData) => {
-    data.neurodiversidade?.length === undefined &&
+    !data.neurodiversidade &&
       (data.neurodiversidade = "Não possui");
 
     dispatch(nextStep());
@@ -227,6 +227,7 @@ export const StepOne: React.FC = () => {
             error={!!errors.neurodiversidade}
             helperText={errors.neurodiversidade?.message}
             id="step-1-neurodiversidade"
+            required
             {...register("neurodiversidade")}
           />
         </Grid>

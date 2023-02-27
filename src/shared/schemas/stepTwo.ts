@@ -56,7 +56,6 @@ export const stepTwoSchema = Yup.object().shape({
       return true;
     }),
   deficiencia: Yup.string()
-    .min(2, "São necessários 2 caracteres, no mínimo")
     .max(255, "O campo deve ter no máximo 255 caracteres"),
   curriculo: Yup.mixed()
     .test("required", "O currículo é obrigatório", (value) => value.length > 0)

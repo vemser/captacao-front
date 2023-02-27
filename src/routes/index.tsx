@@ -16,6 +16,7 @@ import { AptosCurriculum } from 'pages/AptosCurriculum'
 import { Prova } from 'pages/Aptos'
 import { ConfirmaEntrevista } from 'pages/ConfirmaEntrevista'
 import { PageError } from 'components/PageError'
+import 'nprogress/nprogress.css';
 
 export const Router = () => {
   return (

@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import {
 	getEntrevistasExcel,
 	getResultadosExcel,
+	getCandidatosExcel
 } from "shared/features/api/export";
 import { theme } from "shared/theme/index";
 
@@ -16,8 +17,12 @@ export const Export = () => {
 	const checarPagina = () => {
 		if (pathname === "/agenda") {
 			getEntrevistasExcel();
-		} else if (pathname === "/resultado") {
+		}
+		if (pathname === "/resultado") {
 			getResultadosExcel();
+		}
+		if (pathname == "/candidatos") {
+			getCandidatosExcel();
 		}
 	};
 

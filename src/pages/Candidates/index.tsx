@@ -69,7 +69,7 @@ const columns = [
   },
   {
     field: 'acoes',
-    headerName: 'Ações',
+    headerName: 'Avaliar',
     width: 120,
     renderCell: () => {
       return (

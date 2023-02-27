@@ -8,10 +8,9 @@ import { Provider } from "react-redux";
 import { store } from "shared/features/store";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import "./index.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "react-toastify/dist/ReactToastify.css";
-import 'nprogress/nprogress.css';
+import "./index.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

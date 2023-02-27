@@ -315,7 +315,7 @@ export const DrawerContainer = (props: Props) => {
 						{menuItems.find((item) => item.path === pathname)?.text}
 					</Typography>
 					<Box sx={{ flexGrow: 1 }} />
-					{(pathname === "/agenda" || pathname === "/resultado") && <Export />}
+					{(pathname === "/agenda" || pathname === "/resultado" || pathname === "/candidatos") && <Export />}
 
 					<Configurations />
 				</Toolbar>

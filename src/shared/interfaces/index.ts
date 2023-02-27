@@ -9,7 +9,7 @@ export interface SubscribeData {
   cidade: string;
   dataNascimento: string;
   neurodiversidade: string;
-
+  neurodiversidadeBoolean: boolean | TBoolean;
   matriculado: boolean | TBoolean;
   turno: string;
   instituicao: string;

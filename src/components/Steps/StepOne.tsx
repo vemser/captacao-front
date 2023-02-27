@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -19,16 +19,15 @@ import {
   useSteps,
 } from "../../shared/features/subscription/stepsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { IFormQuery, SubscribeData } from "shared/interfaces";
+import {IFormQuery, SubscribeData, TBoolean} from "shared/interfaces";
 import { estadosBrasileiros } from "shared/utils/states";
 import { stepOneSchema } from "shared/schemas/subscription";
 import { useGetInputsQuery } from "shared/features/api/subscription/formSlice";
 import InputMask from "react-input-mask";
 
 export const StepOne: React.FC = () => {
-  const [neurodiversidade, setNeurodiversidade] = useState("F");
-  const { data: formData } = useSelector(useSteps);
-
+  const [neurodiversidade, setNeurodiversidade] = useState<TBoolean>("F");
+  const {data: formData } = useSelector(useSteps);
   const {
     register,
     handleSubmit,
@@ -42,7 +41,7 @@ export const StepOne: React.FC = () => {
   const formulario = data?.data.formulario;
 
   const onSubmit = (data: SubscribeData) => {
-    data.neurodiversidade === '' || data.neurodiversidade === 'F' &&
+    data.neurodiversidadeBoolean === 'F' &&
       (data.neurodiversidade = "Não possui");
 
     dispatch(nextStep());
@@ -52,6 +51,10 @@ export const StepOne: React.FC = () => {
   const FormName: React.FC<IFormQuery> = ({ nome }) => {
     return <>{nome ? nome : <CircularProgress size={22} />}</>;
   };
+
+  useEffect(() => {
+      setNeurodiversidade(formData?.neurodiversidadeBoolean === 'T' ? 'T' : 'F');
+  },[formData]);
 
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
@@ -206,11 +209,12 @@ export const StepOne: React.FC = () => {
             </InputLabel>
             <Select
               label={<FormName nome={formulario?.neurodiversidade} />}
-              defaultValue="F"
-              onChange={() => {
-                setNeurodiversidade(neurodiversidade === "F" ? "T" : "F");
+              defaultValue={formData?.neurodiversidadeBoolean ? formData.neurodiversidadeBoolean : "F"}
+              id="step-1-neurodiversidade-combo"
+              {...register("neurodiversidadeBoolean")}
+              onChange={(event) => {
+                  setNeurodiversidade(event.target.value === 'T' ? 'T' : 'F');
               }}
-              id="step-1-neurodiversidade"
             >
               <MenuItem value="F">Não</MenuItem>
               <MenuItem value="T">Sim</MenuItem>

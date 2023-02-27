@@ -130,6 +130,10 @@ export const StepTwo: React.FC = () => {
         ])
       );
 
+      if (data.neurodiversidade === '' || data.neurodiversidade === 'F') {
+        data.neurodiversidade = "Não possui"
+      }
+
       dispatch(nextStep());
       dispatch(
         changeData({
@@ -493,7 +497,6 @@ export const StepTwo: React.FC = () => {
                   id="s2-select-deficiencia-candidato"
                   label={<FormName nome={formulario?.s2DeficiNcia} />}
                   defaultValue="F"
-
                   onChange={() => {
                     setDeficiencia(deficiencia === "F" ? "T" : "F");
                   }}

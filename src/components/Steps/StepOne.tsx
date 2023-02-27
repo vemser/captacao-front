@@ -42,7 +42,7 @@ export const StepOne: React.FC = () => {
   const formulario = data?.data.formulario;
 
   const onSubmit = (data: SubscribeData) => {
-    !data.neurodiversidade &&
+    data.neurodiversidade === '' || data.neurodiversidade === 'F' &&
       (data.neurodiversidade = "Não possui");
 
     dispatch(nextStep());

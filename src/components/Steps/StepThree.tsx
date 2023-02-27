@@ -32,7 +32,7 @@ export const StepThree: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const [ erroMsg, setErroMsg ] = useState<string>('')
+  const [erroMsg, setErroMsg] = useState<string>('')
 
   const [postNewFormulario] = usePostNewFormularioMutation();
   const [postCandidato] = usePostCandidatoMutation();
@@ -114,7 +114,7 @@ export const StepThree: React.FC = () => {
           setIdCandidato(res.idCandidato);
         })
         .catch((err) => {
-          console.log(err.data.message);
+          console.log(err);
           setErroMsg(err.data.message)
           setIsError(true);
           setIsLoading(false);
@@ -175,7 +175,7 @@ export const StepThree: React.FC = () => {
         <Box>
           <Alert severity="warning">
             <AlertTitle>Houve algum erro!</AlertTitle>
-            {erroMsg? erroMsg : 'Houve algum erro ao enviar os dados da inscrição.'}
+            {erroMsg ? erroMsg : 'Houve algum erro ao enviar os dados da inscrição.'}
           </Alert>
           <Button
             variant="contained"

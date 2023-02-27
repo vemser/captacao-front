@@ -111,7 +111,7 @@ const columns = [
     headerName: 'Adicionar nota',
     width: 140,
     renderCell: (params: any) => {
-      return <Button variant="contained">Adicionar</Button>
+      return <Button variant="contained">Detalhes</Button>
     }
   }
 ]

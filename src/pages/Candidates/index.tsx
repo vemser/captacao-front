@@ -74,7 +74,7 @@ const columns = [
     renderCell: () => {
       return (
         <Button variant="contained" id="">
-          Avaliar
+          Detalhes
         </Button>
       )
     }

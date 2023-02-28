@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -19,7 +19,7 @@ import {
   useSteps,
 } from "../../shared/features/subscription/stepsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {IFormQuery, SubscribeData, TBoolean} from "shared/interfaces";
+import { IFormQuery, SubscribeData, TBoolean } from "shared/interfaces";
 import { estadosBrasileiros } from "shared/utils/states";
 import { stepOneSchema } from "shared/schemas/subscription";
 import { useGetInputsQuery } from "shared/features/api/subscription/formSlice";
@@ -27,7 +27,7 @@ import InputMask from "react-input-mask";
 
 export const StepOne: React.FC = () => {
   const [neurodiversidade, setNeurodiversidade] = useState<TBoolean>("F");
-  const {data: formData } = useSelector(useSteps);
+  const { data: formData } = useSelector(useSteps);
   const {
     register,
     handleSubmit,
@@ -53,8 +53,8 @@ export const StepOne: React.FC = () => {
   };
 
   useEffect(() => {
-      setNeurodiversidade(formData?.neurodiversidadeBoolean === 'T' ? 'T' : 'F');
-  },[formData]);
+    setNeurodiversidade(formData?.neurodiversidadeBoolean === 'T' ? 'T' : 'F');
+  }, [formData]);
 
   return (
     <FormGrid onSubmit={handleSubmit(onSubmit)}>
@@ -213,7 +213,7 @@ export const StepOne: React.FC = () => {
               id="step-1-neurodiversidade-combo"
               {...register("neurodiversidadeBoolean")}
               onChange={(event) => {
-                  setNeurodiversidade(event.target.value === 'T' ? 'T' : 'F');
+                setNeurodiversidade(event.target.value === 'T' ? 'T' : 'F');
               }}
             >
               <MenuItem value="F">Não</MenuItem>
@@ -230,6 +230,7 @@ export const StepOne: React.FC = () => {
             defaultValue={formData?.neurodiversidade}
             error={!!errors.neurodiversidade}
             helperText={errors.neurodiversidade?.message}
+            inputProps={{ maxLength: 255 }}
             id="step-1-neurodiversidade"
             required
             {...register("neurodiversidade")}

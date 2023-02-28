@@ -63,7 +63,7 @@ export interface Candidato {
   linguagens: Linguagen[]
   edicao: Edicao
   formulario: Formulario
-  pcdboolean: boolean
+  pcd: string
 }
 
 export interface Linguagen {

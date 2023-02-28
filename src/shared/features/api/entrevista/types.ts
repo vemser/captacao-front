@@ -88,7 +88,7 @@ export interface CandidatoDTO {
   edicao: Edicao
   formulario: Formulario
   imagem: number
-  pcdboolean: boolean
+  pcd: string
 }
 
 export interface Edicao {

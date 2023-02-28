@@ -32,7 +32,8 @@ export interface SubscribeData {
   curriculo: any;
   lgpdBoolean: boolean;
   resposta: string;
-  deficiencia: boolean | TBoolean;
+  deficiencia: string;
+  deficienciaBoolean: boolean | TBoolean;
   configuracoes: any;
   motivo: string;
   rg: string;

@@ -107,7 +107,7 @@ export const StepThree: React.FC = () => {
           nome: edicaoAtual,
         },
         formulario: idFormulario,
-        pcdboolean: data.deficiencia,
+        pcd: data.deficiencia,
       })
         .unwrap()
         .then((res) => {

@@ -10,7 +10,6 @@ import { toast } from 'react-toastify'
 import { useGetCandidatosByEmailMutation } from 'shared/features/api/candidato/candidatoSlice'
 import { Elemento } from 'shared/features/api/candidato/types'
 import { useUpdateFormMutation } from 'shared/features/api/formulario/formularioSlice'
-import nProgress from "nprogress";
 
 export const InterviewCurriculum = () => {
   const { state } = useLocation()

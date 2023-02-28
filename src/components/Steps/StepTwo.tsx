@@ -84,6 +84,10 @@ export const StepTwo: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    setDeficiencia(formData?.deficiencia === 'T' ? 'T' : 'F');
+  }, [formData]);
+
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -112,6 +116,9 @@ export const StepTwo: React.FC = () => {
   };
 
   const onSubmit = (data: SubscribeData) => {
+    data.deficienciaBoolean === 'F' &&
+      (data.deficiencia = "Não possui");
+
     if (languages.length == 0) {
       setHasLang(true);
       const selecao: HTMLElement | null = document.getElementById(
@@ -130,10 +137,6 @@ export const StepTwo: React.FC = () => {
         ])
       );
 
-      if (data.neurodiversidade === '' || data.neurodiversidade === 'F') {
-        data.neurodiversidade = "Não possui"
-      }
-
       dispatch(nextStep());
       dispatch(
         changeData({
@@ -143,6 +146,10 @@ export const StepTwo: React.FC = () => {
       );
     }
   };
+
+  useEffect(() => {
+    setDeficiencia(formData?.deficienciaBoolean === 'T' ? 'T' : 'F');
+  }, [formData]);
 
   const FormName: React.FC<IFormQuery> = ({ nome }) => {
     return <>{nome ? nome : <CircularProgress size={22} />}</>;
@@ -496,9 +503,10 @@ export const StepTwo: React.FC = () => {
                 <Select
                   id="s2-select-deficiencia-candidato"
                   label={<FormName nome={formulario?.s2DeficiNcia} />}
-                  defaultValue="F"
-                  onChange={() => {
-                    setDeficiencia(deficiencia === "F" ? "T" : "F");
+                  defaultValue={formData?.deficienciaBoolean ? formData.deficienciaBoolean : "F"}
+                  {...register("deficienciaBoolean")}
+                  onChange={(event) => {
+                    setDeficiencia(event.target.value === "T" ? "T" : "F");
                   }}
                 >
                   <MenuItem value="F">Não</MenuItem>

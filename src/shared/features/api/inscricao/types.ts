@@ -14,16 +14,16 @@ export interface IElementos {
 }
 
 export interface IEdicao {
-    nome: string;
+  nome: string;
 }
 
 export interface ILinguagen {
   nome: string
 }
 
-export interface IGetInscritos{
+export interface IGetInscritos {
   pagina: number,
-  
+
 }
 
 export interface ICandidato {
@@ -48,7 +48,7 @@ export interface ICandidato {
   edicao: IEdicao
   formulario: IFormulario | null
   imagem: number
-  pcdboolean: boolean
+  pcd: string
 }
 
 export interface IFormulario {

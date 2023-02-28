@@ -13,7 +13,7 @@ export interface CandidatoBody {
   linguagens: string[]
   edicao: Edicao
   formulario: number
-  pcdboolean: boolean | TBoolean
+  pcd: string
 }
 
 export interface CandidatoResponse {
@@ -37,7 +37,7 @@ export interface CandidatoResponse {
   linguagens: Edicao[]
   edicao: Edicao
   formulario: Formulario
-  pcdboolean: boolean | TBoolean
+  pcd: string
 }
 
 export interface Formulario {
@@ -121,7 +121,7 @@ export interface Elemento {
   edicao: Edicao
   formulario: Formulario
   imagem: number
-  pcdboolean: boolean
+  pcd: string
 }
 
 export interface ITrilha {

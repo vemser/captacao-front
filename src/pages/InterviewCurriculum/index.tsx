@@ -172,187 +172,202 @@ export const InterviewCurriculum = () => {
 
   return (
     <Grid container spacing={2}>
-      {!data ? (
-        <Grid xs={12} item>
-          <Button
-            variant="contained"
-            id="interview-curriculum-agendar"
-            onClick={handleClickOpen}
-          >
-            Agendar entrevista
-          </Button>
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle color="primary" sx={{ textAlign: "center" }}>Agendar entrevista</DialogTitle>
-            <DialogContent>
-              <Stack
-                direction="column"
-                component="form"
-                onSubmit={handleSubmit(handleSubmitEntrevista)}
-                spacing={1}
-              >
-                <TextField
-                  margin="dense"
-                  autoFocus
-                  type="datetime-local"
-                  required={true}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  id="name"
-                  label="Data e hora da entrevista"
-                  {...register('body.dataEntrevista')}
-                  fullWidth
-                />
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Trilha</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Trilha"
-                    required={true}
-                    value={trilha}
-                    onChange={e => {
-                      setTrilha(e.target.value)
-                    }}
-                  >
-                    {inscricaoResponse?.formulario.trilhas.map(trilha => {
-                      return (
-                        <MenuItem
-                          key={trilha.nome}
-                          value={trilha.nome}
-                          id={`filtro-trilha-${trilha.nome}`}
+      <>
+        {data && (
+          data?.candidatoDTO.notaEntrevistaComportamental > 0 ?
+            (
+              <Grid xs={12} item sx={{ display: "flex", gap: "10px" }}>
+                <Button
+                  variant="contained"
+                  id="interview-curriculum-agendar"
+                  disabled
+                >
+                  Já entrevistado
+                </Button>
+              </Grid>
+            ) :
+            (
+              <Grid xs={12} item sx={{ display: "flex", gap: "10px" }}>
+                <Button
+                  variant="contained"
+                  id="interview-curriculum-agendar"
+                  onClick={handleClickOpenEditar}
+                >
+                  Editar agendamento
+                </Button>
+                <Button
+                  variant="contained"
+                  id="interview-curriculum-agendar"
+                  onClick={handleClickOpenCancelar}
+                >
+                  Cancelar entrevista
+                </Button>
+                <Dialog open={openEditar} onClose={handleCloseEditar}>
+                  <DialogTitle color="primary" sx={{ textAlign: "center" }}>Editar agendamento</DialogTitle>
+                  <DialogContent>
+                    <Stack
+                      direction="column"
+                      component="form"
+                      onSubmit={handleSubmit(handleSubmitUpdateEntrevista)}
+                      spacing={1}
+                    >
+                      <TextField
+                        margin="dense"
+                        autoFocus
+                        type="datetime-local"
+                        required={true}
+                        InputLabelProps={{
+                          shrink: true
+                        }}
+                        id="name"
+                        label="Data e hora da entrevista"
+                        defaultValue={data?.dataEntrevista}
+                        {...register('body.dataEntrevista')}
+                        fullWidth
+                      />
+                      <TextField
+                        margin="dense"
+                        id="name"
+                        label="Observações"
+                        defaultValue={data?.observacoes}
+                        {...register('body.observacoes')}
+                        multiline
+                        rows={4}
+                        fullWidth
+                      />
+                      <TextField
+                        value={data?.idEntrevista}
+                        {...register('idEntrevista')}
+                        sx={{
+                          display: "none"
+                        }}
+                      />
+                      <Stack spacing={2} direction="row">
+                        <Button
+                          color="error"
+                          sx={{ width: '100%' }}
+                          onClick={handleCloseEditar}
                         >
-                          {trilha.nome}
-                        </MenuItem>
-                      )
-                    })}
-                  </Select>
-                </FormControl>
-                <TextField
-                  margin="dense"
-                  id="name"
-                  label="Observações"
-                  {...register('body.observacoes')}
-                  multiline
-                  rows={4}
-                  fullWidth
-                />
-                <Stack spacing={2} direction="row">
-                  <Button
-                    color="error"
-                    sx={{ width: '100%' }}
-                    onClick={handleClose}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button sx={{ width: '100%' }} type="submit">
-                    Agendar
-                  </Button>
-                </Stack>
-              </Stack>
-            </DialogContent>
-          </Dialog>
-        </Grid>
-      ) : (
-        <Grid xs={12} item sx={{ display: "flex", gap: "10px" }}>
-          <Button
-            variant="contained"
-            id="interview-curriculum-agendar"
-            onClick={handleClickOpenEditar}
-          >
-            Editar agendamento
-          </Button>
-          <Button
-            variant="contained"
-            id="interview-curriculum-agendar"
-            onClick={handleClickOpenCancelar}
-          >
-            Cancelar entrevista
-          </Button>
-          <Dialog open={openEditar} onClose={handleCloseEditar}>
-            <DialogTitle color="primary" sx={{ textAlign: "center" }}>Editar agendamento</DialogTitle>
-            <DialogContent>
-              <Stack
-                direction="column"
-                component="form"
-                onSubmit={handleSubmit(handleSubmitUpdateEntrevista)}
-                spacing={1}
+                          Cancelar
+                        </Button>
+                        <Button sx={{ width: '100%' }} type="submit">
+                          Salvar
+                        </Button>
+                      </Stack>
+                    </Stack>
+                  </DialogContent>
+                </Dialog>
+                <Dialog open={openCancelar} onClose={handleCloseCancelar}>
+                  <DialogTitle color="secondary" sx={{ userSelect: "none", textAlign: "center", marginBottom: "12px" }}>Tem certeza?</DialogTitle>
+                  <DialogContent>
+                    <Stack
+                      direction="column"
+                      component="form"
+                      spacing={1}
+                    >
+                      <Stack spacing={3} direction="column">
+                        <Button variant='outlined' sx={{ width: '100%', fontWeight: 700 }} onClick={(() => deletarEntrevista())}>
+                          Sim
+                        </Button>
+                        <Button
+                          variant='outlined'
+                          color="error"
+                          sx={{ width: '100%', fontWeight: 700 }}
+                          onClick={handleCloseCancelar}
+                        >
+                          Não
+                        </Button>
+                      </Stack>
+                    </Stack>
+                  </DialogContent>
+                </Dialog>
+              </Grid>
+            )) || (
+            <Grid xs={12} item>
+              <Button
+                variant="contained"
+                id="interview-curriculum-agendar"
+                onClick={handleClickOpen}
               >
-                <TextField
-                  margin="dense"
-                  autoFocus
-                  type="datetime-local"
-                  required={true}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  id="name"
-                  label="Data e hora da entrevista"
-                  defaultValue={data?.dataEntrevista}
-                  {...register('body.dataEntrevista')}
-                  fullWidth
-                />
-                <TextField
-                  margin="dense"
-                  id="name"
-                  label="Observações"
-                  defaultValue={data?.observacoes}
-                  {...register('body.observacoes')}
-                  multiline
-                  rows={4}
-                  fullWidth
-                />
-                <TextField
-                  value={data?.idEntrevista}
-                  {...register('idEntrevista')}
-                  sx={{
-                    display: "none"
-                  }}
-                />
-                <Stack spacing={2} direction="row">
-                  <Button
-                    color="error"
-                    sx={{ width: '100%' }}
-                    onClick={handleCloseEditar}
+                Agendar entrevista
+              </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle color="primary" sx={{ textAlign: "center" }}>Agendar entrevista</DialogTitle>
+                <DialogContent>
+                  <Stack
+                    direction="column"
+                    component="form"
+                    onSubmit={handleSubmit(handleSubmitEntrevista)}
+                    spacing={1}
                   >
-                    Cancelar
-                  </Button>
-                  <Button sx={{ width: '100%' }} type="submit">
-                    Salvar
-                  </Button>
-                </Stack>
-              </Stack>
-            </DialogContent>
-          </Dialog>
-          <Dialog open={openCancelar} onClose={handleCloseCancelar}>
-            <DialogTitle color="secondary" sx={{ userSelect: "none", textAlign: "center", marginBottom: "12px" }}>Tem certeza?</DialogTitle>
-            <DialogContent>
-              <Stack
-                direction="column"
-                component="form"
-                spacing={1}
-              >
-                <Stack spacing={3} direction="column">
-                  <Button variant='outlined' sx={{ width: '100%', fontWeight: 700 }} onClick={(() => deletarEntrevista())}>
-                    Sim
-                  </Button>
-                  <Button
-                    variant='outlined'
-                    color="error"
-                    sx={{ width: '100%', fontWeight: 700 }}
-                    onClick={handleCloseCancelar}
-                  >
-                    Não
-                  </Button>
-                </Stack>
-              </Stack>
-            </DialogContent>
-          </Dialog>
+                    <TextField
+                      margin="dense"
+                      autoFocus
+                      type="datetime-local"
+                      required={true}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      id="name"
+                      label="Data e hora da entrevista"
+                      {...register('body.dataEntrevista')}
+                      fullWidth
+                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Trilha</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Trilha"
+                        required={true}
+                        value={trilha}
+                        onChange={e => {
+                          setTrilha(e.target.value)
+                        }}
+                      >
+                        {inscricaoResponse?.formulario.trilhas.map(trilha => {
+                          return (
+                            <MenuItem
+                              key={trilha.nome}
+                              value={trilha.nome}
+                              id={`filtro-trilha-${trilha.nome}`}
+                            >
+                              {trilha.nome}
+                            </MenuItem>
+                          )
+                        })}
+                      </Select>
+                    </FormControl>
+                    <TextField
+                      margin="dense"
+                      id="name"
+                      label="Observações"
+                      {...register('body.observacoes')}
+                      multiline
+                      rows={4}
+                      fullWidth
+                    />
+                    <Stack spacing={2} direction="row">
+                      <Button
+                        color="error"
+                        sx={{ width: '100%' }}
+                        onClick={handleClose}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button sx={{ width: '100%' }} type="submit">
+                        Agendar
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </DialogContent>
+              </Dialog>
+            </Grid>
+          )}
+        <Grid item xs={12}>
+          <CurriculoContainer />
         </Grid>
-      )}
-      <Grid item xs={12}>
-        <CurriculoContainer />
-      </Grid>
-    </Grid>
+      </>
+    </Grid >
   )
 }

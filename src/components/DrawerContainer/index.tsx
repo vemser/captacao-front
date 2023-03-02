@@ -42,6 +42,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { toast } from "react-toastify";
 import { Configurations } from "components/Configurations";
 import { Export } from "components/ExportarExcel";
+import {Dashboard} from "../Dashboard";
 
 const drawerWidth = 240;
 
@@ -316,7 +317,7 @@ export const DrawerContainer = (props: Props) => {
 					</Typography>
 					<Box sx={{ flexGrow: 1 }} />
 					{(pathname === "/agenda" || pathname === "/resultado" || pathname === "/candidatos") && <Export />}
-
+					<Dashboard />
 					<Configurations />
 				</Toolbar>
 			</AppBar>

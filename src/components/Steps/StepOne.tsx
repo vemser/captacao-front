@@ -41,7 +41,7 @@ export const StepOne: React.FC = () => {
   const formulario = data?.data.formulario;
 
   const onSubmit = (data: SubscribeData) => {
-    data.neurodiversidadeBoolean === 'F' &&
+    data.neurodiversidadeBoolean === "F" &&
       (data.neurodiversidade = "Não possui");
 
     dispatch(nextStep());
@@ -53,7 +53,7 @@ export const StepOne: React.FC = () => {
   };
 
   useEffect(() => {
-    setNeurodiversidade(formData?.neurodiversidadeBoolean === 'T' ? 'T' : 'F');
+    setNeurodiversidade(formData?.neurodiversidadeBoolean === "T" ? "T" : "F");
   }, [formData]);
 
   return (
@@ -83,7 +83,7 @@ export const StepOne: React.FC = () => {
 
       <Grid item xs={6}>
         <InputMask
-          mask="************"
+          mask="*************"
           maskChar=" "
           {...register("rg")}
           defaultValue={formData?.rg}
@@ -163,7 +163,11 @@ export const StepOne: React.FC = () => {
           id="step-1-dataNascimento"
           InputLabelProps={{ shrink: true }}
           {...register("dataNascimento")}
-          defaultValue={new Date(`${formData?.dataNascimento}`).toLocaleDateString().split('/').reverse().join("-")}
+          defaultValue={new Date(`${formData?.dataNascimento}`)
+            .toLocaleDateString()
+            .split("/")
+            .reverse()
+            .join("-")}
         />
       </Grid>
 
@@ -209,11 +213,15 @@ export const StepOne: React.FC = () => {
             </InputLabel>
             <Select
               label={<FormName nome={formulario?.neurodiversidade} />}
-              defaultValue={formData?.neurodiversidadeBoolean ? formData.neurodiversidadeBoolean : "F"}
+              defaultValue={
+                formData?.neurodiversidadeBoolean
+                  ? formData.neurodiversidadeBoolean
+                  : "F"
+              }
               id="step-1-neurodiversidade-combo"
               {...register("neurodiversidadeBoolean")}
               onChange={(event) => {
-                setNeurodiversidade(event.target.value === 'T' ? 'T' : 'F');
+                setNeurodiversidade(event.target.value === "T" ? "T" : "F");
               }}
             >
               <MenuItem value="F">Não</MenuItem>

@@ -24,7 +24,7 @@ export const stepOneSchema = Yup.object().shape({
     .email("O email deve ser um endereço de email válido"),
   rg: Yup.string()
     .required("O RG é obrigatório")
-    .max(13, "O RG deve ter no máximo 12 letras"),
+    .max(13, "O RG deve ter no máximo 13 caracteres"),
   cpf: Yup.string()
     .required("O CPF é obrigatório")
     .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "O CPF deve ser um número válido")
